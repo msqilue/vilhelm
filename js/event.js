@@ -72,7 +72,7 @@ function renderEvent(ev) {
   document.getElementById('ev-title').textContent = ev.title;
   const subEl = document.getElementById('ev-subtitle');
   if (ev.subtitle) {
-    subEl.textContent = ev.subtitle;
+    subEl.textContent = '『' + ev.subtitle + '』';
     subEl.style.display = '';
   } else {
     subEl.textContent = '';

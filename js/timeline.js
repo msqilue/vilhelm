@@ -95,7 +95,7 @@ function renderTimeline() {
           ${thumb ? `<div class="card-media"><img src="${escapeHtml(thumb)}" alt="" loading="lazy"></div>` : ''}
           <div class="card-body">
             <div class="event-meta">
-              ${ev.subtitle ? `<span class="event-subtitle">${escapeHtml(ev.subtitle)}</span>` : (tl ? `<span>${escapeHtml(tl.name)}</span>` : '')}
+              ${ev.subtitle ? `<span class="event-subtitle">『${escapeHtml(ev.subtitle)}』</span>` : (tl ? `<span>${escapeHtml(tl.name)}</span>` : '')}
               ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
               ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
               ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
