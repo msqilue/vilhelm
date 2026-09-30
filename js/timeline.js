@@ -85,8 +85,7 @@ function renderTimeline() {
   el.innerHTML = list.map((ev, i) => {
     const tl = getTimeline(ev.timelineId);
     const imp = ev.importance || 'normal';
-    const excerpt = ev.subtitle || (ev.content || '').split('\n').filter(Boolean).join(' ').slice(0, 60);
-    const excerptSub = ev.subtitle ? ' sub' : '';
+    const excerpt = (ev.content || '').split('\n').filter(Boolean).join(' ').slice(0, 60);
     const thumb = (ev.images && ev.images.length) ? ev.images[0] : null;
     const side = (i % 2 === 0) ? 'left' : 'right';
     return `
@@ -96,13 +95,13 @@ function renderTimeline() {
           ${thumb ? `<div class="card-media"><img src="${escapeHtml(thumb)}" alt="" loading="lazy"></div>` : ''}
           <div class="card-body">
             <div class="event-meta">
-              ${tl ? `<span>${escapeHtml(tl.name)}</span>` : ''}
+              ${ev.subtitle ? `<span class="event-subtitle">${escapeHtml(ev.subtitle)}</span>` : (tl ? `<span>${escapeHtml(tl.name)}</span>` : '')}
               ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
               ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
               ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
             </div>
             <h3 class="event-title">${escapeHtml(ev.title)}</h3>
-            ${excerpt ? `<p class="event-excerpt${excerptSub}">${escapeHtml(excerpt)}${ev.subtitle ? '' : '…'}</p>` : ''}
+            ${excerpt ? `<p class="event-excerpt">${escapeHtml(excerpt)}…</p>` : ''}
             <div class="card-foot">
               <span class="card-open">查看详情 →</span>
               <button class="like-btn" data-id="${ev.id}">点赞 ♡</button>

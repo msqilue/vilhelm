@@ -245,12 +245,7 @@ a:hover { text-decoration: underline; }
 .badge-milestone { background: var(--accent); color: #fff; }
 .event-title { font-size: 1.12rem; margin-bottom: 4px; }
 .event-excerpt { color: var(--muted); font-size: .88rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.event-excerpt.sub {
-  font-family: Georgia, "Noto Serif SC", serif;
-  color: var(--accent);
-  letter-spacing: .1em;
-  -webkit-line-clamp: 1;
-}
+.event-meta .event-subtitle { letter-spacing: .08em; }
 
 /* 事件详情（就地展开） */
 .event-detail { display: none; margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 14px; font-size: .92rem; }
