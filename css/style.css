@@ -534,7 +534,7 @@ a:hover { text-decoration: underline; }
   margin: 0 14px;
 }
 
-/* 正文：辅助叙事，宽松排版 */
+/* 正文：辅助叙事，居中诗行排版 */
 .ev-prose p {
   font-size: 1.06rem;
   line-height: 2.1;
@@ -542,7 +542,7 @@ a:hover { text-decoration: underline; }
   color: var(--ink);
   max-width: 720px;
   margin: 0 auto 16px;
-  text-align: justify;
+  text-align: center;
 }
 
 /* 语音：显眼玻璃播放卡 */
