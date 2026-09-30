@@ -557,7 +557,7 @@ a:hover { text-decoration: underline; }
   background: var(--glass-card);
   border: 1px solid var(--line);
   box-shadow: 0 8px 28px rgba(0, 0, 0, .14);
-  max-width: 640px;
+  max-width: 820px;
   width: 100%;
   justify-self: center;
   margin: 0 0 12px;
@@ -573,12 +573,12 @@ a:hover { text-decoration: underline; }
 }
 .audio-card audio { width: 100%; min-width: 0; }
 
-/* 图片：居中大图画廊（素材优先） */
+/* 图片：横跨整行大图（图阔文窄，素材优先） */
 .detail-images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 20px;
-  max-width: 900px;
+  max-width: 1060px;
   margin: 0 auto;
 }
 .detail-images .img-wrap { border-radius: 10px; box-shadow: 0 12px 36px rgba(0, 0, 0, .22); }
@@ -658,6 +658,8 @@ a:hover { text-decoration: underline; }
 
 /* ===== 关于页 ===== */
 .prose { max-width: 720px; }
+/* 事件页：正文容器放开宽度，由子区块自行控制（图阔文窄） */
+#ev-body.prose { max-width: 1060px; }
 .prose p { margin: 14px 0; color: var(--ink); opacity: .85; }
 
 /* ===== 背景控制面板（右下角） ===== */
