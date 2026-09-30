@@ -72,8 +72,11 @@ function renderEvent(ev) {
         `<span class="img-wrap"><img src="${escapeHtml(src)}" data-full="${escapeHtml(src)}" alt="" loading="lazy">
           <button class="set-bg-btn" data-src="${escapeHtml(src)}" title="将这张图设为页面背景">设为背景</button></span>`).join('')}</div>` : '';
   const audios = ev.audios && ev.audios.length
-    ? `<div class="detail-audios">${ev.audios.map(a =>
-        `<div><audio controls preload="none" src="${escapeHtml(a.src)}"></audio>${a.label ? `<span class="badge">${escapeHtml(a.label)}</span>` : ''}</div>`).join('')}</div>` : '';
+    ? `<div class="detail-audios">${ev.audios.map(a => {
+        const src = typeof a === 'string' ? a : (a && a.src);
+        const label = (a && typeof a === 'object') ? (a.label || '') : '';
+        return `<div><audio controls preload="none" src="${escapeHtml(src)}"></audio>${label ? `<span class="badge">${escapeHtml(label)}</span>` : ''}</div>`;
+      }).join('')}</div>` : '';
   const tagRow = tags.length
     ? `<div class="detail-tags">${tags.map(t => `<span class="tag-chip on" style="border-color:${escapeHtml(t.color || '#6E8F4E')};color:${escapeHtml(t.color || '#6E8F4E')}">${escapeHtml(t.name)}</span>`).join('')}</div>` : '';
   const date = DATA.site.features.recordDate && ev.recordDate ? `<span>记录于 ${escapeHtml(ev.recordDate)}</span>` : '';
