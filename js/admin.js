@@ -113,9 +113,9 @@ function renderEvents() {
             <option value="normal">普通</option>
           </select>
         </div>
-        <div>
-          <label>台词（quote，可空）</label>
-          <input type="text" id="f-quote">
+        <div class="full">
+          <label>引用 quotes（每行一条）</label>
+          <textarea id="f-quotes"></textarea>
         </div>
         <div>
           <label>角色（逗号分隔）</label>
@@ -182,7 +182,7 @@ function renderEvents() {
     editingEventId = null;
     fillEventForm({
       id: '', timelineId: A.timelines[0]?.id || '', title: '', content: '', stage: '',
-      date: '', order: A.events.length + 1, images: [], audios: [], quote: '',
+      date: '', order: A.events.length + 1, images: [], audios: [], quotes: [],
       characters: ['莫弈'], recordDate: '', importance: 'key', bgImage: '', tags: [],
       createdAt: new Date().toISOString()
     });
@@ -199,7 +199,7 @@ function fillEventForm(ev) {
   $('#f-date').value = ev.date || '';
   $('#f-order').value = ev.order != null ? ev.order : '';
   $('#f-importance').value = ev.importance || 'key';
-  $('#f-quote').value = ev.quote || '';
+  $('#f-quotes').value = (ev.quotes || (ev.quote ? [ev.quote] : [])).join('\n');
   $('#f-characters').value = (ev.characters || []).join(',');
   $('#f-content').value = ev.content || '';
   $('#f-images').value = (ev.images || []).join('\n');
@@ -227,7 +227,7 @@ function saveEventForm() {
     order: parseInt($('#f-order').value, 10) || 0,
     images: $('#f-images').value.split('\n').map(s => s.trim()).filter(Boolean),
     audios: $('#f-audios').value.split('\n').map(s => s.trim()).filter(Boolean),
-    quote: $('#f-quote').value.trim(),
+    quotes: $('#f-quotes').value.split('\n').map(s => s.trim()).filter(Boolean),
     characters: $('#f-characters').value.split(/[,，]/).map(s => s.trim()).filter(Boolean),
     recordDate: '',
     importance: $('#f-importance').value,

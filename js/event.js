@@ -64,7 +64,8 @@ function renderEvent(ev) {
   `;
   document.getElementById('ev-title').textContent = ev.title;
 
-  const quote = DATA.site.features.quote && ev.quote ? `<div class="detail-quote">${escapeHtml(ev.quote)}</div>` : '';
+  const quotes = (DATA.site.features.quote && (ev.quotes || (ev.quote ? [ev.quote] : [])) || [])
+    .map(q => `<div class="detail-quote">${escapeHtml(q)}</div>`).join('');
   const chars = DATA.site.features.characters && ev.characters && ev.characters.length
     ? `<div class="detail-tags">${ev.characters.map(c => `<span class="tag-chip on">${escapeHtml(c)}</span>`).join('')}</div>` : '';
   const images = ev.images && ev.images.length
@@ -84,7 +85,7 @@ function renderEvent(ev) {
 
   document.getElementById('ev-body').innerHTML = `
     ${body}
-    ${quote}
+    ${quotes}
     ${images}
     ${audios}
     ${tagRow}
