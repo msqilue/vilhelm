@@ -25,6 +25,7 @@ body.theme-light {
   --bg-base: #F3EFE7;
   --ink: #1E1929;
   --muted: #403850;
+  --gold: #8A6D3B;                 /* 浅色主题深金，保证引用/里程碑可读 */
   --line: rgba(30, 24, 44, .22);
   --line-strong: rgba(30, 24, 44, .6);
   --glass: rgba(255, 255, 255, .55);
