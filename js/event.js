@@ -13,8 +13,9 @@ initPage('timeline.html').then(() => {
     return;
   }
 
-  // 事件级背景图：进入详情页时切换为该事件的背景图
-  if (ev.bgImage) BG.apply(ev.bgImage);
+  // 事件级背景图：进入详情页时自动切换为该事件背景（优先事件指定背景，否则用第二张图片）
+  const evBg = ev.bgImage || (ev.images && ev.images.length >= 2 ? ev.images[1] : '');
+  if (evBg) BG.apply(evBg);
 
   document.title = ev.title + ' · 莫弈·Vilhelm';
   renderEvent(ev);
