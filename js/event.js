@@ -56,40 +56,50 @@ function renderEvent(ev) {
   const imp = ev.importance || 'normal';
   const tags = eventTags(ev);
 
+  // 沉浸式 Hero：事件首图作为顶部背景，标题与元信息叠放其上
+  const heroImg = (ev.images && ev.images[0]) || '';
+  const head = document.getElementById('ev-head');
+  head.classList.toggle('has-bg', !!heroImg);
+  if (heroImg) head.style.backgroundImage = `url("${heroImg}")`;
+
   document.getElementById('ev-meta').innerHTML = `
-    ${tl ? `<span>${escapeHtml(tl.name)}</span>` : ''}
-    ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
-    ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
-    ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
+    ${tl ? `<span class="ev-badge ev-badge-solid">${escapeHtml(tl.name)}</span>` : ''}
+    ${ev.stage ? `<span class="ev-badge">${escapeHtml(ev.stage)}</span>` : ''}
+    ${ev.date ? `<span class="ev-badge">${escapeHtml(ev.date)}</span>` : ''}
+    ${imp !== 'normal' ? `<span class="ev-badge ${imp === 'milestone' ? 'ev-badge-gold' : 'ev-badge-soft'}">${importanceLabel(imp)}</span>` : ''}
   `;
   document.getElementById('ev-title').textContent = ev.title;
 
-  const quotes = (DATA.site.features.quote && (ev.quotes || (ev.quote ? [ev.quote] : [])) || [])
-    .map(q => `<div class="detail-quote">${escapeHtml(q)}</div>`).join('');
-  const chars = DATA.site.features.characters && ev.characters && ev.characters.length
-    ? `<div class="detail-tags">${ev.characters.map(c => `<span class="tag-chip on">${escapeHtml(c)}</span>`).join('')}</div>` : '';
-  const images = ev.images && ev.images.length
-    ? `<div class="detail-images">${ev.images.map(src =>
-        `<span class="img-wrap"><img src="${escapeHtml(src)}" data-full="${escapeHtml(src)}" alt="" loading="lazy">
-          <button class="set-bg-btn" data-src="${escapeHtml(src)}" title="将这张图设为页面背景">设为背景</button></span>`).join('')}</div>` : '';
   const audios = ev.audios && ev.audios.length
-    ? `<div class="detail-audios">${ev.audios.map(a => {
+    ? `<section class="ev-sec"><h2 class="ev-sec-title">语音 · Voice</h2>
+      <div class="detail-audios">${ev.audios.map(a => {
         const src = typeof a === 'string' ? a : (a && a.src);
         const label = (a && typeof a === 'object') ? (a.label || '') : '';
-        return `<div><audio controls preload="none" src="${escapeHtml(src)}"></audio>${label ? `<span class="badge">${escapeHtml(label)}</span>` : ''}</div>`;
-      }).join('')}</div>` : '';
+        return `<div class="audio-card"><span class="audio-disc">♪</span><audio controls preload="none" src="${escapeHtml(src)}"></audio>${label ? `<span class="badge">${escapeHtml(label)}</span>` : ''}</div>`;
+      }).join('')}</div></section>` : '';
+  const images = ev.images && ev.images.length
+    ? `<section class="ev-sec"><h2 class="ev-sec-title">留影 · Gallery</h2>
+      <div class="detail-images">${ev.images.map(src =>
+        `<span class="img-wrap"><img src="${escapeHtml(src)}" data-full="${escapeHtml(src)}" alt="" loading="lazy">
+          <button class="set-bg-btn" data-src="${escapeHtml(src)}" title="将这张图设为页面背景">设为背景</button></span>`).join('')}</div></section>` : '';
+  const body = (ev.content || '').split('\n').filter(l => l.trim()).map(l => `<p>${escapeHtml(l)}</p>`).join('');
+  const quotes = (DATA.site.features.quote && (ev.quotes || (ev.quote ? [ev.quote] : [])) || [])
+    .map(q => `<div class="quote-card"><div class="quote-mark">❝</div><div class="quote-text">${escapeHtml(q)}</div></div>`).join('');
   const tagRow = tags.length
     ? `<div class="detail-tags">${tags.map(t => `<span class="tag-chip on" style="border-color:${escapeHtml(t.color || '#6E8F4E')};color:${escapeHtml(t.color || '#6E8F4E')}">${escapeHtml(t.name)}</span>`).join('')}</div>` : '';
-  const date = DATA.site.features.recordDate && ev.recordDate ? `<span>记录于 ${escapeHtml(ev.recordDate)}</span>` : '';
-  const body = (ev.content || '').split('\n').filter(l => l.trim()).map(l => `<p>${escapeHtml(l)}</p>`).join('');
+  const chars = DATA.site.features.characters && ev.characters && ev.characters.length
+    ? `<div class="detail-chars">${ev.characters.map(c => `<span class="char-chip">${escapeHtml(c)}</span>`).join('')}</div>` : '';
+  const date = DATA.site.features.recordDate && ev.recordDate ? `<span class="ev-date">记录于 ${escapeHtml(ev.recordDate)}</span>` : '';
 
   document.getElementById('ev-body').innerHTML = `
-    ${body}
-    ${quotes}
-    ${images}
+    ${body ? `<section class="ev-sec ev-prose">${body}</section>` : ''}
+    ${quotes ? `<section class="ev-sec"><div class="quote-block">${quotes}</div></section>` : ''}
     ${audios}
-    ${tagRow}
-    ${chars}
+    ${images}
+    <div class="ev-tail">
+      ${tagRow}
+      ${chars}
+    </div>
   `;
   document.getElementById('ev-actions').innerHTML =
     `<button class="like-btn" data-id="${ev.id}">点赞 ♡</button>${date}`;
@@ -106,7 +116,7 @@ function renderNav(ev) {
   const next = idx + 1 < siblings.length ? siblings[idx + 1] : null; // 剧情上更晚
 
   let html = '';
-  if (prev) html += `<a class="ev-nav-link" href="event.html?id=${encodeURIComponent(prev.id)}">↑ 上一条：${escapeHtml(prev.title)}</a>`;
-  if (next) html += `<a class="ev-nav-link" href="event.html?id=${encodeURIComponent(next.id)}">↓ 下一条：${escapeHtml(next.title)}</a>`;
+  if (prev) html += `<a class="ev-nav-card" href="event.html?id=${encodeURIComponent(prev.id)}"><span class="ev-nav-arrow">↑</span><span><em>上一条</em>${escapeHtml(prev.title)}</span></a>`;
+  if (next) html += `<a class="ev-nav-card" href="event.html?id=${encodeURIComponent(next.id)}"><span class="ev-nav-arrow">↓</span><span><em>下一条</em>${escapeHtml(next.title)}</span></a>`;
   el.innerHTML = html || '<p class="ev-nav-empty">这条时间线目前只有这一个事件</p>';
 }
