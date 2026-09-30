@@ -70,6 +70,14 @@ function renderEvent(ev) {
     ${imp !== 'normal' ? `<span class="ev-badge ${imp === 'milestone' ? 'ev-badge-gold' : 'ev-badge-soft'}">${importanceLabel(imp)}</span>` : ''}
   `;
   document.getElementById('ev-title').textContent = ev.title;
+  const subEl = document.getElementById('ev-subtitle');
+  if (ev.subtitle) {
+    subEl.textContent = ev.subtitle;
+    subEl.style.display = '';
+  } else {
+    subEl.textContent = '';
+    subEl.style.display = 'none';
+  }
 
   const audios = ev.audios && ev.audios.length
     ? `<section class="ev-sec"><h2 class="ev-sec-title">语音 · Voice</h2>

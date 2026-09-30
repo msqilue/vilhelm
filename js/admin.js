@@ -94,6 +94,10 @@ function renderEvents() {
           <input type="text" id="f-title">
         </div>
         <div>
+          <label>副标题</label>
+          <input type="text" id="f-subtitle" placeholder="如 莫逆于心 / 岁岁如弈">
+        </div>
+        <div>
           <label>章节 / 阶段</label>
           <input type="text" id="f-stage" placeholder="如 生日 / 序章">
         </div>
@@ -181,7 +185,7 @@ function renderEvents() {
   $('#btn-new-ev').addEventListener('click', () => {
     editingEventId = null;
     fillEventForm({
-      id: '', timelineId: A.timelines[0]?.id || '', title: '', content: '', stage: '',
+      id: '', timelineId: A.timelines[0]?.id || '', title: '', subtitle: '', content: '', stage: '',
       date: '', order: A.events.length + 1, images: [], audios: [], quotes: [],
       characters: ['莫弈'], recordDate: '', importance: 'key', bgImage: '', tags: [],
       createdAt: new Date().toISOString()
@@ -195,6 +199,7 @@ function fillEventForm(ev) {
   $('#f-id').value = ev.id || '';
   $('#f-timeline').value = ev.timelineId || '';
   $('#f-title').value = ev.title || '';
+  $('#f-subtitle').value = ev.subtitle || '';
   $('#f-stage').value = ev.stage || '';
   $('#f-date').value = ev.date || '';
   $('#f-order').value = ev.order != null ? ev.order : '';
@@ -221,6 +226,7 @@ function saveEventForm() {
     id,
     timelineId: tl,
     title: $('#f-title').value.trim() || '未命名',
+    subtitle: $('#f-subtitle').value.trim(),
     content: $('#f-content').value,
     stage: $('#f-stage').value.trim(),
     date: $('#f-date').value.trim(),

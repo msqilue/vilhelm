@@ -33,6 +33,7 @@
         { "key": "id", "type": "string", "required": true, "desc": "事件唯一标识，建议格式 {时间线}-{章节}-{序号}，如 main-序章-1、growth-生日-1；修改数据时按此定位" },
         { "key": "timelineId", "type": "string", "required": true, "desc": "所属时间线 id" },
         { "key": "title", "type": "string", "required": true, "desc": "事件标题" },
+        { "key": "subtitle", "type": "string", "required": false, "desc": "事件副标题（展示于标题下方，如主题词/标语）" },
         { "key": "content", "type": "string", "required": true, "desc": "正文，\\n 分段" },
         { "key": "stage", "type": "string", "required": false, "desc": "剧情阶段/章节，仅展示" },
         { "key": "date", "type": "string", "required": false, "desc": "剧情内日期/时间（如生日、活动日期），仅展示，不参与排序" },

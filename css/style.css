@@ -353,6 +353,14 @@ a:hover { text-decoration: underline; }
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   border-radius: 2px;
 }
+.ev-subtitle {
+  margin-top: 12px;
+  font-size: 1.02rem;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  color: var(--accent);
+  opacity: .92;
+}
 .ev-meta { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .ev-badge {
   font-size: .78rem;
