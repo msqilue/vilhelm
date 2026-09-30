@@ -353,7 +353,7 @@ a:hover { text-decoration: underline; }
 .ev-subtitle {
   position: absolute;
   top: calc(100% + 4px);
-  right: -24px;
+  right: -40px;
   white-space: nowrap;
   font-size: .9rem;
   letter-spacing: .24em;
