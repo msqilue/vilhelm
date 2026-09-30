@@ -34,7 +34,7 @@ function renderFilter() {
   if (!DATA.categories.length) { el.innerHTML = ''; return; }
   el.innerHTML = DATA.categories.map(c => {
     const tags = c.tags.map(t =>
-      `<span class="tag-chip ${state.tags.has(t.id) ? 'on' : ''}" data-tag="${t.id}" style="${t.color ? 'border-color:' + t.color + ';color:' + (state.tags.has(t.id) ? t.color : t.color) : ''}">${escapeHtml(t.name)}</span>`
+      `<span class="tag-chip ${state.tags.has(t.id) ? 'on' : ''}" data-tag="${t.id}" style="${t.color ? 'border-color:' + t.color + ';' + (state.tags.has(t.id) ? 'color:' + t.color : '') : ''}">${escapeHtml(t.name)}</span>`
     ).join('');
     return `<div class="filter-group"><h4>${escapeHtml(c.name)}</h4><div class="filter-tags">${tags}</div></div>`;
   }).join('') +
@@ -55,7 +55,7 @@ function renderFilter() {
   });
 }
 
-/* 过滤 + 排序 */
+/* 过滤 + 排序（倒序：最新在前） */
 function visibleEvents() {
   let list = DATA.events.filter(ev => {
     if (state.timeline !== 'all' && ev.timelineId !== state.timeline) return false;
@@ -74,7 +74,7 @@ function visibleEvents() {
   return sortEvents(list);
 }
 
-/* 时间轴渲染 */
+/* 时间轴 A：左右交替式渲染（点击卡片 → 跳转独立详情页） */
 function renderTimeline() {
   const el = document.getElementById('timeline');
   const list = visibleEvents();
@@ -82,81 +82,53 @@ function renderTimeline() {
     el.innerHTML = `<p class="empty-tip">没有符合条件的事件。</p>`;
     return;
   }
-  el.innerHTML = list.map(ev => {
+  el.innerHTML = list.map((ev, i) => {
     const tl = getTimeline(ev.timelineId);
     const imp = ev.importance || 'normal';
-    const tags = eventTags(ev);
     const excerpt = (ev.content || '').split('\n').filter(Boolean).join(' ').slice(0, 60);
-    const thumb = ev.images && ev.images.length ? ev.images[0] : null;
+    const thumb = (ev.images && ev.images.length) ? ev.images[0] : null;
+    const side = (i % 2 === 0) ? 'left' : 'right';
     return `
-      <article class="event-item importance-${imp}" data-id="${ev.id}">
-        <div class="event-card">
-          <div class="event-meta">
-            ${tl ? `<span>${escapeHtml(tl.name)}</span>` : ''}
-            ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
-            ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
+      <div class="tl-row ${side}" data-id="${ev.id}">
+        <span class="node importance-${imp}"></span>
+        <article class="event-card tl-card" data-href="event.html?id=${encodeURIComponent(ev.id)}">
+          ${thumb ? `<div class="card-media"><img src="${escapeHtml(thumb)}" alt="" loading="lazy"></div>` : ''}
+          <div class="card-body">
+            <div class="event-meta">
+              ${tl ? `<span>${escapeHtml(tl.name)}</span>` : ''}
+              ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
+              ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
+              ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
+            </div>
+            <h3 class="event-title">${escapeHtml(ev.title)}</h3>
+            ${excerpt ? `<p class="event-excerpt">${escapeHtml(excerpt)}…</p>` : ''}
+            <div class="card-foot">
+              <span class="card-open">查看详情 →</span>
+              <button class="like-btn" data-id="${ev.id}">点赞 ♡</button>
+            </div>
           </div>
-          <h3 class="event-title">${escapeHtml(ev.title)}</h3>
-          ${excerpt ? `<p class="event-excerpt">${escapeHtml(excerpt)}…</p>` : ''}
-          ${thumb ? `<div class="event-thumb"><img src="${escapeHtml(thumb)}" alt="" loading="lazy"></div>` : ''}
-          <div class="event-detail" id="detail-${ev.id}">
-            ${renderDetail(ev, tags)}
-          </div>
-        </div>
-      </article>`;
+        </article>
+      </div>`;
   }).join('');
 
-  el.querySelectorAll('.event-item').forEach(item => {
-    const id = item.dataset.id;
-    const card = item.querySelector('.event-card');
+  el.querySelectorAll('.event-card').forEach(card => {
+    const id = card.dataset.href;
     card.addEventListener('click', e => {
-      if (e.target.closest('.like-btn') || e.target.closest('audio') || e.target.closest('.detail-images img')) return;
-      const detail = document.getElementById('detail-' + id);
-      detail.classList.toggle('open');
+      if (e.target.closest('.like-btn')) return;
+      location.href = card.dataset.href;
     });
-    // 灯箱
-    item.querySelectorAll('.detail-images img').forEach(img => {
-      img.addEventListener('click', () => openLightbox(img.dataset.full || img.src));
-    });
-    // 点赞
-    const likeBtn = item.querySelector('.like-btn');
-    if (likeBtn) {
-      const refresh = () => { likeBtn.classList.toggle('on', isLiked(id)); likeBtn.textContent = isLiked(id) ? '已赞 ♥' : '点赞 ♡'; };
-      refresh();
-      likeBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        toggleLike(id);
-        refresh();
-      });
-    }
   });
-}
-
-function renderDetail(ev, tags) {
-  const quote = DATA.site.features.quote && ev.quote ? `<div class="detail-quote">${escapeHtml(ev.quote)}</div>` : '';
-  const chars = DATA.site.features.characters && ev.characters && ev.characters.length
-    ? `<div class="detail-tags">${ev.characters.map(c => `<span class="tag-chip on">${escapeHtml(c)}</span>`).join('')}</div>` : '';
-  const images = ev.images && ev.images.length
-    ? `<div class="detail-images">${ev.images.map(src => `<img src="${escapeHtml(src)}" data-full="${escapeHtml(src)}" alt="" loading="lazy">`).join('')}</div>` : '';
-  const audios = ev.audios && ev.audios.length
-    ? `<div class="detail-audios">${ev.audios.map(a =>
-        `<div><audio controls preload="none" src="${escapeHtml(a.src)}"></audio>${a.label ? `<span class="badge">${escapeHtml(a.label)}</span>` : ''}</div>`).join('')}</div>` : '';
-  const tagRow = tags.length
-    ? `<div class="detail-tags">${tags.map(t => `<span class="tag-chip on" style="border-color:${escapeHtml(t.color || '#8A6D3B')};color:${escapeHtml(t.color || '#8A6D3B')}">${escapeHtml(t.name)}</span>`).join('')}</div>` : '';
-  const date = DATA.site.features.recordDate && ev.recordDate ? `<span>记录于 ${escapeHtml(ev.recordDate)}</span>` : '';
-  const body = (ev.content || '').split('\n').filter(l => l.trim()).map(l => `<p>${escapeHtml(l)}</p>`).join('');
-
-  return `
-    ${body}
-    ${quote}
-    ${images}
-    ${audios}
-    ${tagRow}
-    ${chars}
-    <div class="detail-actions">
-      <button class="like-btn" data-id="${ev.id}">点赞 ♡</button>
-      ${date}
-    </div>`;
+  // 点赞（localStorage）
+  el.querySelectorAll('.like-btn').forEach(btn => {
+    const id = btn.dataset.id;
+    const refresh = () => { btn.classList.toggle('on', isLiked(id)); btn.textContent = isLiked(id) ? '已赞 ♥' : '点赞 ♡'; };
+    refresh();
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleLike(id);
+      refresh();
+    });
+  });
 }
 
 /* 搜索防抖 */

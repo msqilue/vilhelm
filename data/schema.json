@@ -1,6 +1,6 @@
 {
   "description": "数据文件字段结构说明，供管理端导入/导出校验使用。",
-  "version": "1.0",
+  "version": "1.1",
   "files": {
     "site.json": {
       "fields": [
@@ -9,6 +9,7 @@
         { "key": "fanDeclaration", "type": "string", "required": false, "desc": "粉丝向版权声明" },
         { "key": "adminPassHash", "type": "string", "required": false, "desc": "管理口令哈希（留空则不启用口令）" },
         { "key": "characters", "type": "array", "required": true, "desc": "角色配置数组，v1.0 单角色，预留多角色" },
+        { "key": "background", "type": "object", "required": false, "desc": "背景图模式：enabled/image/autoExtract/overlayMin/overlayMax；enabled=false 时页面为纯深色底" },
         { "key": "features", "type": "object", "required": true, "desc": "功能开关：quote/characters/recordDate/importance" }
       ]
     },
@@ -29,22 +30,24 @@
     },
     "events.json": {
       "fields": [
-        { "key": "id", "type": "string", "required": true, "desc": "事件唯一标识" },
+        { "key": "id", "type": "string", "required": true, "desc": "事件唯一标识，建议格式 {时间线}-{章节}-{序号}，如 main-序章-1、growth-生日-1；修改数据时按此定位" },
         { "key": "timelineId", "type": "string", "required": true, "desc": "所属时间线 id" },
         { "key": "title", "type": "string", "required": true, "desc": "事件标题" },
         { "key": "content", "type": "string", "required": true, "desc": "正文，\\n 分段" },
         { "key": "stage", "type": "string", "required": false, "desc": "剧情阶段/章节，仅展示" },
-        { "key": "order", "type": "number", "required": true, "desc": "时间线内剧情顺序，排序依据" },
-        { "key": "images", "type": "array", "required": false, "desc": "插图素材引用（仓库路径或 URL）" },
+        { "key": "date", "type": "string", "required": false, "desc": "剧情内日期/时间（如生日、活动日期），仅展示，不参与排序" },
+        { "key": "order", "type": "number", "required": true, "desc": "时间线内剧情顺序，展示时按此倒序（最新在前）" },
+        { "key": "images", "type": "array", "required": false, "desc": "插图素材引用（仓库路径或 URL），首图兼作时间轴缩略图" },
         { "key": "audios", "type": "array", "required": false, "desc": "语音素材引用：[{src,label,duration}]" },
         { "key": "quote", "type": "string", "required": false, "desc": "台词/原文引用" },
         { "key": "characters", "type": "array", "required": false, "desc": "出场角色名" },
         { "key": "recordDate", "type": "string", "required": false, "desc": "现实记录日期，不参与排序" },
         { "key": "importance", "type": "enum", "required": false, "desc": "normal/key/milestone" },
+        { "key": "bgImage", "type": "string", "required": false, "desc": "事件级背景图（可选）；展开该事件详情时替换全局背景图，留空则沿用全局" },
         { "key": "tags", "type": "array", "required": false, "desc": "标签 id 列表" },
         { "key": "createdAt", "type": "string", "required": true, "desc": "录入时间 ISO 格式" }
       ],
-      "sortRule": "同时间线内按 order 升序，相同按 createdAt",
+      "sortRule": "时间线展示按 order 倒序（最新在前），相同按 createdAt 倒序",
       "importanceValues": ["normal", "key", "milestone"]
     }
   }

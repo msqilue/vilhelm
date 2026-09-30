@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计稿 v2 · 莫弈·Vilhelm</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; line-height: 1.7; background: #FAF9F6; color: #2B2B2B; }
+h1,h2,h3,.serif { font-family: Georgia,"Noto Serif SC","Songti SC",SimSun,serif; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+/* 页头 */
+.mock-header { background: #2B2B2B; color: #fff; padding: 16px 0; position: sticky; top: 0; z-index: 50; }
+.mock-header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.mock-header .badge { font-size: .8rem; background: #555; padding: 3px 10px; border-radius: 999px; }
+
+.section { padding: 44px 0 8px; }
+.section-title { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #6E8F4E; padding-bottom: 8px; margin-bottom: 22px; }
+.section-title .no { font-family: Georgia, serif; color: #6E8F4E; font-size: 1.3rem; }
+.section-title h2 { font-size: 1.35rem; }
+.section-title .desc { color: #8A8A8A; font-size: .85rem; }
+
+/* 色板 */
+.palette { display: flex; gap: 20px; flex-wrap: wrap; }
+.palette-card { flex: 1; min-width: 260px; border: 1px solid #E4E0D6; border-radius: 4px; overflow: hidden; background: #fff; }
+.palette-swatches { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 12px; }
+.sw { height: 64px; border-radius: 3px; display: flex; align-items: flex-end; padding: 6px 8px; font-size: .72rem; color: #fff; }
+.sw.light { color: #333; }
+.palette-info { padding: 0 12px 12px; font-size: .82rem; color: #8A8A8A; }
+.palette-info strong { color: #2B2B2B; }
+.tag-ok { display: inline-block; font-size: .72rem; background: #6E8F4E; color: #fff; padding: 1px 8px; border-radius: 999px; margin-left: 6px; }
+
+/* 模式对比 */
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 860px) { .modes { grid-template-columns: 1fr; } }
+.mode-card { border: 1px solid #E4E0D6; border-radius: 4px; overflow: hidden; background: #fff; }
+.mode-head { padding: 10px 14px; border-bottom: 1px solid #E4E0D6; font-size: .85rem; font-weight: 600; }
+.mode-head .m { color: #6E8F4E; }
+
+/* 首页模式1：纸白绿 */
+.home-light { padding: 26px; display: grid; grid-template-columns: 240px 1fr; gap: 26px; align-items: center; background: #FAF9F6; }
+.home-light .av { aspect-ratio: 3/4; background: linear-gradient(160deg, #E7EFDB, #6E8F4E); border-radius: 3px; display: flex; align-items: flex-end; justify-content: center; padding: 12px; color: #fff; font-size: 2rem; }
+.home-light h1 { font-size: 2.2rem; color: #6E8F4E; }
+.home-light .sub { letter-spacing: .12em; color: #8A8A8A; font-size: .8rem; margin: 2px 0 10px; }
+.home-light p { color: #8A8A8A; font-size: .85rem; }
+.home-light .nav { display: flex; gap: 8px; margin-top: 14px; }
+.hbtn { padding: 7px 16px; border: 1px solid #E4E0D6; border-radius: 3px; font-size: .82rem; background: #fff; color: #2B2B2B; }
+.hbtn.primary { background: #6E8F4E; border-color: #6E8F4E; color: #fff; }
+
+/* 首页模式2：背景图深色 */
+.home-dark { position: relative; min-height: 460px; background: url('../assets/images/moyi/bg-birthday-card.jpg') center/cover no-repeat; display: flex; align-items: center; }
+.home-dark::before { content:""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,16,32,.42) 0%, rgba(20,16,32,.62) 60%, rgba(20,16,32,.85) 100%); }
+.home-dark .inner { position: relative; padding: 48px 40px; color: #F5F1EA; max-width: 560px; }
+.home-dark .sub { letter-spacing: .14em; font-size: .8rem; color: #D9C6A8; margin-bottom: 10px; }
+.home-dark h1 { font-size: 2.8rem; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.home-dark p { color: rgba(245,241,234,.85); font-size: .88rem; margin: 12px 0 24px; }
+.home-dark .nav { display: flex; gap: 10px; }
+.glass-btn { padding: 8px 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.14); color: #fff; font-size: .85rem; backdrop-filter: blur(6px); }
+.glass-btn.primary { background: rgba(110,143,78,.75); border-color: rgba(110,143,78,.9); }
+
+/* 提取色说明 */
+.extract { margin-top: 14px; display: flex; align-items: center; gap: 10px; font-size: .8rem; color: #8A8A8A; flex-wrap: wrap; }
+.extract .mini { width: 40px; height: 22px; border-radius: 3px; border: 1px solid #E4E0D6; }
+
+/* 时间轴方案（深色展示） */
+.tl-wrap { background: linear-gradient(180deg, #1A1626, #241E38); border-radius: 4px; padding: 22px; }
+.tl-scheme { margin-bottom: 26px; }
+.tl-scheme h4 { color: #F5F1EA; font-size: 1rem; margin-bottom: 4px; }
+.tl-scheme .hint { font-size: .8rem; color: #B8AECB; margin-bottom: 14px; }
+.scheme-tag { display: inline-block; font-size: .72rem; background: #6E8F4E; color: #fff; padding: 1px 8px; border-radius: 999px; margin-left: 8px; vertical-align: middle; }
+
+/* A 左右交替（深色） */
+.tl-alt { position: relative; padding: 8px 0; }
+.tl-alt::before { content:""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.15); transform: translateX(-50%); }
+.tl-row { display: flex; margin-bottom: 14px; position: relative; }
+.tl-row .dot { position: absolute; left: 50%; top: 18px; width: 12px; height: 12px; border-radius: 50%; background: #6E8F4E; transform: translateX(-50%); z-index: 2; }
+.tl-row .dot.mile { width: 16px; height: 16px; background: #D9C6A8; }
+.tl-card { width: 44%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 3px; padding: 12px 14px; font-size: .82rem; }
+.tl-card .t { font-weight: 600; color: #F5F1EA; }
+.tl-card .s { color: #B8AECB; font-size: .74rem; }
+.tl-row:nth-child(odd) { justify-content: flex-start; }
+.tl-row:nth-child(even) { justify-content: flex-end; }
+
+/* B 横向（深色） */
+.tl-h { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+.tl-h-item { min-width: 170px; border: 1px solid rgba(255,255,255,.16); border-radius: 3px; padding: 12px; background: rgba(255,255,255,.07); }
+.tl-h-item .hdot { width: 10px; height: 10px; border-radius: 50%; background: #6E8F4E; margin-bottom: 8px; }
+.tl-h-item .t { font-size: .82rem; font-weight: 600; color: #F5F1EA; }
+.tl-h-item .s { font-size: .72rem; color: #B8AECB; }
+.tl-h-line { height: 2px; background: rgba(255,255,255,.16); flex: 1; position: relative; top: 6px; }
+
+/* C 分段（深色） */
+.tl-seg .seg { margin-bottom: 16px; }
+.tl-seg .seg-head { display: inline-block; background: #6E8F4E; color: #fff; font-size: .76rem; padding: 2px 14px; border-radius: 999px; margin-bottom: 8px; }
+.tl-seg .seg-item { border-left: 2px solid rgba(110,143,78,.55); padding: 6px 0 6px 16px; margin: 6px 0; font-size: .82rem; }
+.tl-seg .seg-item .t { font-weight: 600; color: #F5F1EA; }
+.tl-seg .seg-item .s { color: #B8AECB; font-size: .74rem; }
+
+/* 事件详情（深色） */
+.detail-mock { background: linear-gradient(180deg, #1A1626, #241E38); border-radius: 4px; padding: 22px 26px; color: #F5F1EA; }
+.detail-mock .d-title { font-size: 1.15rem; font-weight: 600; }
+.detail-mock .d-meta { font-size: .78rem; color: #B8AECB; margin: 4px 0 12px; }
+.detail-mock .d-quote { border-left: 3px solid #6E8F4E; background: rgba(110,143,78,.18); padding: 8px 14px; margin: 12px 0; font-family: Georgia, serif; color: #E8E1D2; }
+.detail-mock .d-img { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
+.detail-mock .d-img i { display: block; aspect-ratio: 4/3; background: rgba(255,255,255,.08); border-radius: 3px; }
+.like { border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 4px 16px; font-size: .8rem; background: rgba(255,255,255,.1); color: #F5F1EA; }
+
+footer.mock-footer { padding: 40px 0 60px; color: #8A8A8A; font-size: .85rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="mock-header">
+  <div class="container">
+    <span><strong>设计稿 v2</strong> · 莫弈·Vilhelm · 主色已定 #6E8F4E + 背景图模式</span>
+    <span class="badge">首页布局已改 · 配色适配背景图</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 01 色板 -->
+  <section class="section">
+    <div class="section-title"><span class="no">01</span><h2>配色方案</h2><span class="desc">品牌绿已确认 + 背景图自动适配色系</span></div>
+    <div class="palette">
+      <div class="palette-card">
+        <div class="palette-swatches">
+          <div class="sw" style="background:#6E8F4E">主色 #6E8F4E <span class="tag-ok" style="background:#fff;color:#6E8F4E;border:1px solid #6E8F4E;">已确认</span></div>
+          <div class="sw light" style="background:#E7EFDB;color:#333">浅色 #E7EFDB</div>
+          <div class="sw light" style="background:#FAF9F6;color:#333">浅色模式背景 #FAF9F6</div>
+          <div class="sw light" style="background:#1A1626;color:#fff;border:1px solid #443">深色模式背景 #1A1626</div>
+        </div>
+        <div class="palette-info"><strong>品牌绿</strong>：全站强调色（按钮、节点、徽标、链接），浅色/深色模式通用</div>
+      </div>
+      <div class="palette-card">
+        <div class="palette-swatches">
+          <div class="sw" style="background:#443A5E">背景图主调 #443A5E</div>
+          <div class="sw" style="background:#8C4A4A">暖调提取 #8C4A4A</div>
+          <div class="sw" style="background:#D9C6A8;color:#333">光点提取 #D9C6A8</div>
+          <div class="sw" style="background:rgba(20,16,32,.75);color:#fff">遮罩 rgba(20,16,32,.75)</div>
+        </div>
+        <div class="palette-info"><strong>背景图适配</strong>：上传背景图后，页面自动按图取色——从图中提取主调与暖调作氛围色，叠加半透明深色遮罩保证文字可读（机制见下）</div>
+      </div>
+    </div>
+    <div class="extract">
+      <span>本次参考图（莫弈生日卡）提取结果：</span>
+      <span class="mini" style="background:#443A5E"></span>
+      <span class="mini" style="background:#8C4A4A"></span>
+      <span class="mini" style="background:#D9C6A8"></span>
+      <span>→ 页面将以深色氛围呈现，品牌绿 #6E8F4E 作为强调色叠加其上</span>
+    </div>
+  </section>
+
+  <!-- 02 首页布局对比 -->
+  <section class="section">
+    <div class="section-title"><span class="no">02</span><h2>首页布局 · 两种模式</h2><span class="desc">左侧：无背景图的浅色杂志风（已确认主色）；右侧：上传背景图后的深色氛围版（首页布局已修改）</span></div>
+    <div class="modes">
+      <div class="mode-card">
+        <div class="mode-head"><span class="m">模式 1</span> · 无背景图 · 纸白绿杂志风</div>
+        <div class="home-light">
+          <div class="av">莫</div>
+          <div>
+            <h1>莫弈</h1>
+            <div class="sub">《未定事件簿》· 成长时间线</div>
+            <p>角色简介占位文字。左侧头像大图，右侧文字与导航。</p>
+            <div class="nav"><span class="hbtn primary">进入时间线</span><span class="hbtn">统计</span><span class="hbtn">关于</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mode-card">
+        <div class="mode-head"><span class="m">模式 2</span> · 有背景图 · 深色氛围版（首页布局 v2）</div>
+        <div class="home-dark">
+          <div class="inner">
+            <div class="sub">《未定事件簿》· 成长时间线</div>
+            <h1>莫弈</h1>
+            <p>背景图全屏铺满 + 渐变深色遮罩（底部更重），角色名以衬线大字浮于图上，导航用毛玻璃按钮。</p>
+            <div class="nav">
+              <span class="glass-btn primary">进入时间线</span>
+              <span class="glass-btn">成长统计</span>
+              <span class="glass-btn">关于本站</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 背景图适配机制 -->
+  <section class="section">
+    <div class="section-title"><span class="no">03</span><h2>背景图适配机制</h2><span class="desc">你后续上传任意图片作背景，页面自动适配</span></div>
+    <div style="background:#fff;border:1px solid #E4E0D6;border-radius:4px;padding:18px 22px;font-size:.88rem;color:#555;">
+      <p><strong>自动取色（推荐）</strong>：页面加载背景图后，用 Canvas 读取图片主色调 → 自动生成深色遮罩透明度与氛围色 → 换任何背景图都不用改代码。</p>
+      <p style="margin-top:8px;"><strong>手动预设（备选）</strong>：每张背景图可配一套颜色（遮罩色、文字色、强调色），在站点配置中维护。</p>
+      <p style="margin-top:8px;"><strong>文字可读性保障</strong>：无论背景图多亮，遮罩层保证文字对比度（WCAG 对比度 ≥ 4.5:1）；背景图模式下文字统一使用浅色系。</p>
+    </div>
+  </section>
+
+  <!-- 04 时间轴方案（深色） -->
+  <section class="section">
+    <div class="section-title"><span class="no">04</span><h2>时间轴样式方案（深色模式呈现）</h2><span class="desc">三种方案对比，选一个（背景图模式下时间轴也走深色风）</span></div>
+    <div class="tl-wrap">
+      <div class="tl-scheme">
+        <h4>方案 A · 左右交替式 <span class="scheme-tag">推荐</span></h4>
+        <p class="hint">中线居中、卡片左右交错；里程碑节点用金色放大。</p>
+        <div class="tl-alt">
+          <div class="tl-row"><span class="dot mile"></span><div class="tl-card"><div class="t">与莫弈的初见 · 里程碑</div><div class="s">序章 · 主线剧情线</div></div></div>
+          <div class="tl-row"><span class="dot"></span><div class="tl-card"><div class="t">第一次委托</div><div class="s">第1章 · 主线剧情线</div></div></div>
+          <div class="tl-row"><span class="dot"></span><div class="tl-card"><div class="t">生日那天</div><div class="s">活动/节日线</div></div></div>
+          <div class="tl-row"><span class="dot"></span><div class="tl-card"><div class="t">羁绊加深 · 关键</div><div class="s">个人成长线</div></div></div>
+        </div>
+      </div>
+      <div class="tl-scheme">
+        <h4>方案 B · 横向滚动式</h4>
+        <p class="hint">横向时间轴 + 卡片横向排布，移动端左右滑动。</p>
+        <div class="tl-h">
+          <div class="tl-h-item"><span class="hdot"></span><div class="t">初见</div><div class="s">序章</div></div>
+          <div class="tl-h-line"></div>
+          <div class="tl-h-item"><span class="hdot"></span><div class="t">第一次委托</div><div class="s">第1章</div></div>
+          <div class="tl-h-line"></div>
+          <div class="tl-h-item"><span class="hdot"></span><div class="t">生日</div><div class="s">活动线</div></div>
+          <div class="tl-h-line"></div>
+          <div class="tl-h-item"><span class="hdot"></span><div class="t">羁绊加深</div><div class="s">成长线</div></div>
+        </div>
+      </div>
+      <div class="tl-scheme">
+        <h4>方案 C · 分段章节式</h4>
+        <p class="hint">按阶段分组（序章 / 第1章 / 活动线），章节徽标 + 段内竖排。</p>
+        <div class="tl-seg">
+          <div class="seg"><span class="seg-head">序章</span>
+            <div class="seg-item"><span class="t">与莫弈的初见</span> <span class="s">· 里程碑</span></div></div>
+          <div class="seg"><span class="seg-head">第 1 章</span>
+            <div class="seg-item"><span class="t">第一次委托</span></div>
+            <div class="seg-item"><span class="t">深夜的对话</span> <span class="s">· 关键</span></div></div>
+          <div class="seg"><span class="seg-head">活动线</span>
+            <div class="seg-item"><span class="t">生日那天</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 事件详情 -->
+  <section class="section">
+    <div class="section-title"><span class="no">05</span><h2>事件详情（深色模式）</h2><span class="desc">背景图模式下的事件展开效果</span></div>
+    <div class="detail-mock">
+      <div class="d-title">与莫弈的初见 <span class="scheme-tag">里程碑</span></div>
+      <div class="d-meta">主线剧情线 · 序章 · 记录于 2026-09-30</div>
+      <p style="font-size:.9rem;color:#C9C0D8;">未名市案件现场，第一次见到他……他的目光让我印象深刻。</p>
+      <div class="d-quote">「这个世界，远比你想的要复杂。」</div>
+      <div class="d-img"><i></i><i></i><i></i><i></i></div>
+      <div style="font-size:.8rem;color:#B8AECB;">▸ 语音播放器：角色语音片段（示例）</div>
+      <div style="margin-top:14px;display:flex;gap:14px;align-items:center;"><span class="like">点赞 ♡</span><span style="font-size:.78rem;color:#B8AECB;">标签：序章 · 初见 · 案件</span></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="mock-footer">
+  请确认：① 首页模式 2（背景图深色版）布局是否满意？ ② 时间轴选 A / B / C？ ③ 背景图适配机制用「自动取色」还是「手动预设」？<br>
+  有其它调整直接说，确认后我更新正式页面。
+</footer>
+
+</body>
+</html>

@@ -10,9 +10,16 @@
       "game": "未定事件簿",
       "avatar": "assets/images/moyi/avatar.jpg",
       "intro": "《未定事件簿》中的心理医生，在未名市的案件与日常中逐渐与「我」相识、相知。这里记录他的成长时间线。",
-      "themeColor": "#8A6D3B"
+      "themeColor": "#6E8F4E"
     }
   ],
+  "background": {
+    "enabled": true,
+    "image": "assets/images/moyi/bg-birthday-card.jpg",
+    "autoExtract": true,
+    "overlayMin": 0.45,
+    "overlayMax": 0.85
+  },
   "features": {
     "quote": true,
     "characters": true,

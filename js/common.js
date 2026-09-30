@@ -8,13 +8,16 @@ const DATA = {
 
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
+/* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
+const DATA_VERSION = '20260930c';
+
 async function loadData() {
   if (DATA.site) return DATA;
   const [s, t, g, e] = await Promise.all([
-    fetch('data/site.json').then(r => r.json()),
-    fetch('data/timelines.json').then(r => r.json()),
-    fetch('data/tags.json').then(r => r.json()),
-    fetch('data/events.json').then(r => r.json())
+    fetch('data/site.json?v=' + DATA_VERSION).then(r => r.json()),
+    fetch('data/timelines.json?v=' + DATA_VERSION).then(r => r.json()),
+    fetch('data/tags.json?v=' + DATA_VERSION).then(r => r.json()),
+    fetch('data/events.json?v=' + DATA_VERSION).then(r => r.json())
   ]);
   DATA.site = s;
   DATA.timelines = t.timelines || [];
@@ -31,8 +34,9 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+/* 事件展示排序：按剧情顺序倒序（最新在前） */
 function sortEvents(list) {
-  return [...list].sort((a, b) => (a.order - b.order) || (a.createdAt < b.createdAt ? -1 : 1));
+  return [...list].sort((a, b) => (b.order - a.order) || (a.createdAt < b.createdAt ? 1 : -1));
 }
 
 function getTimeline(id) {
@@ -55,10 +59,213 @@ function importanceLabel(v) {
   return { normal: '', key: '关键', milestone: '里程碑' }[v] || '';
 }
 
+/* ===== 背景图 + 自动取色 ===== */
+const BG_KEY = 'vilhelm:bg';
+const OVERLAY_KEY = 'vilhelm:overlay';
+
+function getStoredBg() {
+  try { return localStorage.getItem(BG_KEY) || ''; } catch (e) { return ''; }
+}
+function storeBg(src) {
+  try { localStorage.setItem(BG_KEY, src); } catch (e) { /* 忽略 */ }
+}
+function getStoredOverlay() {
+  try {
+    const v = parseFloat(localStorage.getItem(OVERLAY_KEY));
+    return Number.isFinite(v) ? v : null;
+  } catch (e) { return null; }
+}
+function storeOverlay(v) {
+  try { localStorage.setItem(OVERLAY_KEY, String(v)); } catch (e) { /* 忽略 */ }
+}
+
+const BG = {
+  overlay: null,
+  current: '',
+  defaultSrc: '',
+  _accentRGB: '',
+  _dark: true,
+  _autoA: 0,
+
+  /* 设置遮罩层（dark：主色暗渐变；light：白色轻纱渐变，提升深色文字可读性） */
+  _setOverlay(accentRGB, a, dark) {
+    if (!this.overlay) return;
+    let bg;
+    if (dark) {
+      bg = `linear-gradient(180deg, rgba(${accentRGB},${(a * 0.55).toFixed(2)}) 0%, ` +
+           `rgba(${accentRGB},${(a * 0.8).toFixed(2)}) 55%, ` +
+           `rgba(${accentRGB},${a.toFixed(2)}) 100%)`;
+    } else {
+      // 浅色主题：白色轻纱遮罩，压淡背景图案但不降低亮度，深色文字更清晰
+      const w = Math.min(0.85, Math.max(0.18, a));
+      bg = `linear-gradient(180deg, rgba(255,255,255,${(w * 1.15).toFixed(2)}) 0%, ` +
+           `rgba(255,255,255,${(w * 1.3).toFixed(2)}) 55%, ` +
+           `rgba(255,255,255,${w.toFixed(2)}) 100%)`;
+    }
+    this.overlay.style.background = bg;
+  },
+
+  /* 应用背景图：src 为空时按优先级取「用户已选背景 → 全局配置背景」 */
+  async apply(src) {
+    const cfg = DATA.site.background || {};
+    if (cfg.enabled === false) return;
+    const stored = getStoredBg();
+    const target = src || stored || cfg.image || '';
+    if (!target) return;
+    if (target === this.current) return;
+    this.current = target;
+
+    document.body.style.backgroundImage = `url('${target}')`;
+    document.body.style.backgroundColor = 'var(--bg-base)';
+
+    if (cfg.autoExtract !== false) {
+      try {
+        const img = await loadImage(target);
+        const c = extractPalette(img);
+        // 按背景亮度自动切换主题：暗背景 → 浅色文字；亮背景 → 深色文字
+        const dark = c.brightness <= 0.5;
+        this._dark = dark;
+        document.body.classList.toggle('theme-light', !dark);
+
+        this._accentRGB = `${c.r},${c.g},${c.b}`;
+        document.body.style.setProperty('--bg-accent', `rgb(${this._accentRGB})`);
+
+        // 遮罩强度：用户手动值优先，否则自动（暗 0.45~0.85；亮 0.28~0.52）
+        const lo = cfg.overlayMin ?? 0.45;
+        const hi = cfg.overlayMax ?? 0.85;
+        let a;
+        if (dark) {
+          a = Math.min(hi, Math.max(lo, lo + c.brightness * (hi - lo)));
+        } else {
+          a = 0.28 + (1 - c.brightness) * 0.24;
+        }
+        const manual = getStoredOverlay();
+        if (manual != null) a = manual;
+        this._autoA = a;
+
+        this._setOverlay(this._accentRGB, a, dark);
+      } catch (e) {
+        /* 取色失败：保留默认主题与遮罩 */
+      }
+    }
+  },
+
+  /* 用户主动把某张图设为背景：记住选择并立即应用（背景路径不写死，可动态更换） */
+  async setBg(src) {
+    if (!src) return;
+    storeBg(src);
+    this.current = '';           // 强制重新应用
+    await this.apply(src);
+  }
+};
+
+/* ===== 背景控制面板（右下角「设置」）：遮罩强度滑块 + 恢复默认背景 ===== */
+let bgCtlEl = null;
+function renderBgControl() {
+  if (bgCtlEl) return;
+  bgCtlEl = document.createElement('div');
+  bgCtlEl.className = 'bg-ctl';
+  bgCtlEl.innerHTML = `
+    <button class="bg-ctl-toggle" title="设置">设置<span class="bg-ctl-arrow">▾</span></button>
+    <div class="bg-ctl-panel">
+      <div class="bg-ctl-title">背景</div>
+      <div class="bg-ctl-row"><span class="bg-ctl-label">遮罩强度</span><span class="bg-ctl-val"></span></div>
+      <input class="bg-ctl-range" type="range" min="10" max="90" step="5">
+      <button class="bg-ctl-reset">恢复默认背景</button>
+    </div>`;
+  document.body.appendChild(bgCtlEl);
+
+  const panel = bgCtlEl.querySelector('.bg-ctl-panel');
+  const range = bgCtlEl.querySelector('.bg-ctl-range');
+  const valEl = bgCtlEl.querySelector('.bg-ctl-val');
+  const reset = bgCtlEl.querySelector('.bg-ctl-reset');
+  const toggle = bgCtlEl.querySelector('.bg-ctl-toggle');
+
+  const syncRange = () => {
+    const manual = getStoredOverlay();
+    const init = Math.round((manual != null ? manual : BG._autoA) * 100);
+    range.value = Math.max(10, Math.min(90, init));
+    valEl.textContent = range.value + '%';
+  };
+
+  // 鼠标悬停向上展开面板；移出收起；点击也可切换
+  bgCtlEl.addEventListener('mouseenter', () => panel.classList.add('open'));
+  bgCtlEl.addEventListener('mouseleave', () => panel.classList.remove('open'));
+  toggle.addEventListener('click', e => {
+    e.stopPropagation();
+    panel.classList.toggle('open');
+  });
+  range.addEventListener('input', () => {
+    const v = parseInt(range.value, 10) / 100;
+    storeOverlay(v);
+    valEl.textContent = range.value + '%';
+    BG._setOverlay(BG._accentRGB || '20,16,32', v, BG._dark);
+  });
+  reset.addEventListener('click', () => {
+    try { localStorage.removeItem(BG_KEY); localStorage.removeItem(OVERLAY_KEY); } catch (e) { /* 忽略 */ }
+    location.reload();
+  });
+
+  syncRange();
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('image load failed: ' + src));
+    img.src = src;
+  });
+}
+
+/* 从图片提取主色（量化统计）与亮度 */
+function extractPalette(img) {
+  const size = 48;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, size, size);
+  const { data } = ctx.getImageData(0, 0, size, size);
+
+  // 第一遍：跳过过暗像素（黑色背景不参与主色），统计亮度
+  const freq = new Map();
+  let sumL = 0, n = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+    if (a < 128) continue;
+    const L = 0.299 * r + 0.587 * g + 0.114 * b;
+    sumL += L; n++;
+  }
+  const avgBright = n ? sumL / n / 255 : 0.5;
+
+  // 第二遍：仅用「非过暗」像素统计主色（暗图时取有色彩的区域）
+  const lightEnough = n && avgBright < 0.45 ? 34 : 20; // 图越暗，跳过阈值越低
+  const freq2 = new Map();
+  let n2 = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+    if (a < 128) continue;
+    const L = 0.299 * r + 0.587 * g + 0.114 * b;
+    if (L < lightEnough) continue;
+    const key = ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
+    freq2.set(key, (freq2.get(key) || 0) + 1);
+    n2++;
+  }
+
+  let best = 0, bestKey = 0;
+  const pool = (n2 >= 4) ? freq2 : freq; // 整图过暗时回退全像素
+  pool.forEach((cnt, k) => { if (cnt > best) { best = cnt; bestKey = k; } });
+  return {
+    r: ((bestKey >> 8) & 0xF) * 16 + 8,
+    g: ((bestKey >> 4) & 0xF) * 16 + 8,
+    b: (bestKey & 0xF) * 16 + 8,
+    brightness: avgBright
+  };
+}
+
 /* 页头 / 页脚渲染 */
 function currentPage() {
-  const p = location.pathname.split('/').pop() || 'index.html';
-  return p;
+  return location.pathname.split('/').pop() || 'index.html';
 }
 
 function renderHeader(active) {
@@ -96,9 +303,21 @@ function ensureLightbox() {
   if (!lightboxEl) {
     lightboxEl = document.createElement('div');
     lightboxEl.className = 'lightbox';
-    lightboxEl.innerHTML = '<img alt=""><span class="lightbox-close">&times;</span>';
+    lightboxEl.innerHTML = '<img alt=""><button class="lightbox-setbg" title="将这张图设为页面背景">设为背景</button><span class="lightbox-close">&times;</span>';
     lightboxEl.addEventListener('click', e => {
       if (e.target === lightboxEl || e.target.classList.contains('lightbox-close')) closeLightbox();
+    });
+    // 灯箱内「设为背景」
+    lightboxEl.querySelector('.lightbox-setbg').addEventListener('click', e => {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      const src = lightboxEl._src;
+      if (!src) return;
+      BG.setBg(src).then(() => {
+        btn.textContent = '已设为背景 ✓';
+        btn.classList.add('done');
+        setTimeout(() => { btn.textContent = '设为背景'; btn.classList.remove('done'); }, 1600);
+      });
     });
     document.body.appendChild(lightboxEl);
   }
@@ -106,6 +325,7 @@ function ensureLightbox() {
 }
 function openLightbox(src) {
   const lb = ensureLightbox();
+  lb._src = src;
   lb.querySelector('img').src = src;
   lb.classList.add('open');
   document.addEventListener('keydown', onLbKey);
@@ -127,10 +347,21 @@ function toggleLike(id) {
   localStorage.setItem(k, '1'); return true;
 }
 
-/* 初始化：加载数据 + 页头页脚 */
+/* 初始化：加载数据 + 页头页脚 + 背景图 */
 async function initPage(active) {
   await loadData();
   renderHeader(active);
   renderFooter();
   document.title = DATA.site.siteName;
+
+  // 遮罩层
+  if (!BG.overlay) {
+    BG.overlay = document.createElement('div');
+    BG.overlay.className = 'bg-overlay';
+    document.body.insertBefore(BG.overlay, document.body.firstChild);
+  }
+  // 全局背景图（自动取色）
+  BG.defaultSrc = (DATA.site.background || {}).image || '';
+  await BG.apply('');
+  renderBgControl();
 }

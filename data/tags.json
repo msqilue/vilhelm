@@ -21,7 +21,8 @@
       "name": "事件类型",
       "tags": [
         { "id": "t9", "name": "案件", "color": "#A9716A" },
-        { "id": "t10", "name": "日常", "color": "#C4A484" }
+        { "id": "t10", "name": "日常", "color": "#C4A484" },
+        { "id": "t11", "name": "生日", "color": "#D9A441" }
       ]
     },
     {

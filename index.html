@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=v=v=v=20260930e">
 </head>
 <body>
   <header class="site-header">
@@ -14,18 +14,19 @@
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-avatar" id="hero-avatar">莫</div>
-      <div class="hero-text">
-        <h1 id="hero-name">莫弈</h1>
-        <p class="hero-sub" id="hero-sub"></p>
-        <p class="hero-intro" id="hero-intro"></p>
-        <nav class="hero-nav">
-          <a class="btn btn-primary" href="timeline.html">进入时间线</a>
-          <a class="btn" href="stats.html">成长统计</a>
-          <a class="btn" href="about.html">关于本站</a>
-        </nav>
+  <main>
+    <section class="hero-dark">
+      <div class="container">
+        <div class="hero-inner">
+          <p class="hero-sub" id="hero-sub">《未定事件簿》· 成长时间线</p>
+          <h1 id="hero-name">莫弈</h1>
+          <p class="hero-intro" id="hero-intro"></p>
+          <nav class="hero-nav">
+            <a class="glass-btn primary" href="timeline.html">进入时间线</a>
+            <a class="glass-btn" href="stats.html">成长统计</a>
+            <a class="glass-btn" href="about.html">关于本站</a>
+          </nav>
+        </div>
       </div>
     </section>
   </main>
@@ -37,22 +38,14 @@
     </div>
   </footer>
 
-  <script src="js/common.js"></script>
+  <script src="js/common.js?v=v=v=v=20260930e"></script>
   <script>
     initPage('index.html').then(() => {
       const c = DATA.site.characters[0];
       if (c) {
         document.getElementById('hero-name').textContent = c.name;
-        document.getElementById('hero-sub').textContent = '《' + c.game + '》';
+        document.getElementById('hero-sub').textContent = '《' + c.game + '》· 成长时间线';
         document.getElementById('hero-intro').textContent = c.intro || '';
-        const avatar = document.getElementById('hero-avatar');
-        if (c.avatar) {
-          const img = new Image();
-          img.onload = () => { avatar.textContent = ''; avatar.style.backgroundImage = 'url(' + c.avatar + ')'; avatar.style.backgroundSize = 'cover'; avatar.style.backgroundPosition = 'center'; };
-          img.src = c.avatar;
-        } else {
-          avatar.textContent = c.name.charAt(0);
-        }
       }
     });
   </script>

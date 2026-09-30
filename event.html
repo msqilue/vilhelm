@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>时间线 · 莫弈·Vilhelm</title>
+  <title>事件详情 · 莫弈·Vilhelm</title>
   <link rel="stylesheet" href="css/style.css?v=v=v=v=20260930e">
 </head>
 <body>
@@ -15,20 +15,14 @@
   </header>
 
   <main class="container">
-    <div class="page-head">
-      <h1>成长时间线</h1>
-      <p>按剧情时间记录莫弈的成长经历</p>
+    <div class="page-head" id="ev-head">
+      <a class="back-link" href="timeline.html">← 返回时间线</a>
+      <div class="event-meta" id="ev-meta" style="margin-top:14px;"></div>
+      <h1 id="ev-title"></h1>
     </div>
-
-    <div class="tl-bar">
-      <div class="tl-switch" id="tl-switch"></div>
-      <input class="search-box" id="search" type="search" placeholder="搜索标题 / 正文 / 台词 / 标签…">
-    </div>
-
-    <div class="layout">
-      <aside class="filter-panel" id="filter-panel"></aside>
-      <section class="timeline" id="timeline"></section>
-    </div>
+    <div class="prose" id="ev-body"></div>
+    <div class="detail-actions" id="ev-actions" style="margin:18px 0 0;"></div>
+    <div class="ev-nav" id="ev-nav"></div>
   </main>
 
   <footer class="site-footer">
@@ -39,6 +33,6 @@
   </footer>
 
   <script src="js/common.js?v=v=v=v=20260930e"></script>
-  <script src="js/timeline.js?v=v=v=v=20260930e"></script>
+  <script src="js/event.js?v=v=v=v=20260930e"></script>
 </body>
 </html>

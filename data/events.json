@@ -1,7 +1,7 @@
 {
   "events": [
     {
-      "id": "ev-001",
+      "id": "main-序章-1",
       "timelineId": "main",
       "title": "与莫弈的初见",
       "content": "未名市案件现场，第一次见到他……\n他的目光让我印象深刻。",
@@ -13,15 +13,17 @@
       "characters": ["莫弈"],
       "recordDate": "",
       "importance": "milestone",
+      "bgImage": "",
       "tags": ["t1", "t5", "t9"],
       "createdAt": "2026-09-30T10:00:00+08:00"
     },
     {
-      "id": "ev-002",
+      "id": "growth-羁绊-1",
       "timelineId": "growth",
       "title": "示例事件：羁绊加深",
       "content": "这是一条示例事件，用于演示时间线展示效果。\n正式内容请通过管理端录入。",
       "stage": "",
+      "date": "",
       "order": 1,
       "images": [],
       "audios": [],
@@ -29,8 +31,27 @@
       "characters": ["莫弈"],
       "recordDate": "",
       "importance": "key",
+      "bgImage": "",
       "tags": ["t6", "t10"],
       "createdAt": "2026-09-30T10:05:00+08:00"
+    },
+    {
+      "id": "growth-生日-1",
+      "timelineId": "growth",
+      "title": "莫弈的生日",
+      "content": "今天是莫弈的生日。\n为他准备了一份小小的礼物，希望他能度过温暖的一天。",
+      "stage": "生日",
+      "date": "2026.9.27",
+      "order": 2,
+      "images": ["assets/images/moyi/growth/生日-20260927-1.jpg", "assets/images/moyi/growth/生日-20260927-2.jpg"],
+      "audios": [],
+      "quote": "「谢谢你，今天我很开心。」",
+      "characters": ["莫弈"],
+      "recordDate": "",
+      "importance": "milestone",
+      "bgImage": "",
+      "tags": ["t11"],
+      "createdAt": "2026-09-30T10:10:00+08:00"
     }
   ]
 }
