@@ -126,7 +126,7 @@ function renderEvents() {
           <textarea id="f-content"></textarea>
         </div>
         <div class="full">
-          <label>图片路径（每行一条，如 assets/images/moyi/growth/生日-20260927-1.jpg）</label>
+          <label>图片路径（每行一条，如 assets/images/moyi/growth/挚礼/生日-20260927-1.jpg）</label>
           <textarea id="f-images"></textarea>
         </div>
         <div class="full">
