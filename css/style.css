@@ -661,6 +661,12 @@ a:hover { text-decoration: underline; }
 /* 事件页：正文容器放开宽度，由子区块自行控制（图阔文窄） */
 #ev-body.prose { max-width: 1060px; }
 .prose p { margin: 14px 0; color: var(--ink); opacity: .85; }
+/* 事件页正文段落：窄栏居中（防止被上方 .prose p 的左右 margin 覆盖） */
+#ev-body.prose .ev-prose p {
+  text-align: center;
+  margin: 0 auto 16px;
+  max-width: 720px;
+}
 
 /* ===== 背景控制面板（右下角） ===== */
 .bg-ctl { position: fixed; right: 18px; bottom: 18px; z-index: 90; }
