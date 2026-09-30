@@ -48,7 +48,7 @@
       "id": "growth-生日-1",
       "timelineId": "growth",
       "title": "挚礼",
-      "content": "今天是莫弈的生日。\n为他准备了一份小小的礼物，希望他能度过温暖的一天。",
+      "content": "一岁一礼\n“那······ 就把我当做礼物拆开吧”",
       "stage": "生日",
       "date": "2026.9.27",
       "order": 2,
@@ -57,7 +57,8 @@
         "assets/images/moyi/growth/挚礼/生日-20260927-2.jpg"
       ],
       "audios": [
-        "assets/audio/moyi/growth/挚礼/生日-20260927-1.mp3"
+        "assets/audio/moyi/growth/挚礼/生日-20260927-1.mp3",
+        "assets/audio/moyi/growth/挚礼/生日-20260927-2.mp3"
       ],
       "quotes": [
         "当我欣赏野花，花中便是她的面庞；\n在娇美的花里，她的脸那么光鲜亮丽。\n假如她经过，我会一言不发，我们彼此沉默，各走各路。",
