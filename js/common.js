@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION = '20261001f';
+const DATA_VERSION = '20261001g';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -35,8 +35,21 @@ function escapeHtml(str) {
 }
 
 /* 事件展示排序：按剧情顺序倒序（最新在前） */
+/* 解析 "2026.9.27" 这类日期为可比较数值；无日期返回 0 */
+function parseEvDate(s) {
+  if (!s) return 0;
+  const m = String(s).match(/(\d{4})[.\-\/年](\d{1,2})[.\-\/月](\d{1,2})/);
+  return m ? (+m[1]) * 10000 + (+m[2]) * 100 + (+m[3]) : 0;
+}
+
 function sortEvents(list) {
-  return [...list].sort((a, b) => (b.order - a.order) || (a.createdAt < b.createdAt ? 1 : -1));
+  return [...list].sort((a, b) => {
+    const da = parseEvDate(a.date), db = parseEvDate(b.date);
+    if (da && db) return db - da;            // 有日期：按日期倒序（最新在上）
+    if (da) return -1;                        // 有日期的排前面
+    if (db) return 1;
+    return (b.order - a.order) || (a.createdAt < b.createdAt ? 1 : -1);
+  });
 }
 
 function getTimeline(id) {
