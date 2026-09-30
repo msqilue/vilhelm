@@ -75,6 +75,31 @@
         "t18"
       ],
       "createdAt": "2026-09-30T10:10:00+08:00"
+    },
+    {
+      "id": "growth-生日-2",
+      "timelineId": "growth",
+      "title": "人心如面",
+      "content": "而且，有你和我一起，我怎么可能输",
+      "stage": "生日",
+      "date": "2025.9.27",
+      "order": 3,
+      "images": [
+        "assets/images/moyi/growth/人心如面/生日-20250927-1.jpg",
+        "assets/images/moyi/growth/人心如面/生日-20250927-2.jpg"
+      ],
+      "audios": [],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t11"
+      ],
+      "createdAt": "2026-10-01T00:20:00+08:00"
     }
   ]
 }
