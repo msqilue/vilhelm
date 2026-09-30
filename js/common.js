@@ -159,7 +159,7 @@ const BG = {
   }
 };
 
-/* ===== 背景控制面板（右下角「设置」）：遮罩强度滑块 + 恢复默认背景 ===== */
+/* ===== 右下角「设置」悬浮面板：背景（遮罩滑块 + 恢复默认背景） ===== */
 let bgCtlEl = null;
 function renderBgControl() {
   if (bgCtlEl) return;
