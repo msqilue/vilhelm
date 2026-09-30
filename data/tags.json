@@ -1,0 +1,35 @@
+{
+  "categories": [
+    {
+      "id": "story",
+      "name": "剧情/章节",
+      "tags": [
+        { "id": "t1", "name": "序章", "color": "#B08968" },
+        { "id": "t2", "name": "第1章", "color": "#9C6B30" }
+      ]
+    },
+    {
+      "id": "state",
+      "name": "角色状态/成长阶段",
+      "tags": [
+        { "id": "t5", "name": "初见", "color": "#7A9E7E" },
+        { "id": "t6", "name": "羁绊加深", "color": "#6B8EAD" }
+      ]
+    },
+    {
+      "id": "eventType",
+      "name": "事件类型",
+      "tags": [
+        { "id": "t9", "name": "案件", "color": "#A9716A" },
+        { "id": "t10", "name": "日常", "color": "#C4A484" }
+      ]
+    },
+    {
+      "id": "place",
+      "name": "地点/时期",
+      "tags": [
+        { "id": "t13", "name": "未名市", "color": "#8F8F8F" }
+      ]
+    }
+  ]
+}

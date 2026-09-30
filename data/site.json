@@ -1,0 +1,22 @@
+{
+  "siteName": "莫弈·Vilhelm",
+  "siteSubtitle": "《未定事件簿》角色成长时间线",
+  "fanDeclaration": "本站点为粉丝向非官方作品，角色与素材版权归原游戏方（miHoYo）所有",
+  "adminPassHash": "",
+  "characters": [
+    {
+      "id": "moyi",
+      "name": "莫弈",
+      "game": "未定事件簿",
+      "avatar": "assets/images/moyi/avatar.jpg",
+      "intro": "《未定事件簿》中的心理医生，在未名市的案件与日常中逐渐与「我」相识、相知。这里记录他的成长时间线。",
+      "themeColor": "#8A6D3B"
+    }
+  ],
+  "features": {
+    "quote": true,
+    "characters": true,
+    "recordDate": false,
+    "importance": true
+  }
+}

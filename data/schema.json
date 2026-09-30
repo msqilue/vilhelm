@@ -1,0 +1,51 @@
+{
+  "description": "数据文件字段结构说明，供管理端导入/导出校验使用。",
+  "version": "1.0",
+  "files": {
+    "site.json": {
+      "fields": [
+        { "key": "siteName", "type": "string", "required": true, "desc": "站点名称" },
+        { "key": "siteSubtitle", "type": "string", "required": false, "desc": "站点副标题" },
+        { "key": "fanDeclaration", "type": "string", "required": false, "desc": "粉丝向版权声明" },
+        { "key": "adminPassHash", "type": "string", "required": false, "desc": "管理口令哈希（留空则不启用口令）" },
+        { "key": "characters", "type": "array", "required": true, "desc": "角色配置数组，v1.0 单角色，预留多角色" },
+        { "key": "features", "type": "object", "required": true, "desc": "功能开关：quote/characters/recordDate/importance" }
+      ]
+    },
+    "timelines.json": {
+      "fields": [
+        { "key": "id", "type": "string", "required": true, "desc": "时间线唯一标识" },
+        { "key": "name", "type": "string", "required": true, "desc": "时间线名称" },
+        { "key": "description", "type": "string", "required": false, "desc": "时间线简介" },
+        { "key": "order", "type": "number", "required": true, "desc": "展示顺序" }
+      ]
+    },
+    "tags.json": {
+      "fields": [
+        { "key": "id", "type": "string", "required": true, "desc": "类别唯一标识" },
+        { "key": "name", "type": "string", "required": true, "desc": "类别名称" },
+        { "key": "tags", "type": "array", "required": true, "desc": "标签数组：id/name/color" }
+      ]
+    },
+    "events.json": {
+      "fields": [
+        { "key": "id", "type": "string", "required": true, "desc": "事件唯一标识" },
+        { "key": "timelineId", "type": "string", "required": true, "desc": "所属时间线 id" },
+        { "key": "title", "type": "string", "required": true, "desc": "事件标题" },
+        { "key": "content", "type": "string", "required": true, "desc": "正文，\\n 分段" },
+        { "key": "stage", "type": "string", "required": false, "desc": "剧情阶段/章节，仅展示" },
+        { "key": "order", "type": "number", "required": true, "desc": "时间线内剧情顺序，排序依据" },
+        { "key": "images", "type": "array", "required": false, "desc": "插图素材引用（仓库路径或 URL）" },
+        { "key": "audios", "type": "array", "required": false, "desc": "语音素材引用：[{src,label,duration}]" },
+        { "key": "quote", "type": "string", "required": false, "desc": "台词/原文引用" },
+        { "key": "characters", "type": "array", "required": false, "desc": "出场角色名" },
+        { "key": "recordDate", "type": "string", "required": false, "desc": "现实记录日期，不参与排序" },
+        { "key": "importance", "type": "enum", "required": false, "desc": "normal/key/milestone" },
+        { "key": "tags", "type": "array", "required": false, "desc": "标签 id 列表" },
+        { "key": "createdAt", "type": "string", "required": true, "desc": "录入时间 ISO 格式" }
+      ],
+      "sortRule": "同时间线内按 order 升序，相同按 createdAt",
+      "importanceValues": ["normal", "key", "milestone"]
+    }
+  }
+}

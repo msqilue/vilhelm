@@ -1,0 +1,36 @@
+{
+  "events": [
+    {
+      "id": "ev-001",
+      "timelineId": "main",
+      "title": "与莫弈的初见",
+      "content": "未名市案件现场，第一次见到他……\n他的目光让我印象深刻。",
+      "stage": "序章",
+      "order": 1,
+      "images": [],
+      "audios": [],
+      "quote": "「这个世界，远比你想的要复杂。」",
+      "characters": ["莫弈"],
+      "recordDate": "",
+      "importance": "milestone",
+      "tags": ["t1", "t5", "t9"],
+      "createdAt": "2026-09-30T10:00:00+08:00"
+    },
+    {
+      "id": "ev-002",
+      "timelineId": "growth",
+      "title": "示例事件：羁绊加深",
+      "content": "这是一条示例事件，用于演示时间线展示效果。\n正式内容请通过管理端录入。",
+      "stage": "",
+      "order": 1,
+      "images": [],
+      "audios": [],
+      "quote": "",
+      "characters": ["莫弈"],
+      "recordDate": "",
+      "importance": "key",
+      "tags": ["t6", "t10"],
+      "createdAt": "2026-09-30T10:05:00+08:00"
+    }
+  ]
+}

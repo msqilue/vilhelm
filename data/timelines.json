@@ -1,0 +1,22 @@
+{
+  "timelines": [
+    {
+      "id": "main",
+      "name": "主线剧情线",
+      "description": "未名市案件与主线剧情推进",
+      "order": 1
+    },
+    {
+      "id": "growth",
+      "name": "个人成长线",
+      "description": "莫弈的个人成长与变化",
+      "order": 2
+    },
+    {
+      "id": "activity",
+      "name": "活动/节日线",
+      "description": "活动与节日剧情",
+      "order": 3
+    }
+  ]
+}

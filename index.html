@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>莫弈·Vilhelm</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <span class="brand" id="brand">莫弈·Vilhelm</span>
+      <nav class="main-nav" id="main-nav"></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-avatar" id="hero-avatar">莫</div>
+      <div class="hero-text">
+        <h1 id="hero-name">莫弈</h1>
+        <p class="hero-sub" id="hero-sub"></p>
+        <p class="hero-intro" id="hero-intro"></p>
+        <nav class="hero-nav">
+          <a class="btn btn-primary" href="timeline.html">进入时间线</a>
+          <a class="btn" href="stats.html">成长统计</a>
+          <a class="btn" href="about.html">关于本站</a>
+        </nav>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div id="footer-text"></div>
+      <a id="admin-link" href="admin.html"></a>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    initPage('index.html').then(() => {
+      const c = DATA.site.characters[0];
+      if (c) {
+        document.getElementById('hero-name').textContent = c.name;
+        document.getElementById('hero-sub').textContent = '《' + c.game + '》';
+        document.getElementById('hero-intro').textContent = c.intro || '';
+        const avatar = document.getElementById('hero-avatar');
+        if (c.avatar) {
+          const img = new Image();
+          img.onload = () => { avatar.textContent = ''; avatar.style.backgroundImage = 'url(' + c.avatar + ')'; avatar.style.backgroundSize = 'cover'; avatar.style.backgroundPosition = 'center'; };
+          img.src = c.avatar;
+        } else {
+          avatar.textContent = c.name.charAt(0);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

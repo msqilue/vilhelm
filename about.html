@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于 · 莫弈·Vilhelm</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <span class="brand" id="brand">莫弈·Vilhelm</span>
+      <nav class="main-nav" id="main-nav"></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <h1>关于本站</h1>
+    </div>
+    <div class="prose">
+      <p>「莫弈·Vilhelm」是《未定事件簿》角色莫弈的个人成长时间线记录与展示站，由粉丝个人维护。</p>
+      <p>本站以纯前端静态站点形式构建，内容以 JSON 数据文件维护，托管于 Gitee Pages，无需服务器。</p>
+      <p>功能包括：多条时间线浏览与切换、类别/标签筛选、关键词搜索、成长统计、事件插图与语音展示等。</p>
+      <div class="notice" id="declaration"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div id="footer-text"></div>
+      <a id="admin-link" href="admin.html"></a>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    initPage('about.html').then(() => {
+      document.getElementById('declaration').textContent = DATA.site.fanDeclaration || '';
+    });
+  </script>
+</body>
+</html>
