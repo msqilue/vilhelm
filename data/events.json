@@ -10,11 +10,17 @@
       "images": [],
       "audios": [],
       "quote": "「这个世界，远比你想的要复杂。」",
-      "characters": ["莫弈"],
+      "characters": [
+        "莫弈"
+      ],
       "recordDate": "",
       "importance": "milestone",
       "bgImage": "",
-      "tags": ["t1", "t5", "t9"],
+      "tags": [
+        "t1",
+        "t5",
+        "t9"
+      ],
       "createdAt": "2026-09-30T10:00:00+08:00"
     },
     {
@@ -28,11 +34,16 @@
       "images": [],
       "audios": [],
       "quote": "",
-      "characters": ["莫弈"],
+      "characters": [
+        "莫弈"
+      ],
       "recordDate": "",
       "importance": "key",
       "bgImage": "",
-      "tags": ["t6", "t10"],
+      "tags": [
+        "t6",
+        "t10"
+      ],
       "createdAt": "2026-09-30T10:05:00+08:00"
     },
     {
@@ -43,14 +54,21 @@
       "stage": "生日",
       "date": "2026.9.27",
       "order": 2,
-      "images": ["assets/images/moyi/growth/生日-20260927-1.jpg", "assets/images/moyi/growth/生日-20260927-2.jpg"],
+      "images": [
+        "assets/images/moyi/growth/生日-20260927-1.jpg",
+        "assets/images/moyi/growth/生日-20260927-2.jpg"
+      ],
       "audios": [],
       "quote": "「谢谢你，今天我很开心。」",
-      "characters": ["莫弈"],
+      "characters": [
+        "莫弈"
+      ],
       "recordDate": "",
       "importance": "milestone",
       "bgImage": "",
-      "tags": ["t11"],
+      "tags": [
+        "t11"
+      ],
       "createdAt": "2026-09-30T10:10:00+08:00"
     }
   ]

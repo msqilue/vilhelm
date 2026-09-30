@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理端 · 莫弈·Vilhelm</title>
+  <link rel="stylesheet" href="css/style.css?v=20260930h">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <span class="brand">莫弈·Vilhelm</span>
+      <nav class="main-nav">
+        <a href="index.html">返回站点</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <h1>管理端</h1>
+      <p>在网页上维护时间线 / 标签 / 事件数据，编辑后「导出 JSON」替换项目 data/ 目录文件并推送即生效。</p>
+    </div>
+
+    <div class="admin-tabs" id="admin-tabs">
+      <button class="admin-tab" data-tab="events">事件管理</button>
+      <button class="admin-tab" data-tab="tags">标签管理</button>
+      <button class="admin-tab" data-tab="timelines">时间线管理</button>
+    </div>
+
+    <div class="admin-panel" id="panel-events"></div>
+    <div class="admin-panel" id="panel-tags" hidden></div>
+    <div class="admin-panel" id="panel-timelines" hidden></div>
+
+    <div class="admin-bar">
+      <span class="admin-state" id="admin-state"></span>
+      <button class="glass-btn" id="btn-export">导出 JSON</button>
+      <button class="glass-btn" id="btn-reset">重置为仓库数据</button>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div id="footer-text"></div>
+    </div>
+  </footer>
+
+  <script src="js/common.js?v=20260930h"></script>
+  <script src="js/admin.js?v=20260930h"></script>
+</body>
+</html>
