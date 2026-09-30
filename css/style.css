@@ -354,12 +354,13 @@ a:hover { text-decoration: underline; }
   border-radius: 2px;
 }
 .ev-subtitle {
-  margin-top: 12px;
-  font-size: 1.02rem;
-  letter-spacing: .3em;
-  text-indent: .3em;
-  color: var(--accent);
-  opacity: .92;
+  margin-top: 10px;
+  font-size: .96rem;
+  letter-spacing: .22em;
+  text-indent: .22em;
+  color: var(--ink);
+  opacity: .8;
+  transform: translateX(34%);
 }
 .ev-meta { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .ev-badge {
