@@ -18,17 +18,42 @@
     },
     {
       "id": "state",
-      "name": "角色状态/成长阶段",
+      "name": "篇章",
       "tags": [
         {
-          "id": "t5",
-          "name": "初见",
-          "color": "#7A9E7E"
+          "id": "t14",
+          "name": "旖慕篇",
+          "color": "#D9A0A0"
         },
         {
-          "id": "t6",
-          "name": "羁绊加深",
-          "color": "#6B8EAD"
+          "id": "t15",
+          "name": "甜蜜篇",
+          "color": "#E8B4A0"
+        },
+        {
+          "id": "t16",
+          "name": "约定篇",
+          "color": "#C9A9C9"
+        },
+        {
+          "id": "t17",
+          "name": "挚爱篇",
+          "color": "#B98E8E"
+        },
+        {
+          "id": "t18",
+          "name": "相守篇",
+          "color": "#A8B4A0"
+        },
+        {
+          "id": "t19",
+          "name": "未定篇",
+          "color": "#8F8F9C"
+        },
+        {
+          "id": "t20",
+          "name": "异世篇",
+          "color": "#9C8FB0"
         }
       ]
     },
