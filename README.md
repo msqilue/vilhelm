@@ -54,12 +54,13 @@ python -m http.server 8000
 - 素材文件放入 `assets/images/moyi/`、`assets/audio/moyi/`，事件中引用相对路径。
 - 修改数据后推送到仓库，再到 Gitee Pages 服务页点击「更新」完成部署。
 
-## 部署（Gitee Pages）
+## 部署（静态托管）
 
-1. 推送代码到 Gitee 仓库（公开）。
-2. 仓库 → 服务 → Gitee Pages → 选择 `master` 分支、根目录，启动。
-3. 访问 `https://ilue.gitee.io/vilhelm/`。
-4. 每次更新数据/素材：提交推送 → Gitee Pages 服务页点「更新」。
+> 注：原计划使用 Gitee Pages，该服务已下线（Gitee 官方确认暂无上线计划），托管方案待定。候选：自有服务器 Nginx / Cloudflare Pages / 腾讯云 CloudBase / 阿里云 OSS。
+
+- 代码托管：Gitee 仓库 `vilhelm`（公开，master 分支）已就绪。
+- 本地预览：`python -m http.server 8000` → `http://localhost:8000/`。
+- 每次更新数据/素材：提交推送 Gitee → 按所选托管平台的规则更新部署。
 
 ## 版权声明
 
