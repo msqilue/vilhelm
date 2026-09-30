@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION = '20261001b';
+const DATA_VERSION = '20261001c';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -159,15 +159,17 @@ const BG = {
   }
 };
 
-/* ===== 右下角「设置」悬浮面板：背景（遮罩滑块 + 恢复默认背景） ===== */
+/* ===== 右上角「设置」：右侧抽屉（背景：遮罩滑块 + 恢复默认背景） ===== */
 let bgCtlEl = null;
 function renderBgControl() {
   if (bgCtlEl) return;
   bgCtlEl = document.createElement('div');
   bgCtlEl.className = 'bg-ctl';
   bgCtlEl.innerHTML = `
-    <button class="bg-ctl-toggle" title="设置">设置<span class="bg-ctl-arrow">▾</span></button>
-    <div class="bg-ctl-panel">
+    <button class="bg-ctl-toggle" title="设置">设置<span class="bg-ctl-arrow">▸</span></button>
+    <div class="bg-backdrop"></div>
+    <div class="bg-drawer">
+      <button class="bg-drawer-close" title="关闭">✕</button>
       <div class="bg-ctl-title">背景</div>
       <div class="bg-ctl-row"><span class="bg-ctl-label">遮罩强度</span><span class="bg-ctl-val"></span></div>
       <input class="bg-ctl-range" type="range" min="10" max="90" step="5">
@@ -175,11 +177,17 @@ function renderBgControl() {
     </div>`;
   document.body.appendChild(bgCtlEl);
 
-  const panel = bgCtlEl.querySelector('.bg-ctl-panel');
+  const drawer = bgCtlEl.querySelector('.bg-drawer');
+  const backdrop = bgCtlEl.querySelector('.bg-backdrop');
   const range = bgCtlEl.querySelector('.bg-ctl-range');
   const valEl = bgCtlEl.querySelector('.bg-ctl-val');
   const reset = bgCtlEl.querySelector('.bg-ctl-reset');
   const toggle = bgCtlEl.querySelector('.bg-ctl-toggle');
+  const closeBtn = bgCtlEl.querySelector('.bg-drawer-close');
+  const arrow = bgCtlEl.querySelector('.bg-ctl-arrow');
+
+  const open = () => { drawer.classList.add('open'); backdrop.classList.add('open'); toggle.classList.add('on'); arrow.classList.add('rot'); };
+  const close = () => { drawer.classList.remove('open'); backdrop.classList.remove('open'); toggle.classList.remove('on'); arrow.classList.remove('rot'); };
 
   const syncRange = () => {
     const manual = getStoredOverlay();
@@ -188,13 +196,13 @@ function renderBgControl() {
     valEl.textContent = range.value + '%';
   };
 
-  // 鼠标悬停向上展开面板；移出收起；点击也可切换
-  bgCtlEl.addEventListener('mouseenter', () => panel.classList.add('open'));
-  bgCtlEl.addEventListener('mouseleave', () => panel.classList.remove('open'));
+  // 点击按钮打开/关闭抽屉；点遮罩或 ✕ 关闭
   toggle.addEventListener('click', e => {
     e.stopPropagation();
-    panel.classList.toggle('open');
+    drawer.classList.contains('open') ? close() : open();
   });
+  backdrop.addEventListener('click', close);
+  closeBtn.addEventListener('click', close);
   range.addEventListener('input', () => {
     const v = parseInt(range.value, 10) / 100;
     storeOverlay(v);
