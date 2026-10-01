@@ -123,7 +123,9 @@
         "assets/images/moyi/growth/枕桂听梦/生日-20250927-1.jpg",
         "assets/images/moyi/growth/枕桂听梦/生日-20250927-2.jpg"
       ],
-      "audios": [],
+      "audios": [
+        "assets/audio/moyi/growth/枕桂听梦/枕桂听梦-20250927-0.mp3"
+      ],
       "quotes": [],
       "characters": [
         "莫弈"

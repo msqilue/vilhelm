@@ -1,4 +1,31 @@
 /* ===== 事件详情页逻辑 ===== */
+
+/* 序号为 0 的语音为「自动播放语音」：点进事件自动播放，不在语音列表显示。
+   命名规则：{事件名}-{时间}-0.mp3（-0. 结尾即视为自动播放语音） */
+function isAutoAudio(a) {
+  const src = typeof a === 'string' ? a : (a && a.src);
+  return !!src && /-0\.[a-z0-9]+$/i.test(src.split('/').pop().split('?')[0]);
+}
+
+/* 自动播放：立即尝试播放；被浏览器拦截时，等待用户首次交互后播放一次 */
+function playAutoAudio(src) {
+  if (!src) return;
+  const audio = new Audio(src);
+  audio.volume = 1;
+  const tryPlay = () => {
+    const p = audio.play();
+    if (p && p.catch) p.catch(() => {
+      ['pointerdown', 'keydown', 'touchstart'].forEach(evt =>
+        document.addEventListener(evt, function once() {
+          audio.play().catch(() => {});
+          ['pointerdown', 'keydown', 'touchstart'].forEach(e2 =>
+            document.removeEventListener(e2, once));
+        }, { once: true }));
+    });
+  };
+  tryPlay();
+}
+
 initPage('timeline.html').then(() => {
   const id = new URLSearchParams(location.search).get('id');
   const ev = DATA.events.find(e => e.id === id);
@@ -19,6 +46,13 @@ initPage('timeline.html').then(() => {
 
   document.title = ev.title + ' · 莫弈·Vilhelm';
   renderEvent(ev);
+
+  /* 自动播放语音（序号 0）：不显示在列表，进页自动播放 */
+  const autoAudio = (ev.audios || []).find(isAutoAudio);
+  if (autoAudio) {
+    const src = typeof autoAudio === 'string' ? autoAudio : (autoAudio && autoAudio.src);
+    playAutoAudio(src);
+  }
 
   /* 点赞 */
   const likeBtn = actions.querySelector('.like-btn');
@@ -79,9 +113,10 @@ function renderEvent(ev) {
     subEl.style.display = 'none';
   }
 
-  const audios = ev.audios && ev.audios.length
+  const listAudios = (ev.audios || []).filter(a => !isAutoAudio(a));
+  const audios = listAudios.length
     ? `<section class="ev-sec"><h2 class="ev-sec-title">语音 · Voice</h2>
-      <div class="detail-audios">${ev.audios.map(a => {
+      <div class="detail-audios">${listAudios.map(a => {
         const src = typeof a === 'string' ? a : (a && a.src);
         const label = (a && typeof a === 'object') ? (a.label || '') : '';
         return `<div class="audio-card"><span class="audio-disc">♪</span><audio controls preload="none" src="${escapeHtml(src)}"></audio>${label ? `<span class="badge">${escapeHtml(label)}</span>` : ''}</div>`;
