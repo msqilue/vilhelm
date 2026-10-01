@@ -199,6 +199,35 @@
         "t16"
       ],
       "createdAt": "2026-10-01T16:30:00+08:00"
+    },
+    {
+      "id": "growth-昔年之缚-1",
+      "timelineId": "growth",
+      "title": "昔年之缚",
+      "subtitle": "沐光携愿",
+      "content": "“困了就睡吧，我陪着你。”",
+      "stage": "生日",
+      "date": "2021.9.27",
+      "order": 7,
+      "images": [
+        "assets/images/moyi/growth/昔年之缚/生日-20210927-1.jpg",
+        "assets/images/moyi/growth/昔年之缚/生日-20210927-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/growth/昔年之缚/昔年之缚-20210927-0.mp3"
+      ],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t11",
+        "t15"
+      ],
+      "createdAt": "2026-10-01T16:40:00+08:00"
     }
   ]
 }
