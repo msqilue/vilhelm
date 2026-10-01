@@ -109,6 +109,34 @@
         "t17"
       ],
       "createdAt": "2026-10-01T00:20:00+08:00"
+    },
+    {
+      "id": "growth-枕桂听梦-1",
+      "timelineId": "growth",
+      "title": "枕桂听梦",
+      "subtitle": "予爱未名",
+      "content": "一直以来，我都被你无比充足的爱着。",
+      "stage": "生日",
+      "date": "2025.9.27",
+      "order": 4,
+      "images": [
+        "assets/images/moyi/growth/枕桂听梦/生日-20250927-1.jpg",
+        "assets/images/moyi/growth/枕桂听梦/生日-20250927-2.jpg"
+      ],
+      "audios": [],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t11",
+        "t17",
+        "t21"
+      ],
+      "createdAt": "2026-10-01T15:20:00+08:00"
     }
   ]
 }
