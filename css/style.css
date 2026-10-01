@@ -581,6 +581,23 @@ a:hover { text-decoration: underline; }
 }
 .audio-card audio { width: 100%; min-width: 0; }
 
+/* 音频控件透明化：面板/进度条透明，文字与图标随主题色 */
+.audio-card audio::-webkit-media-controls-panel {
+  background-color: transparent;
+}
+.audio-card audio::-webkit-media-controls-current-time-display,
+.audio-card audio::-webkit-media-controls-time-remaining-display {
+  color: var(--ink);
+  font-size: 12px;
+}
+.audio-card audio::-webkit-media-controls-play-button,
+.audio-card audio::-webkit-media-controls-mute-button {
+  color: var(--ink);
+}
+.audio-card audio::-webkit-media-controls-timeline {
+  background-color: transparent;
+}
+
 /* 图片：横跨整行大图（图阔文窄，素材优先） */
 .detail-images {
   display: grid;
