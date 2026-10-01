@@ -228,6 +228,32 @@
         "t15"
       ],
       "createdAt": "2026-10-01T16:40:00+08:00"
+    },
+    {
+      "id": "growth-午夜流光-1",
+      "timelineId": "growth",
+      "title": "午夜流光",
+      "subtitle": "钟情和弦",
+      "content": "“现在，就只看着我。”",
+      "stage": "生日",
+      "date": "2020.9.27",
+      "order": 8,
+      "images": [],
+      "audios": [
+        "assets/audio/moyi/growth/午夜流光/午夜流光-20200927-0.mp3"
+      ],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t11",
+        "t14"
+      ],
+      "createdAt": "2026-10-01T16:50:00+08:00"
     }
   ]
 }
