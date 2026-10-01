@@ -581,21 +581,42 @@ a:hover { text-decoration: underline; }
 }
 .audio-card audio { width: 100%; min-width: 0; }
 
-/* 音频控件透明化：面板/进度条透明，文字与图标随主题色 */
-.audio-card audio::-webkit-media-controls-panel {
-  background-color: transparent;
+/* 自定义音频播放器（透明控件，替代原生白底进度条） */
+.audio-custom {
+  display: flex; align-items: center; gap: 12px;
+  flex: 1; min-width: 0;
 }
-.audio-card audio::-webkit-media-controls-current-time-display,
-.audio-card audio::-webkit-media-controls-time-remaining-display {
+.ac-play {
+  flex: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--glass);
   color: var(--ink);
-  font-size: 12px;
+  font-size: .8rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s ease, color .15s ease;
 }
-.audio-card audio::-webkit-media-controls-play-button,
-.audio-card audio::-webkit-media-controls-mute-button {
-  color: var(--ink);
+.ac-play:hover { border-color: var(--accent); color: var(--accent); }
+.ac-track {
+  flex: 1; min-width: 0;
+  height: 6px; border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  cursor: pointer;
+  position: relative;
 }
-.audio-card audio::-webkit-media-controls-timeline {
-  background-color: transparent;
+.ac-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0; border-radius: 3px;
+  background: var(--accent);
+}
+.ac-time {
+  flex: none;
+  font-size: .76rem;
+  color: var(--muted);
+  min-width: 86px; text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 /* 图片：横跨整行大图（图阔文窄，素材优先） */

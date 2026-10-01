@@ -82,9 +82,55 @@ initPage('timeline.html').then(() => {
     });
   });
 
+  /* 自定义音频播放器：播放/暂停、进度条、时间显示 */
+  initAudioPlayers(body);
+
   /* 上一条 / 下一条（按当前时间线剧情顺序） */
   renderNav(ev);
 });
+
+function fmtTime(s) {
+  if (!isFinite(s) || s < 0) s = 0;
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function initAudioPlayers(root) {
+  root.querySelectorAll('.audio-custom').forEach(box => {
+    const audio = new Audio();
+    audio.preload = 'none';
+    audio.src = box.dataset.src;
+    const playBtn = box.querySelector('.ac-play');
+    const fill = box.querySelector('.ac-fill');
+    const timeEl = box.querySelector('.ac-time');
+
+    playBtn.addEventListener('click', () => {
+      audio.paused ? audio.play() : audio.pause();
+    });
+    audio.addEventListener('play', () => { playBtn.textContent = '❚❚'; });
+    audio.addEventListener('pause', () => { playBtn.textContent = '▶'; });
+    audio.addEventListener('ended', () => { playBtn.textContent = '▶'; fill.style.width = '0%'; timeEl.textContent = '0:00 / 0:00'; });
+    audio.addEventListener('timeupdate', () => {
+      const p = audio.duration ? audio.currentTime / audio.duration : 0;
+      fill.style.width = (p * 100) + '%';
+      timeEl.textContent = fmtTime(audio.currentTime) + ' / ' + fmtTime(audio.duration);
+    });
+    audio.addEventListener('loadedmetadata', () => {
+      timeEl.textContent = '0:00 / ' + fmtTime(audio.duration);
+    });
+
+    const track = box.querySelector('.ac-track');
+    track.addEventListener('click', e => {
+      const r = track.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      if (audio.duration) {
+        audio.currentTime = p * audio.duration;
+        fill.style.width = (p * 100) + '%';
+      }
+    });
+  });
+}
 
 function renderEvent(ev) {
   const tl = getTimeline(ev.timelineId);
@@ -119,7 +165,12 @@ function renderEvent(ev) {
       <div class="detail-audios">${listAudios.map(a => {
         const src = typeof a === 'string' ? a : (a && a.src);
         const label = (a && typeof a === 'object') ? (a.label || '') : '';
-        return `<div class="audio-card"><span class="audio-disc">♪</span><audio controls preload="none" src="${escapeHtml(src)}"></audio>${label ? `<span class="badge">${escapeHtml(label)}</span>` : ''}</div>`;
+        return `<div class="audio-card"><span class="audio-disc">♪</span>
+          <div class="audio-custom" data-src="${escapeHtml(src)}">
+            <button class="ac-play" type="button" aria-label="播放">▶</button>
+            <div class="ac-track"><div class="ac-fill"></div></div>
+            <span class="ac-time">0:00 / 0:00</span>
+          </div>${label ? `<span class="badge">${escapeHtml(label)}</span>` : ''}</div>`;
       }).join('')}</div></section>` : '';
   const images = ev.images && ev.images.length
     ? `<section class="ev-sec"><h2 class="ev-sec-title">留影 · Gallery</h2>
