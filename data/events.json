@@ -170,6 +170,35 @@
         "t17"
       ],
       "createdAt": "2026-10-01T16:20:00+08:00"
+    },
+    {
+      "id": "growth-繁梦明辰-1",
+      "timelineId": "growth",
+      "title": "繁梦明辰",
+      "subtitle": "岁许佳期",
+      "content": "“或许”他“在乎的，就是如此简单。”",
+      "stage": "生日",
+      "date": "2022.9.27",
+      "order": 6,
+      "images": [
+        "assets/images/moyi/growth/繁梦明辰/生日-20220927-1.jpg",
+        "assets/images/moyi/growth/繁梦明辰/生日-20220927-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/growth/繁梦明辰/繁梦明辰-20220927-0.mp3"
+      ],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t11",
+        "t16"
+      ],
+      "createdAt": "2026-10-01T16:30:00+08:00"
     }
   ]
 }
