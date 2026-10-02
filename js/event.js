@@ -182,7 +182,7 @@ function renderEvent(ev) {
   const quotes = (DATA.site.features.quote && (ev.quotes || (ev.quote ? [ev.quote] : [])) || [])
     .map(q => `<div class="quote-card"><div class="quote-mark">❝</div><div class="quote-text">${escapeHtml(q)}</div></div>`).join('');
   const tagRow = tags.length
-    ? `<div class="detail-tags">${tags.map(t => `<span class="tag-chip on" style="border-color:${escapeHtml(t.color || '#6E8F4E')};color:${escapeHtml(t.color || '#6E8F4E')}">${escapeHtml(t.name)}</span>`).join('')}</div>` : '';
+    ? `<div class="detail-tags">${tags.map(t => `<span class="tag-chip ev-tag" style="border-color:${escapeHtml(t.color || '#6E8F4E')};color:${escapeHtml(t.color || '#6E8F4E')}">${escapeHtml(t.name)}</span>`).join('')}</div>` : '';
   const chars = DATA.site.features.characters && ev.characters && ev.characters.length
     ? `<div class="detail-chars">${ev.characters.map(c => `<span class="char-chip">${escapeHtml(c)}</span>`).join('')}</div>` : '';
   const date = DATA.site.features.recordDate && ev.recordDate ? `<span class="ev-date">记录于 ${escapeHtml(ev.recordDate)}</span>` : '';

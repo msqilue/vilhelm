@@ -285,6 +285,8 @@ a:hover { text-decoration: underline; }
   color: #fff; font-weight: 600;
   box-shadow: 0 0 0 3px var(--accent-soft), 0 2px 10px rgba(110, 143, 78, .4);
 }
+/* 事件页内标签：透明底，保留彩色描边与文字色 */
+.tag-chip.ev-tag { background: transparent; box-shadow: none; }
 .filter-summary { font-size: .82rem; color: var(--muted); margin-top: 12px; }
 .filter-summary a { color: var(--accent); }
 
