@@ -1061,6 +1061,6 @@ a:hover { text-decoration: underline; }
   background-size: 14px;
 }
 .admin-field select option {
-  background-color: #1a1722;
-  color: #f5f1ea;
+  background-color: var(--bg-accent, #1a1722);
+  color: var(--ink);
 }
