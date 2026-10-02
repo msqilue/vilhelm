@@ -100,7 +100,7 @@ function renderTimeline() {
               ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
               ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
             </div>
-            <h3 class="event-title">${escapeHtml(ev.title)}</h3>
+            <h3 class="event-title">${escapeHtml(ev.title)}${ev.pending ? ' <span class="badge badge-local">本地</span>' : ''}</h3>
             ${excerpt ? `<p class="event-excerpt">${escapeHtml(excerpt)}…</p>` : ''}
             <div class="card-foot">
               <span class="card-open">查看详情 →</span>

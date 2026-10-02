@@ -200,6 +200,9 @@ a:hover { text-decoration: underline; }
 .admin-tagcat-name { display: block; font-size: .78rem; color: var(--muted); margin-bottom: 7px; }
 .admin-tagcheck { display: block; font-size: .86rem; margin: 3px 0; cursor: pointer; }
 .admin-tagcheck input { margin-right: 6px; accent-color: var(--accent); }
+
+/* 本地待同步事件标记 */
+.badge-local { background: var(--accent); color: #fff; border-radius: 999px; padding: 1px 8px; font-size: .7rem; vertical-align: middle; margin-left: 4px; }
 .admin-lines { display: flex; flex-direction: column; gap: 8px; }
 .admin-line { display: flex; align-items: center; gap: 8px; }
 .admin-line .line-val { flex: 1; }

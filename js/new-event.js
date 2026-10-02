@@ -92,8 +92,8 @@ initPage('new-event.html').then(() => {
     return m[1] + String(m[2]).padStart(2, '0') + String(m[3]).padStart(2, '0');
   }
 
-  /* 生成事件 JSON */
-  document.getElementById('btn-gen').addEventListener('click', () => {
+  /* 生成事件 JSON + 保存到本地 */
+  document.getElementById('btn-add').addEventListener('click', () => {
     const title = document.getElementById('f-title').value.trim();
     if (!title) { alert('请填写事件名称'); return; }
     const subtitle = document.getElementById('f-subtitle').value.trim();
@@ -130,13 +130,23 @@ initPage('new-event.html').then(() => {
       createdAt: new Date().toISOString()
     };
 
+    /* 存入浏览器本地：时间线立即生效 */
+    try {
+      const pend = JSON.parse(localStorage.getItem('vilhelm:pendingEvents') || '[]');
+      if (!Array.isArray(pend)) pend.length = 0;
+      pend.push({ event: ev, createdAt: new Date().toISOString() });
+      localStorage.setItem('vilhelm:pendingEvents', JSON.stringify(pend));
+    } catch (e) { /* 忽略 */ }
+
     const json = JSON.stringify(ev, null, 2);
     document.getElementById('ev-json').value = json;
     const note = [
+      '✔ 已添加到本地，刷新时间线即可看到该事件（仅当前浏览器可见）。',
+      '',
       '① 素材请放到以下目录（未填的忽略）：',
       ...audios.map(a => '   ' + a),
       ...images.map(i => '   ' + i),
-      '② 把上面 JSON 复制或下载后发给我，我会写入 data/events.json 并上线。'
+      '② 要同步到线上（所有浏览器可见），把上面 JSON 复制或下载后发给我，我会写入 data/events.json 并上线。'
     ].join('\n');
     document.getElementById('ev-path-note').textContent = note;
     document.getElementById('ev-result').hidden = false;
