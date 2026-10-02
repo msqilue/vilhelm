@@ -354,6 +354,38 @@
       ],
       "createdAt": "2026-10-02T09:15:00.000Z",
       "mainTag": "t23"
+    },
+    {
+      "id": "growth-斯年以沫-1",
+      "timelineId": "growth",
+      "title": "斯年以沫",
+      "subtitle": "归心之所",
+      "content": "“之前的故事已经告一段落。而新的篇章才刚刚展开……你愿意和我一起谱写接下去的乐章吗？”",
+      "stage": "",
+      "date": "2023.7.20",
+      "order": 0,
+      "images": [
+        "assets/images/moyi/growth/斯年以沫/斯年以沫-20230720-1.jpg",
+        "assets/images/moyi/growth/斯年以沫/斯年以沫-20230720-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/growth/斯年以沫/斯年以沫-20230720-0.mp3"
+      ],
+      "quotes": [
+        "钢琴见证我们的相恋，蔷薇花目睹我们的相知。仅仅是因为这样，它们在这个世界上就有了唯一性。",
+        "情有独钟，誓言不渝。于万斯年，相濡以沫——"
+      ],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "mainTag": "t23",
+      "tags": [
+        "t23"
+      ],
+      "createdAt": "2026-10-02T09:45:00.000Z"
     }
   ]
 }
