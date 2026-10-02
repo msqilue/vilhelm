@@ -1,28 +1,6 @@
 {
   "events": [
     {
-      "id": "main-序章-1",
-      "timelineId": "main",
-      "title": "与莫弈的初见",
-      "content": "未名市案件现场，第一次见到他……\n他的目光让我印象深刻。",
-      "stage": "序章",
-      "order": 1,
-      "images": [],
-      "audios": [],
-      "quote": "「这个世界，远比你想的要复杂。」",
-      "characters": [
-        "莫弈"
-      ],
-      "recordDate": "",
-      "importance": "milestone",
-      "bgImage": "",
-      "tags": [
-        "t1",
-        "t9"
-      ],
-      "createdAt": "2026-09-30T10:00:00+08:00"
-    },
-    {
       "id": "growth-生日-1",
       "timelineId": "growth",
       "title": "挚礼",
