@@ -282,6 +282,34 @@
         "t10"
       ],
       "createdAt": "2026-10-02T07:35:21.178Z"
+    },
+    {
+      "id": "growth-不渝-1",
+      "timelineId": "growth",
+      "title": "不渝",
+      "subtitle": "绯色之吻",
+      "content": "“最后······只剩下你的一个回答了。”",
+      "stage": "",
+      "date": "2021.6.30",
+      "order": 0,
+      "images": [
+        "assets/images/moyi/growth/不渝/不渝-20210630-1.jpg",
+        "assets/images/moyi/growth/不渝/不渝-20210630-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/growth/不渝/不渝-20210630-0.mp3"
+      ],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t15"
+      ],
+      "createdAt": "2026-10-02T07:51:14.777Z"
     }
   ]
 }
