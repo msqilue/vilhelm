@@ -1,18 +1,29 @@
 /* ===== 时间线页逻辑 ===== */
-// 记住上次选中的时间线，从事件页返回时恢复（localStorage）
+// 记住上次选中的时间线 + 标签筛选，从事件页返回时恢复（localStorage）
 const savedTl = localStorage.getItem('vilhelm:tlFilter');
+let savedTags = [];
+try { savedTags = JSON.parse(localStorage.getItem('vilhelm:tlTags') || '[]') || []; } catch (e) { savedTags = []; }
 const state = {
   timeline: savedTl || 'all',      // 'all' 或时间线 id
-  tags: new Set(),      // 选中的标签 id（跨类别 AND、同类别 OR）
+  tags: new Set(savedTags),      // 选中的标签 id（跨类别 AND、同类别 OR）
   keyword: ''
 };
 
 initPage('timeline.html').then(renderAll);
 
 function renderAll() {
+  // 清理已失效的标签 id（时间线/标签被删除时）
+  const valid = new Set(DATA.categories.flatMap(c => (c.tags || []).map(t => t.id)));
+  let dirty = false;
+  [...state.tags].forEach(id => { if (!valid.has(id)) { state.tags.delete(id); dirty = true; } });
+  if (dirty) saveTags();
   renderSwitch();
   renderFilter();
   renderTimeline();
+}
+
+function saveTags() {
+  localStorage.setItem('vilhelm:tlTags', JSON.stringify([...state.tags]));
 }
 
 /* 时间线切换器 */
@@ -47,6 +58,7 @@ function renderFilter() {
     chip.addEventListener('click', () => {
       const id = chip.dataset.tag;
       if (state.tags.has(id)) state.tags.delete(id); else state.tags.add(id);
+      saveTags();
       renderAll();
     });
   });
@@ -54,6 +66,7 @@ function renderFilter() {
   if (clear) clear.addEventListener('click', e => {
     e.preventDefault();
     state.tags.clear();
+    saveTags();
     renderAll();
   });
 }
