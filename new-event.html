@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>添加事件 · 莫弈·Vilhelm</title>
+  <link rel="stylesheet" href="css/style.css?v=20261001am">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <span class="brand" id="brand">莫弈·Vilhelm</span>
+      <nav class="main-nav" id="main-nav"></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container" style="max-width: 860px;">
+      <a class="ev-toplink" href="timeline.html">← 返回时间线</a>
+      <h2 class="page-title">添加事件</h2>
+      <p class="page-desc">填写表单后点「生成事件 JSON」，复制或下载后发给我即可入库。素材文件请放到页面提示的目录。</p>
+
+      <form id="ev-form" class="admin-form" autocomplete="off">
+        <div class="admin-field">
+          <label>事件名称（必填）</label>
+          <input id="f-title" type="text" placeholder="如：挚礼" required>
+        </div>
+        <div class="admin-field">
+          <label>副标题（可为空）</label>
+          <input id="f-subtitle" type="text" placeholder="如：莫逆于心">
+        </div>
+        <div class="admin-field">
+          <label>时间线</label>
+          <select id="f-timeline"></select>
+        </div>
+        <div class="admin-field">
+          <label>日期（用于排序与素材命名）</label>
+          <input id="f-date" type="text" placeholder="如：2026.9.27">
+        </div>
+        <div class="admin-field">
+          <label>标签</label>
+          <div id="f-tags" class="admin-checkgroup"></div>
+        </div>
+        <div class="admin-field">
+          <label>正文</label>
+          <textarea id="f-content" rows="3" placeholder="事件正文，可多行"></textarea>
+        </div>
+
+        <div class="admin-field">
+          <label>引用（可添加多条）</label>
+          <div id="f-quotes" class="admin-lines"></div>
+          <button type="button" class="admin-btn small" data-add="quote">+ 添加引用</button>
+        </div>
+
+        <div class="admin-field">
+          <label>事件语音（序号为 0 的那个 · 自动播放语音）</label>
+          <div id="f-autoaudio" class="admin-lines"></div>
+          <button type="button" class="admin-btn small" data-add="autoaudio">+ 选择语音文件</button>
+        </div>
+
+        <div class="admin-field">
+          <label>语音（可添加多个）</label>
+          <div id="f-audios" class="admin-lines"></div>
+          <button type="button" class="admin-btn small" data-add="audio">+ 选择语音文件</button>
+        </div>
+
+        <div class="admin-field">
+          <label>图片（可添加多条）</label>
+          <div id="f-images" class="admin-lines"></div>
+          <button type="button" class="admin-btn small" data-add="image">+ 选择图片文件</button>
+        </div>
+
+        <div class="admin-field">
+          <button type="button" class="admin-btn primary" id="btn-gen">生成事件 JSON</button>
+        </div>
+      </form>
+
+      <div id="ev-result" class="admin-result" hidden>
+        <h3>生成结果</h3>
+        <p id="ev-path-note" class="ev-path-note"></p>
+        <textarea id="ev-json" rows="10" readonly></textarea>
+        <div class="admin-field" style="display:flex;gap:10px;">
+          <button type="button" class="admin-btn primary" id="btn-copy">复制 JSON</button>
+          <button type="button" class="admin-btn" id="btn-download">下载 JSON</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div id="footer-text"></div>
+      <a id="admin-link" href="admin.html"></a>
+    </div>
+  </footer>
+
+  <script src="js/common.js?v=20261001am"></script>
+  <script src="js/new-event.js?v=20261001am"></script>
+</body>
+</html>

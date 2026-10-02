@@ -138,9 +138,98 @@ a:hover { text-decoration: underline; }
 .glass-btn.primary:hover { background: rgba(110, 143, 78, .9); }
 
 /* ===== 页面标题 ===== */
-.page-head { padding: 44px 0 10px; }
+.page-head { padding: 44px 0 10px; position: relative; }
 .page-head h1 { font-size: 2rem; }
 .page-head p { color: var(--muted); }
+
+/* 时间线右上角：添加事件按钮 */
+.add-event-btn {
+  position: absolute;
+  top: 44px; right: 0;
+  padding: 9px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  font-size: .88rem;
+  transition: background .15s ease, color .15s ease;
+}
+.add-event-btn:hover { background: var(--accent); color: #fff; text-decoration: none; }
+
+/* ===== 添加事件页 ===== */
+.page-title { font-size: 1.7rem; margin: 18px 0 6px; }
+.page-desc { color: var(--muted); font-size: .9rem; margin-bottom: 22px; }
+.admin-form { display: flex; flex-direction: column; gap: 16px; }
+.admin-field { display: flex; flex-direction: column; gap: 7px; }
+.admin-field > label { font-size: .85rem; color: var(--muted); letter-spacing: .04em; }
+.admin-field input[type="text"],
+.admin-field select,
+.admin-field textarea {
+  padding: 10px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--glass-card);
+  color: var(--ink);
+  font-size: .92rem;
+  font-family: inherit;
+}
+.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.admin-btn {
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--glass);
+  color: var(--ink);
+  font-size: .88rem;
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.admin-btn:hover { border-color: var(--accent); color: var(--accent); }
+.admin-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.admin-btn.primary:hover { filter: brightness(1.08); color: #fff; }
+.admin-btn.small { padding: 5px 13px; font-size: .8rem; }
+.admin-btn.danger:hover { border-color: #c96; color: #c96; }
+.admin-checkgroup { display: flex; flex-wrap: wrap; gap: 10px; }
+.admin-tagcat {
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 14px; min-width: 180px;
+}
+.admin-tagcat-name { display: block; font-size: .78rem; color: var(--muted); margin-bottom: 7px; }
+.admin-tagcheck { display: block; font-size: .86rem; margin: 3px 0; cursor: pointer; }
+.admin-tagcheck input { margin-right: 6px; accent-color: var(--accent); }
+.admin-lines { display: flex; flex-direction: column; gap: 8px; }
+.admin-line { display: flex; align-items: center; gap: 8px; }
+.admin-line .line-val { flex: 1; }
+.admin-line .line-file { flex: 1; color: var(--ink); font-size: .84rem; }
+.admin-line .line-path {
+  flex: 1; font-size: .76rem; color: var(--accent);
+  word-break: break-all;
+  background: var(--glass);
+  border-radius: 6px; padding: 6px 10px;
+}
+.admin-line button { flex: none; }
+.admin-result {
+  margin-top: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 18px 20px;
+  background: var(--glass-card);
+}
+.admin-result h3 { margin: 0 0 10px; }
+.ev-path-note { font-size: .82rem; color: var(--ink); white-space: pre-wrap; line-height: 1.8; margin-bottom: 10px; }
+.admin-result textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: Consolas, monospace;
+  font-size: .8rem;
+  line-height: 1.6;
+}
 
 /* ===== 时间线页 ===== */
 .tl-bar {
