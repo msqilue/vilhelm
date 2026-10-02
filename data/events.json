@@ -266,7 +266,9 @@
         "assets/images/moyi/main/咫尺远近/咫尺远近-20200730-1.jpg",
         "assets/images/moyi/main/咫尺远近/咫尺远近-20200730-2.jpg"
       ],
-      "audios": [],
+      "audios": [
+        "assets/audio/moyi/main/咫尺远近/咫尺远近-20200730-0.mp3"
+      ],
       "quotes": [],
       "characters": [
         "莫弈"
