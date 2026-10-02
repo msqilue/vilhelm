@@ -48,7 +48,7 @@ function renderFilter() {
   if (!DATA.categories.length) { el.innerHTML = ''; return; }
   el.innerHTML = DATA.categories.map(c => {
     const tags = c.tags.map(t =>
-      `<span class="tag-chip ${state.tags.has(t.id) ? 'on' : ''}" data-tag="${t.id}" style="${t.color ? 'border-color:' + t.color + ';' + (state.tags.has(t.id) ? 'color:' + t.color : '') : ''}">${escapeHtml(t.name)}</span>`
+      `<span class="tag-chip ${state.tags.has(t.id) ? 'on' : ''}" data-tag="${t.id}" style="${t.color && !state.tags.has(t.id) ? 'border-color:' + t.color + ';' : ''}">${escapeHtml(t.name)}</span>`
     ).join('');
     return `<div class="filter-group"><h4>${escapeHtml(c.name)}</h4><div class="filter-tags">${tags}</div></div>`;
   }).join('') +
