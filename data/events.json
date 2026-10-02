@@ -460,15 +460,15 @@
       "createdAt": "2026-10-02T10:05:01.000Z"
     },
     {
-      "timelineId": "growth",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
       "images": [
-        "assets/images/moyi/growth/囚己/囚己-20260715-1.jpg",
-        "assets/images/moyi/growth/囚己/囚己-20260715-2.jpg"
+        "assets/images/moyi/activity/囚己/囚己-20260715-1.jpg",
+        "assets/images/moyi/activity/囚己/囚己-20260715-2.jpg"
       ],
       "audios": [
-        "assets/audio/moyi/growth/囚己/囚己-20260715-0.mp3"
+        "assets/audio/moyi/activity/囚己/囚己-20260715-0.mp3"
       ],
       "characters": [
         "莫弈"
@@ -476,7 +476,7 @@
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "id": "growth-囚己-1",
+      "id": "activity-囚己-1",
       "title": "囚己",
       "subtitle": "何人生还",
       "date": "2026.7.15",
