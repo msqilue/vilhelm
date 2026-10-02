@@ -316,14 +316,14 @@
       "subtitle": "约定之日",
       "content": "“无论前方光辉无尽还是永夜昏沉，只要有你在，我便能一直走下去。”",
       "stage": "",
-      "date": "2022.6.30",
+      "date": "2023.7.1",
       "order": 0,
       "images": [
-        "assets/images/moyi/growth/溺于烬中/溺于烬中-20220630-1.jpg",
-        "assets/images/moyi/growth/溺于烬中/溺于烬中-20220630-2.jpg"
+        "assets/images/moyi/growth/溺于烬中/溺于烬中-20230701-1.jpg",
+        "assets/images/moyi/growth/溺于烬中/溺于烬中-20230701-2.jpg"
       ],
       "audios": [
-        "assets/audio/moyi/growth/溺于烬中/溺于烬中-20220630-0.mp3"
+        "assets/audio/moyi/growth/溺于烬中/溺于烬中-20230701-0.mp3"
       ],
       "quotes": [
         "等这一生迎来终结，就去寻找下一个百年。再次对你一见钟情，留在你身边。",
@@ -338,7 +338,8 @@
       "importance": "",
       "bgImage": "",
       "tags": [
-        "t16"
+        "t16",
+        "t22"
       ],
       "createdAt": "2026-10-02T09:15:00.000Z"
     }
