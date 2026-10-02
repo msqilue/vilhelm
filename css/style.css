@@ -194,7 +194,8 @@ a:hover { text-decoration: underline; }
 .admin-checkgroup { display: flex; flex-wrap: wrap; gap: 10px; }
 .admin-tagcat {
   border: 1px solid var(--line); border-radius: 8px;
-  padding: 10px 14px; min-width: 180px;
+  padding: 10px 14px;
+  flex: 1 1 0; min-width: 0;
 }
 .admin-tagcat-name { display: block; font-size: .78rem; color: var(--muted); margin-bottom: 7px; }
 .admin-tagcheck { display: block; font-size: .86rem; margin: 3px 0; cursor: pointer; }
@@ -1064,3 +1065,5 @@ a:hover { text-decoration: underline; }
   background-color: var(--bg-accent, #1a1722);
   color: var(--ink);
 }
+/* 添加事件页：正文单行高度（覆盖管理端多行 min-height） */
+.admin-field textarea { min-height: 40px; }
