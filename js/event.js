@@ -145,6 +145,7 @@ function renderEvent(ev) {
 
   document.getElementById('ev-meta').innerHTML = `
     ${tl ? `<span class="ev-badge ev-badge-solid">${escapeHtml(tl.name)}</span>` : ''}
+    ${mainTagOf(ev) ? `<span class="ev-badge" style="color:${mainTagOf(ev).color};border-color:${mainTagOf(ev).color}">${escapeHtml(mainTagOf(ev).name)}</span>` : ''}
     ${ev.stage ? `<span class="ev-badge">${escapeHtml(ev.stage)}</span>` : ''}
     ${ev.date ? `<span class="ev-badge">${escapeHtml(ev.date)}</span>` : ''}
     ${imp !== 'normal' ? `<span class="ev-badge ${imp === 'milestone' ? 'ev-badge-gold' : 'ev-badge-soft'}">${importanceLabel(imp)}</span>` : ''}
