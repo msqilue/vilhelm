@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>添加事件 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261001au">
+  <link rel="stylesheet" href="css/style.css?v=20261001aw">
 </head>
 <body>
   <header class="site-header">
@@ -20,7 +20,7 @@
       <h2 class="page-title">添加事件</h2>
       <p class="page-desc">填写表单后点「生成事件 JSON」，复制或下载后发给我即可入库。素材文件请放到页面提示的目录。</p>
 
-      <form id="ev-form" class="admin-form" autocomplete="off">
+      <form id="ev-form" class="admin-form ne-form" autocomplete="off">
         <div class="admin-field">
           <label>事件名称（必填）</label>
           <input id="f-title" type="text" placeholder="如：挚礼" required>
@@ -47,27 +47,29 @@
         </div>
 
         <div class="admin-field">
-          <label>引用（可添加多条）</label>
-          <div id="f-quotes" class="admin-lines"></div>
-          <button type="button" class="admin-btn small" data-add="quote">+ 添加引用</button>
-        </div>
-
-        <div class="admin-field">
           <label>事件语音（序号为 0 的那个 · 自动播放语音）</label>
           <div id="f-autoaudio" class="admin-lines"></div>
           <button type="button" class="admin-btn small" data-add="autoaudio">+ 选择语音文件</button>
         </div>
 
         <div class="admin-field">
-          <label>语音（可添加多个）</label>
-          <div id="f-audios" class="admin-lines"></div>
-          <button type="button" class="admin-btn small" data-add="audio">+ 选择语音文件</button>
-        </div>
-
-        <div class="admin-field">
-          <label>图片（可添加多条）</label>
-          <div id="f-images" class="admin-lines"></div>
-          <button type="button" class="admin-btn small" data-add="image">+ 选择图片文件</button>
+          <div class="admin-multis">
+            <div class="admin-multi-col">
+              <h4>引用（可添加多条）</h4>
+              <div id="f-quotes" class="admin-lines"></div>
+              <button type="button" class="admin-btn small" data-add="quote">+ 添加引用</button>
+            </div>
+            <div class="admin-multi-col">
+              <h4>语音（可添加多个）</h4>
+              <div id="f-audios" class="admin-lines"></div>
+              <button type="button" class="admin-btn small" data-add="audio">+ 选择语音文件</button>
+            </div>
+            <div class="admin-multi-col">
+              <h4>图片（可添加多条）</h4>
+              <div id="f-images" class="admin-lines"></div>
+              <button type="button" class="admin-btn small" data-add="image">+ 选择图片文件</button>
+            </div>
+          </div>
         </div>
 
         <div class="admin-field">
@@ -94,7 +96,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=20261001au"></script>
-  <script src="js/new-event.js?v=20261001au"></script>
+  <script src="js/common.js?v=20261001aw"></script>
+  <script src="js/new-event.js?v=20261001aw"></script>
 </body>
 </html>

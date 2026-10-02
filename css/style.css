@@ -1067,3 +1067,16 @@ a:hover { text-decoration: underline; }
 }
 /* 添加事件页：正文单行高度（覆盖管理端多行 min-height） */
 .admin-field textarea { min-height: 40px; }
+
+/* 添加事件页表单：整列排列（覆盖管理端网格布局） */
+.ne-form { display: flex; flex-direction: column; gap: 16px; }
+
+/* 可多条素材区：引用 / 语音 / 图片 三列横排 */
+.admin-multis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.admin-multi-col {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px; background: var(--glass-card);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.admin-multi-col h4 { margin: 0; font-size: .84rem; color: var(--muted); letter-spacing: .03em; }
+.admin-multi-col .admin-lines { flex: 1; }
