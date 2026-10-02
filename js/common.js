@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION = '20261001bq';
+const DATA_VERSION = '20261001br';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -79,6 +79,12 @@ function tagById(id) {
 
 function eventTags(event) {
   return (event.tags || []).map(tagById).filter(Boolean);
+}
+
+function mainTagOf(event) {
+  const id = event.mainTag;
+  if (!id) return null;
+  return tagById(id) || null;
 }
 
 function importanceLabel(v) {

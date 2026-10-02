@@ -112,6 +112,7 @@ function renderTimeline() {
           <div class="card-body">
             <div class="event-meta">
               ${ev.subtitle ? `<span class="event-subtitle">『${escapeHtml(ev.subtitle)}』</span>` : (tl ? `<span>${escapeHtml(tl.name)}</span>` : '')}
+              ${mainTagOf(ev) ? `<span class="main-tag" style="color:${mainTagOf(ev).color};border-color:${mainTagOf(ev).color}">${escapeHtml(mainTagOf(ev).name)}</span>` : ''}
               ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
               ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
               ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
