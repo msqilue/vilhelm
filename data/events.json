@@ -23,28 +23,6 @@
       "createdAt": "2026-09-30T10:00:00+08:00"
     },
     {
-      "id": "growth-羁绊-1",
-      "timelineId": "growth",
-      "title": "示例事件：羁绊加深",
-      "content": "这是一条示例事件，用于演示时间线展示效果。\n正式内容请通过管理端录入。",
-      "stage": "",
-      "date": "",
-      "order": 1,
-      "images": [],
-      "audios": [],
-      "quote": "",
-      "characters": [
-        "莫弈"
-      ],
-      "recordDate": "",
-      "importance": "key",
-      "bgImage": "",
-      "tags": [
-        "t10"
-      ],
-      "createdAt": "2026-09-30T10:05:00+08:00"
-    },
-    {
       "id": "growth-生日-1",
       "timelineId": "growth",
       "title": "挚礼",
