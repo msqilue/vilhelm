@@ -17,6 +17,12 @@
       "name": "活动/节日线",
       "description": "活动与节日剧情",
       "order": 3
+    },
+    {
+      "id": "uncategorized",
+      "name": "未分类",
+      "description": "暂未归入其他时间线的事件",
+      "order": 4
     }
   ]
 }
