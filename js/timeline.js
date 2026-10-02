@@ -90,6 +90,14 @@ function visibleEvents() {
   return sortEvents(list);
 }
 
+/* 跳转详情页时携带当前筛选（时间线 + 标签），供事件页按筛选后的顺序导航 */
+function detailHref(id) {
+  let url = 'event.html?id=' + encodeURIComponent(id);
+  if (state.timeline && state.timeline !== 'all') url += '&tl=' + encodeURIComponent(state.timeline);
+  if (state.tags.size) url += '&tags=' + [...state.tags].join(',');
+  return url;
+}
+
 /* 时间轴 A：左右交替式渲染（点击卡片 → 跳转独立详情页） */
 function renderTimeline() {
   const el = document.getElementById('timeline');
@@ -107,7 +115,7 @@ function renderTimeline() {
     return `
       <div class="tl-row ${side}" data-id="${ev.id}">
         <span class="node importance-${imp}"></span>
-        <article class="event-card tl-card" data-href="event.html?id=${encodeURIComponent(ev.id)}">
+        <article class="event-card tl-card" data-href="${detailHref(ev.id)}">
           ${thumb ? `<div class="card-media"><img src="${escapeHtml(thumb)}" alt="" loading="lazy"></div>` : ''}
           <div class="card-body">
             <div class="event-meta">

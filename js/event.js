@@ -201,16 +201,43 @@ function renderEvent(ev) {
     `<button class="like-btn" data-id="${ev.id}">点赞 ♡</button>${date}`;
 }
 
-/* 上一条 / 下一条：同时间线内按时间线排序（与时间线页一致：日期倒序，最新在上） */
+/* 上一条 / 下一条：按时间线页的当前筛选（时间线 + 标签）顺序导航；
+   未携带筛选参数时退化为同时间线内全量排序（与时间线页一致：日期倒序，最新在上） */
+function navScope(ev) {
+  const params = new URLSearchParams(location.search);
+  const navTl = params.get('tl');
+  const navTags = (params.get('tags') || '').split(',').filter(Boolean);
+  let list = DATA.events.filter(e => e.timelineId === ev.timelineId);
+  if (navTl && navTl !== 'all' && navTl !== ev.timelineId) list = [];
+  if (navTags.length) {
+    // 与时间线页筛选规则一致：跨类别 AND、同类别 OR
+    list = list.filter(e => {
+      for (const c of DATA.categories) {
+        const selected = navTags.filter(tid => (c.tags || []).some(t => t.id === tid));
+        if (selected.length && !selected.some(tid => (e.tags || []).includes(tid))) return false;
+      }
+      return true;
+    });
+  }
+  return { ordered: sortEvents(list), navTl, navTags };
+}
+
 function renderNav(ev) {
   const el = document.getElementById('ev-nav');
-  const ordered = sortEvents(DATA.events.filter(e => e.timelineId === ev.timelineId));
+  const { ordered, navTl, navTags } = navScope(ev);
   const idx = ordered.findIndex(e => e.id === ev.id);
   const prev = idx > 0 ? ordered[idx - 1] : null;        // 时间线上方：更新的
   const next = (idx >= 0 && idx + 1 < ordered.length) ? ordered[idx + 1] : null; // 时间线下方：更早的
 
+  const navHref = (id) => {
+    let url = 'event.html?id=' + encodeURIComponent(id);
+    if (navTl && navTl !== 'all') url += '&tl=' + encodeURIComponent(navTl);
+    if (navTags.length) url += '&tags=' + navTags.join(',');
+    return url;
+  };
+
   let html = '';
-  if (prev) html += `<a class="ev-nav-card" href="event.html?id=${encodeURIComponent(prev.id)}"><span class="ev-nav-arrow">↑</span><span><em>上一条</em>${escapeHtml(prev.title)}</span></a>`;
-  if (next) html += `<a class="ev-nav-card" href="event.html?id=${encodeURIComponent(next.id)}"><span class="ev-nav-arrow">↓</span><span><em>下一条</em>${escapeHtml(next.title)}</span></a>`;
-  el.innerHTML = html || '<p class="ev-nav-empty">这条时间线目前只有这一个事件</p>';
+  if (prev) html += `<a class="ev-nav-card" href="${navHref(prev.id)}"><span class="ev-nav-arrow">↑</span><span><em>上一条</em>${escapeHtml(prev.title)}</span></a>`;
+  if (next) html += `<a class="ev-nav-card" href="${navHref(next.id)}"><span class="ev-nav-arrow">↓</span><span><em>下一条</em>${escapeHtml(next.title)}</span></a>`;
+  el.innerHTML = html || '<p class="ev-nav-empty">当前筛选下没有其他事件</p>';
 }
