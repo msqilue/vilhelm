@@ -200,15 +200,13 @@ function renderEvent(ev) {
     `<button class="like-btn" data-id="${ev.id}">点赞 ♡</button>${date}`;
 }
 
-/* 上一条 / 下一条：同时间线内按剧情顺序（倒序展示） */
+/* 上一条 / 下一条：同时间线内按时间线排序（与时间线页一致：日期倒序，最新在上） */
 function renderNav(ev) {
   const el = document.getElementById('ev-nav');
-  const siblings = DATA.events
-    .filter(e => e.timelineId === ev.timelineId && e.id !== ev.id)
-    .sort((a, b) => (b.order - a.order) || (a.createdAt < b.createdAt ? 1 : -1));
-  const idx = siblings.findIndex(e => e.order <= ev.order);
-  const prev = idx >= 0 ? siblings[idx] : null;      // 剧情上更早（展示在其上方）
-  const next = idx + 1 < siblings.length ? siblings[idx + 1] : null; // 剧情上更晚
+  const ordered = sortEvents(DATA.events.filter(e => e.timelineId === ev.timelineId));
+  const idx = ordered.findIndex(e => e.id === ev.id);
+  const prev = idx > 0 ? ordered[idx - 1] : null;        // 时间线上方：更新的
+  const next = (idx >= 0 && idx + 1 < ordered.length) ? ordered[idx + 1] : null; // 时间线下方：更早的
 
   let html = '';
   if (prev) html += `<a class="ev-nav-card" href="event.html?id=${encodeURIComponent(prev.id)}"><span class="ev-nav-arrow">↑</span><span><em>上一条</em>${escapeHtml(prev.title)}</span></a>`;
