@@ -1,10 +1,20 @@
 /* ===== 添加事件页面：人工填写 → 生成标准事件 JSON ===== */
 initPage('new-event.html').then(() => {
-  /* 时间线下拉 */
-  const tlSel = document.getElementById('f-timeline');
-  tlSel.innerHTML = (DATA.timelines || []).map(t =>
-    `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`).join('');
-  if (!tlSel.value && tlSel.options.length) tlSel.selectedIndex = 0;
+  /* 时间线单选卡片 */
+  const tlBox = document.getElementById('f-timeline');
+  tlBox.innerHTML = (DATA.timelines || []).map(t =>
+    `<label class="admin-tl-opt" data-tl="${escapeHtml(t.id)}">
+      <input type="radio" name="tl" value="${escapeHtml(t.id)}">
+      <span class="admin-tl-name">${escapeHtml(t.name)}</span>
+      ${t.desc ? `<span class="admin-tl-desc">${escapeHtml(t.desc)}</span>` : ''}
+    </label>`).join('');
+  /* 默认选中个人成长线 */
+  const growth = tlBox.querySelector('input[value="growth"]');
+  (growth || tlBox.querySelector('input')).checked = true;
+  function currentTimeline() {
+    const checked = tlBox.querySelector('input:checked');
+    return checked ? checked.value : (tlBox.querySelector('input') ? tlBox.querySelector('input').value : '');
+  }
 
   /* 标签多选（按分类分组） */
   const tagBox = document.getElementById('f-tags');
@@ -63,7 +73,7 @@ initPage('new-event.html').then(() => {
     const title = document.getElementById('f-title').value.trim();
     const date = document.getElementById('f-date').value.trim();
     if (!title || !date) { pathEl.textContent = '（请先填写事件名称与日期）'; return; }
-    const tl = document.getElementById('f-timeline').value;
+    const tl = currentTimeline();
     const dir = `assets/${kind === 'image' ? 'images' : 'audio'}/moyi/${tl}/${title}/`;
     const ext = (file.files[0].name.split('.').pop() || '').toLowerCase();
     const d = normalizeDate(date);
@@ -92,7 +102,7 @@ initPage('new-event.html').then(() => {
     const title = document.getElementById('f-title').value.trim();
     if (!title) { alert('请填写事件名称'); return; }
     const subtitle = document.getElementById('f-subtitle').value.trim();
-    const timelineId = document.getElementById('f-timeline').value;
+    const timelineId = currentTimeline();
     const date = document.getElementById('f-date').value.trim();
     const content = document.getElementById('f-content').value.trim();
     const tags = [...document.querySelectorAll('#f-tags input:checked')].map(i => i.value);
