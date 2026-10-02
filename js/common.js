@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION = '20261001ax';
+const DATA_VERSION = '20261001ay';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -23,12 +23,16 @@ async function loadData() {
   DATA.timelines = t.timelines || [];
   DATA.categories = g.categories || [];
   DATA.events = e.events || [];
-  /* 合并浏览器本地「待入库事件」（添加事件页直接添加的），带 pending 标记 */
+  /* 合并浏览器本地「待入库事件」（添加事件页直接添加的），带 pending 标记；
+     与正式数据同 id 时跳过（正式版优先），避免重复显示 */
   try {
     const pend = JSON.parse(localStorage.getItem('vilhelm:pendingEvents') || '[]');
     if (Array.isArray(pend) && pend.length) {
+      const ids = new Set(DATA.events.map(e => e.id));
       DATA.events = DATA.events.concat(
-        pend.map(p => p.event).filter(Boolean).map(ev => Object.assign({ pending: true }, ev))
+        pend.map(p => p.event).filter(Boolean)
+          .filter(ev => !ids.has(ev.id))
+          .map(ev => Object.assign({ pending: true }, ev))
       );
     }
   } catch (err) { /* 本地存储不可用则忽略 */ }

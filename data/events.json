@@ -252,6 +252,34 @@
         "t14"
       ],
       "createdAt": "2026-10-01T16:50:00+08:00"
+    },
+    {
+      "id": "main-咫尺远近-1",
+      "timelineId": "main",
+      "title": "咫尺远近",
+      "subtitle": "",
+      "content": "“一道伤疤换你永远记住我，值得。”",
+      "stage": "",
+      "date": "2020.7.30",
+      "order": 0,
+      "images": [
+        "assets/images/moyi/main/咫尺远近/咫尺远近-20200730-1.jpg",
+        "assets/images/moyi/main/咫尺远近/咫尺远近-20200730-2.jpg"
+      ],
+      "audios": [],
+      "quotes": [],
+      "characters": [
+        "莫弈"
+      ],
+      "recordDate": "",
+      "importance": "",
+      "bgImage": "",
+      "tags": [
+        "t1",
+        "t14",
+        "t10"
+      ],
+      "createdAt": "2026-10-02T07:35:21.178Z"
     }
   ]
 }
