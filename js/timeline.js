@@ -1,6 +1,8 @@
 /* ===== 时间线页逻辑 ===== */
+// 记住上次选中的时间线，从事件页返回时恢复（localStorage）
+const savedTl = localStorage.getItem('vilhelm:tlFilter');
 const state = {
-  timeline: 'all',      // 'all' 或时间线 id
+  timeline: savedTl || 'all',      // 'all' 或时间线 id
   tags: new Set(),      // 选中的标签 id（跨类别 AND、同类别 OR）
   keyword: ''
 };
@@ -23,6 +25,7 @@ function renderSwitch() {
   el.querySelectorAll('.chip').forEach(chip => {
     chip.addEventListener('click', () => {
       state.timeline = chip.dataset.tl;
+      localStorage.setItem('vilhelm:tlFilter', state.timeline);
       renderAll();
     });
   });
