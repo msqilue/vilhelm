@@ -1048,20 +1048,19 @@ a:hover { text-decoration: underline; }
   .search-box { min-width: 0; }
 }
 
-/* 下拉框适配站点主题（置于文件末尾保证优先）：去原生外观 + 莫弈绿箭头 + 暗色展开面板 */
+/* 下拉框适配站点主题（置于文件末尾保证优先）：去原生外观 + 莫弈绿箭头 */
 .admin-field select {
   appearance: none;
   -webkit-appearance: none;
-  color-scheme: dark;
   cursor: pointer;
   padding-right: 38px;
-  background-color: transparent;
+  background-color: transparent !important;
   background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%23A8B4A0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 14px;
 }
 .admin-field select option {
-  background-color: var(--page-bg, #12101a);
-  color: var(--ink);
+  background-color: #1a1722;
+  color: #f5f1ea;
 }
