@@ -915,20 +915,25 @@
       "createdAt": "2026-10-02T12:00:00.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/浮香黯光/浮香黯光-20221208-1.jpg",
+        "assets/images/moyi/activity/浮香黯光/浮香黯光-20221208-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/浮香黯光/浮香黯光-20221208-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“嗯······我也会永远记得今夜的你。”",
       "mainTag": "",
-      "id": "uncategorized-浮香黯光-1",
+      "id": "activity-浮香黯光-1",
       "title": "浮香黯光",
       "subtitle": "凝香思弈",
       "date": "2022.12.8",
