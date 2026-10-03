@@ -1383,8 +1383,13 @@
       "timelineId": "uncategorized",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/uncategorized/离念/离念-20231116-1.jpg",
+        "assets/images/moyi/uncategorized/离念/离念-20231116-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/uncategorized/离念/离念-20231116-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
