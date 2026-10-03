@@ -737,20 +737,25 @@
       "createdAt": "2026-10-02T10:50:02.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/弦光掠影/弦光掠影-20211221-1.jpg",
+        "assets/images/moyi/activity/弦光掠影/弦光掠影-20211221-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/弦光掠影/弦光掠影-20211221-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“有你在一边看着，我一定会比平时发挥得更好。”",
       "mainTag": "",
-      "id": "uncategorized-弦光掠影-1",
+      "id": "activity-弦光掠影-1",
       "title": "弦光掠影",
       "subtitle": "雪色弥境",
       "date": "2021.12.21",
