@@ -1231,7 +1231,7 @@
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "“不看看我吗？明明我离你更近。”",
+      "content": "“窥探人心总是会让人充满兴趣，不是吗？”",
       "mainTag": "",
       "id": "activity-是夜有晴-1",
       "title": "是夜有晴",
@@ -1306,20 +1306,25 @@
       "createdAt": "2026-10-02T13:00:08.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/迷津/迷津-20260528-1.jpg",
+        "assets/images/moyi/activity/迷津/迷津-20260528-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/迷津/迷津-20260528-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“不看看我吗？明明我离你更近。”",
       "mainTag": "",
-      "id": "uncategorized-迷津-1",
+      "id": "activity-迷津-1",
       "title": "迷津",
       "subtitle": "恋时旅纪·莫弈篇",
       "date": "2026.5.28",
