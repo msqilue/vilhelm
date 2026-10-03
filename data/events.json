@@ -242,8 +242,8 @@
       "mainTag": "t11"
     },
     {
-      "id": "main-咫尺远近-1",
-      "timelineId": "main",
+      "id": "activity-咫尺远近-1",
+      "timelineId": "activity",
       "title": "咫尺远近",
       "subtitle": "",
       "content": "“一道伤疤换你永远记住我，值得。”",
@@ -251,11 +251,11 @@
       "date": "2020.7.30",
       "order": 0,
       "images": [
-        "assets/images/moyi/main/咫尺远近/咫尺远近-20200730-1.jpg",
-        "assets/images/moyi/main/咫尺远近/咫尺远近-20200730-2.jpg"
+        "assets/images/moyi/activity/咫尺远近/咫尺远近-20200730-1.jpg",
+        "assets/images/moyi/activity/咫尺远近/咫尺远近-20200730-2.jpg"
       ],
       "audios": [
-        "assets/audio/moyi/main/咫尺远近/咫尺远近-20200730-0.mp3"
+        "assets/audio/moyi/activity/咫尺远近/咫尺远近-20200730-0.mp3"
       ],
       "quotes": [
         "别怕，我只是想看清你的心。",
