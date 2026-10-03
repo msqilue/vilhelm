@@ -2,7 +2,7 @@
 
 《未定事件簿》角色 **莫弈** 的个人成长时间线记录与展示站（粉丝向非官方作品）。
 
-纯前端静态站点：无后端、无数据库，内容以 JSON 数据文件维护；托管方案待定（Gitee Pages 已下线）。
+纯前端静态站点：无后端、无数据库，内容以 JSON 数据文件维护；已部署至 GitHub Pages（https://msqilue.github.io/vilhelm/）。
 
 ## 功能
 
@@ -85,15 +85,12 @@ python -m http.server 8000
 
 ## 部署（静态托管）
 
-> 注：原计划使用 Gitee Pages，该服务已下线（Gitee 官方确认暂无上线计划），托管方案待定。候选：自有服务器 Nginx / Cloudflare Pages / 腾讯云 CloudBase / 阿里云 OSS。
+> 托管方案已定：**GitHub Pages**（免费，公开仓库自动构建）。原计划使用的 Gitee Pages 已下线（Gitee 官方确认暂无上线计划）。
 
-
-
-* 代码托管：Gitee 仓库 `vilhelm`（公开，master 分支）已就绪。
-
+* 在线访问：**https://msqilue.github.io/vilhelm/**
+* 代码托管：Gitee 仓库 `vilhelm`（公开，master 分支）+ GitHub 仓库 `vilhelm`（公开，master 分支）双远程。
 * 本地预览：`python -m http.server 8000` → `http://localhost:8000/`。
-
-* 每次更新数据 / 素材：提交推送 Gitee → 按所选托管平台的规则更新部署。
+* 每次更新数据 / 素材：提交推送双远程（`git push origin master && git push github master`），GitHub Pages 约 1–2 分钟自动重新构建上线。
 
 ## 版权声明
 
