@@ -33,7 +33,7 @@ initPage('profile.html').then(async () => {
 
   /* 性格特征 */
   document.getElementById('pf-traits').innerHTML = (c.traits || []).map(t =>
-    `<span class="tag-chip on" style="border-color:var(--accent);color:var(--accent)">${escapeHtml(t)}</span>`
+    `<span class="tag-chip ev-tag" style="border-color:var(--accent);color:var(--accent)">${escapeHtml(t)}</span>`
   ).join('');
 
   /* 经典片段 */
