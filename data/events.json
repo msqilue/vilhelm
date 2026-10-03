@@ -593,8 +593,13 @@
       "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/霓光旋律/霓光旋律-20210521-1.jpg",
+        "assets/images/moyi/activity/霓光旋律/霓光旋律-20210521-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/霓光旋律/霓光旋律-20210521-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
