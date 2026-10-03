@@ -1090,3 +1090,86 @@ a:hover { text-decoration: underline; }
 }
 .admin-multi-col h4 { margin: 0; font-size: .84rem; color: var(--muted); letter-spacing: .03em; }
 .admin-multi-col .admin-lines { flex: 1; }
+
+/* 更新日志页 */
+.changelog {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 0 40px;
+}
+
+.changelog-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  transition: border-color .2s;
+}
+
+.changelog-item:hover {
+  border-color: var(--accent);
+}
+
+.changelog-ver {
+  flex: 0 0 auto;
+  min-width: 104px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  padding-top: 2px;
+}
+
+.changelog-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.changelog-date {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--panel2, rgba(255,255,255,.06));
+  border-radius: 20px;
+  padding: 1px 10px;
+  margin-bottom: 6px;
+}
+
+.changelog-item ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.changelog-item li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+  padding-left: 14px;
+  position: relative;
+}
+
+.changelog-item li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .72em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: .7;
+}
+
+.changelog-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 60px 0;
+}

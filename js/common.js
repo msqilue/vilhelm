@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION = '20261001db';
+const DATA_VERSION = '20261001dc';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -316,6 +316,7 @@ function renderHeader(active) {
     ['profile.html', '人物'],
     ['timeline.html', '时间线'],
     ['stats.html', '统计'],
+    ['changelog.html', '日志'],
     ['about.html', '关于']
   ];
   nav.innerHTML = pages.map(([href, label]) =>
