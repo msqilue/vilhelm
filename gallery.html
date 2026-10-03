@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>典藏 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261002ao">
+  <link rel="stylesheet" href="css/style.css?v=20261002ap">
   <style>
     /* ===== 典藏栏目组件样式 ===== */
     .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
@@ -134,8 +134,11 @@
 
     <div class="gallery-head">
       <div class="gallery-tabs">
-        <span class="chip small on" data-sub="sr">SR</span>
+        <span class="chip small" data-sub="sss">SSS</span>
+        <span class="chip small on" data-sub="ssr">SSR</span>
+        <span class="chip small" data-sub="sr">SR</span>
         <span class="chip small" data-sub="mr">MR</span>
+        <span class="chip small" data-sub="r">R</span>
       </div>
       <div class="view-switch">
         <span class="chip small on" data-view="card">卡片视图</span>
@@ -195,12 +198,12 @@
     </div>
   </div>
 
-  <script src="js/common.js?v=20261002ao"></script>
+  <script src="js/common.js?v=20261002ap"></script>
   <script>
     /* ===== 典藏页面：SR/MR 卡面与语音 ===== */
     let CARDS = [];
     const PAGE_SIZE = 10;
-    const state = { sub: 'sr', view: 'card', mode: 'order', playingIdx: -1, page: 1, queue: [], dragging: false };
+    const state = { sub: 'ssr', view: 'card', mode: 'order', playingIdx: -1, page: 1, queue: [], dragging: false };
     const audio = new Audio();
     audio.loop = false;
     const mp = document.getElementById('mini-player');

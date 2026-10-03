@@ -122,3 +122,4 @@ dist
 
 # 本机部署方案：仅本地参考，不推送远端
 deploy/
+gallery-preview.html

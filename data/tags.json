@@ -108,6 +108,37 @@
           "color": "#C2A878"
         }
       ]
+    },
+    {
+      "id": "rarity",
+      "name": "稀有度",
+      "tags": [
+        {
+          "id": "t25",
+          "name": "SSS",
+          "color": "#D4A5E0"
+        },
+        {
+          "id": "t26",
+          "name": "SSR",
+          "color": "#D9C6A8"
+        },
+        {
+          "id": "t27",
+          "name": "SR",
+          "color": "#A8C4D9"
+        },
+        {
+          "id": "t28",
+          "name": "MR",
+          "color": "#C4A8D9"
+        },
+        {
+          "id": "t29",
+          "name": "R",
+          "color": "#B0B0B0"
+        }
+      ]
     }
   ]
 }
