@@ -1274,20 +1274,25 @@
       "createdAt": "2026-10-02T13:00:07.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/岁月同鞍/岁月同鞍-20260122-1.jpg",
+        "assets/images/moyi/activity/岁月同鞍/岁月同鞍-20260122-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/岁月同鞍/岁月同鞍-20260122-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“而比起你带给我的幸福，这只是一件无比微小的事。”",
       "mainTag": "",
-      "id": "uncategorized-岁月同鞍-1",
+      "id": "activity-岁月同鞍-1",
       "title": "岁月同鞍",
       "subtitle": "乐动节拍·莫弈篇",
       "date": "2026.1.22",
