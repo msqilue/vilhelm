@@ -1151,20 +1151,25 @@
       "createdAt": "2026-10-02T13:00:03.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/遂愿有灵/遂愿有灵-20241025-1.jpg",
+        "assets/images/moyi/activity/遂愿有灵/遂愿有灵-20241025-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/遂愿有灵/遂愿有灵-20241025-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“是啊，当人们遇到想要拥有的东西的时候，总会不受控制地幻想永恒。”",
       "mainTag": "",
-      "id": "uncategorized-遂愿有灵-1",
+      "id": "activity-遂愿有灵-1",
       "title": "遂愿有灵",
       "subtitle": "彩翎新肴",
       "date": "2024.10.25",
