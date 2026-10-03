@@ -1646,20 +1646,25 @@
       "createdAt": "2026-10-02T13:20:04.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/花间曲/花间曲-20250430-1.jpg",
+        "assets/images/moyi/activity/花间曲/花间曲-20250430-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/花间曲/花间曲-20250430-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“所以······  你愿意和我走吗？”",
       "mainTag": "",
-      "id": "uncategorized-花间曲-1",
+      "id": "activity-花间曲-1",
       "title": "花间曲",
       "subtitle": "少年如你之心动魔咒",
       "date": "2025.4.30",
