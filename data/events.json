@@ -1215,20 +1215,25 @@
       "createdAt": "2026-10-02T13:00:05.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/是夜有晴/是夜有晴-20250523-1.jpg",
+        "assets/images/moyi/activity/是夜有晴/是夜有晴-20250523-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/是夜有晴/是夜有晴-20250523-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“窥探人心总是会让人充满兴趣，不是吗？”",
       "mainTag": "",
-      "id": "uncategorized-是夜有晴-1",
+      "id": "activity-是夜有晴-1",
       "title": "是夜有晴",
       "subtitle": "流光忆彩·莫弈篇",
       "date": "2025.5.23",
