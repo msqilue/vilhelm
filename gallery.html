@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>典藏 · 莫弈·Vilhelm</title>
+  <link rel="stylesheet" href="css/style.css?v=20261002ao">
+  <style>
+    /* ===== 典藏栏目组件样式 ===== */
+    .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
+    .gallery-tabs { display:flex; gap:8px; }
+    .view-switch { display:flex; gap:8px; }
+    .chip.small { font-size:.8rem; padding:5px 14px; }
+    .chip.small.on { background: var(--accent); border-color: var(--accent); color:#fff; }
+    /* 卡片视图 */
+    .card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:16px; }
+    .srmr-card { border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--glass); transition:border-color .2s, transform .2s, box-shadow .2s; }
+    .srmr-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow:0 8px 24px rgba(110,143,78,.15); }
+    .srmr-card.playing { border-color: var(--accent); box-shadow:0 0 0 3px var(--accent-soft), 0 8px 24px rgba(110,143,78,.3); }
+    .card-art { position:relative; aspect-ratio: 3/4; overflow:hidden; }
+    .card-art img { width:100%; height:100%; object-fit:cover; display:block; }
+    .card-art .rarity { position:absolute; top:10px; left:10px; font-size:.72rem; padding:2px 10px; border-radius:999px; background:rgba(20,16,32,.65); color:var(--gold); border:1px solid rgba(201,168,106,.6); letter-spacing:.1em; }
+    .card-play { position:absolute; right:10px; bottom:10px; width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.5); background:rgba(20,16,32,.55); color:#fff; font-size:1.05rem; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter: blur(4px); transition:background .2s, border-color .2s; }
+    .card-play:hover { background: var(--accent); border-color: var(--accent); }
+    .srmr-card.playing .card-play { background: var(--accent); border-color: var(--accent); }
+    .card-info { padding:11px 13px 13px; }
+    .card-name { font-family: Georgia,"Noto Serif SC",serif; font-size: .98rem; color: var(--ink); margin-bottom:2px; }
+    .card-sub { font-size:.74rem; color:var(--muted); margin-bottom:8px; }
+    .card-tags { display:flex; gap:6px; flex-wrap:wrap; }
+    .mini-tag { font-size:.68rem; padding:1px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
+    /* 列表视图 */
+    .list-view { display:none; }
+    .music-list { border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--glass); }
+    .music-row { display:grid; grid-template-columns: 46px 1fr auto auto auto; align-items:center; gap:14px; padding:11px 16px; border-bottom:1px solid var(--line); font-size:.88rem; }
+    .music-row:last-child { border-bottom:none; }
+    .music-row:hover { background: var(--glass-strong); }
+    .music-row.playing { background: var(--accent-soft); }
+    .row-idx { color: var(--muted); font-size:.8rem; text-align:center; }
+    .music-row.playing .row-idx { color: var(--accent); font-weight:600; }
+    .row-name { color: var(--ink); }
+    .music-row.playing .row-name { color: var(--accent-solid); }
+    .row-sub { font-size:.72rem; color: var(--muted); }
+    .row-dur { color: var(--muted); font-size:.8rem; min-width:44px; text-align:right; }
+    .row-play { width:34px; height:34px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.95rem; transition:all .2s; }
+    .row-play:hover { border-color: var(--accent); color: var(--accent); }
+    .music-row.playing .row-play { background: var(--accent); border-color: var(--accent); color:#fff; }
+    /* 播放提示条（顶部） */
+    .now-playing { margin-bottom: 16px; padding: 10px 14px; border-radius: 10px; background: var(--accent-soft); border: 1px solid rgba(110,143,78,.35); font-size: .82rem; color: var(--accent-solid); display: none; }
+    .now-playing.on { display: block; }
+    /* 分页 */
+    .pager { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:24px; flex-wrap:wrap; }
+    .pg-btn, .pg-num { min-width:30px; height:30px; padding:0 10px; border:1px solid var(--line); border-radius:8px; background:transparent; color:var(--muted); font-size:.78rem; cursor:pointer; transition:all .2s; }
+    .pg-btn:hover:not(:disabled), .pg-num:hover { border-color: var(--accent); color: var(--accent); }
+    .pg-btn:disabled { opacity:.35; cursor:default; }
+    .pg-num.on { background: var(--accent); border-color: var(--accent); color:#fff; }
+    .pg-info { font-size:.72rem; color:var(--muted); margin-left:6px; }
+    /* 迷你播放器浮窗（向上撑开：列表区 + 控制条） */
+    .mini-player {
+      position: fixed; right: 20px; bottom: 20px; z-index: 999;
+      display: none; flex-direction: column;
+      min-width: 380px; max-width: 520px;
+      padding: 10px 14px 12px 10px;
+      border: 1px solid rgba(110,143,78,.45); border-radius: 14px;
+      background: rgba(26,22,38,.92); backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      transition: transform .25s ease, opacity .25s ease;
+      opacity: 0; transform: translateY(24px);
+    }
+    .mini-player.show { display: flex; opacity: 1; transform: translateY(0); }
+    .mp-dragbar { position:absolute; top:0; left:0; right:0; height:8px; cursor:grab; border-radius:14px 14px 0 0; }
+    .mp-dragbar:active { cursor:grabbing; }
+    /* 向上撑开的播放列表区 */
+    .mp-pl-wrap { width:100%; max-height:0; overflow:hidden; transition:max-height .3s ease; }
+    .mp-pl-wrap.open { max-height:264px; border-bottom:1px solid var(--line); margin-bottom:10px; }
+    .mp-pl-title { font-size:.72rem; color:var(--muted); padding:2px 6px 8px; display:flex; justify-content:space-between; align-items:center; }
+    .mp-pl-items { overflow-y:auto; max-height:216px; }
+    .mp-pl-item { display:flex; align-items:center; gap:6px; padding:6px 6px; border-radius:8px; font-size:.78rem; color:var(--ink); cursor:pointer; }
+    .mp-pl-item:hover { background:var(--glass-strong); }
+    .mp-pl-item.playing { color: var(--accent); background: var(--accent-soft); }
+    .mp-pl-idx { color:var(--muted); font-size:.68rem; width:16px; flex:none; }
+    .mp-pl-name { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mp-pl-dur { color:var(--muted); font-size:.66rem; flex:none; }
+    .mp-pl-del { width:18px; height:18px; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:.85rem; line-height:1; border-radius:50%; flex:none; }
+    .mp-pl-del:hover { color: var(--gold); background: rgba(255,255,255,.08); }
+    .mp-pl-empty { font-size:.74rem; color:var(--muted); padding:12px 6px; text-align:center; }
+    /* 常驻控制条 */
+    .mp-body { display:flex; align-items:center; gap:10px; width:100%; }
+    .mp-coverwrap { position: relative; flex: none; }
+    .mp-cover { width:52px; height:52px; border-radius:10px; object-fit:cover; border:1px solid var(--line); display:block; }
+    /* 封面正中央按钮：悬停小窗时显示，点击向上撑开/收起播放列表 */
+    .mp-list-tab { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:26px; height:26px; border-radius:50%; border:none; background:rgba(20,17,30,.6); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s, background .2s; }
+    .mini-player:hover .mp-list-tab { opacity:1; }
+    .mp-list-tab:hover { background: rgba(110,143,78,.75); }
+    .mp-list-tab.open { opacity:1; background: rgba(110,143,78,.75); }
+    .tab-ic { width:14px; height:14px; display:block; }
+    .mp-info { flex:1; min-width:0; }
+    .mp-name { font-family: Georgia,"Noto Serif SC",serif; font-size:.9rem; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mp-sub { font-size:.7rem; color:var(--muted); margin-top:2px; }
+    .mp-ctrl { display:flex; align-items:center; gap:6px; flex:none; }
+    .mp-btn { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; font-size:.8rem; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .mp-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .mp-btn.mp-play { width:40px; height:40px; background: var(--accent); border-color: var(--accent); color:#fff; font-size:.95rem; }
+    .mp-btn.mp-play.playing { background: var(--gold); border-color: var(--gold); color:#2A2438; }
+    .mp-mode { display:flex; align-items:center; flex:none; }
+    .mp-mode-btn { width:30px; height:30px; border-radius:50%; border:1px solid transparent; background:transparent; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color .2s; }
+    .mp-mode-btn:hover { color: var(--accent); }
+    .mp-mode-btn.on { color: var(--gold); }
+    .mp-mode-ic { width:17px; height:17px; display:block; }
+    .mp-close { position:absolute; top:8px; right:8px; width:22px; height:22px; border:none; background:transparent; color:var(--muted); font-size:1rem; cursor:pointer; line-height:1; }
+    .mp-close:hover { color:var(--accent); }
+    @media (max-width: 640px) {
+      .mini-player { min-width: 0; left: 12px; right: 12px; }
+      .mp-mode { width:100%; justify-content:flex-end; }
+      .music-row { grid-template-columns: 30px 1fr auto; }
+      .row-sub { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <span class="brand" id="brand">莫弈·Vilhelm</span>
+      <nav class="main-nav" id="main-nav"></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <h1>典藏</h1>
+    </div>
+
+    <!-- 播放提示条（顶部） -->
+    <div class="now-playing" id="now-playing"></div>
+
+    <div class="gallery-head">
+      <div class="gallery-tabs">
+        <span class="chip small on" data-sub="sr">SR</span>
+        <span class="chip small" data-sub="mr">MR</span>
+      </div>
+      <div class="view-switch">
+        <span class="chip small on" data-view="card">卡片视图</span>
+        <span class="chip small" data-view="list">列表视图</span>
+      </div>
+    </div>
+
+    <!-- 卡片视图 -->
+    <div class="card-grid" id="card-grid"></div>
+
+    <!-- 列表视图 -->
+    <div class="list-view" id="list-view">
+      <div class="music-list" id="music-list"></div>
+    </div>
+
+    <!-- 分页（每页 10 条） -->
+    <div class="pager" id="pager"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div id="footer-text"></div>
+      <a id="admin-link" href="admin.html"></a>
+    </div>
+  </footer>
+
+  <!-- 迷你播放器浮窗（向上撑开：上半播放列表 + 下半控制条） -->
+  <div class="mini-player" id="mini-player">
+    <div class="mp-dragbar" id="mp-dragbar"></div>
+    <!-- 向上撑开的播放列表区 -->
+    <div class="mp-pl-wrap" id="mp-pl-wrap"></div>
+    <!-- 常驻控制条 -->
+    <div class="mp-body">
+      <div class="mp-coverwrap">
+        <img class="mp-cover" id="mp-cover" alt="">
+        <button class="mp-list-tab" id="mp-list-tab" title="播放列表">
+          <svg class="tab-ic ic-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l6-6 6 6"/></svg>
+          <svg class="tab-ic ic-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M6 10l6 6 6-6"/></svg>
+        </button>
+      </div>
+      <div class="mp-info">
+        <div class="mp-name" id="mp-name"></div>
+        <div class="mp-sub" id="mp-sub"></div>
+      </div>
+      <div class="mp-ctrl">
+        <button class="mp-btn" id="mp-prev" title="上一首">⏮</button>
+        <button class="mp-btn mp-play" id="mp-toggle" title="播放/停止">▶</button>
+        <button class="mp-btn" id="mp-next" title="下一首">⏭</button>
+      </div>
+      <div class="mp-mode">
+        <button class="mp-mode-btn" id="mp-mode" title="顺序播放">
+          <svg class="mp-mode-ic ic-order" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H8a4 4 0 0 0-4 4"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h13a4 4 0 0 0 4-4"/></svg>
+          <svg class="mp-mode-ic ic-random" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+        </button>
+      </div>
+      <button class="mp-close" id="mp-close" title="关闭">×</button>
+    </div>
+  </div>
+
+  <script src="js/common.js?v=20261002ao"></script>
+  <script>
+    /* ===== 典藏页面：SR/MR 卡面与语音 ===== */
+    let CARDS = [];
+    const PAGE_SIZE = 10;
+    const state = { sub: 'sr', view: 'card', mode: 'order', playingIdx: -1, page: 1, queue: [], dragging: false };
+    const audio = new Audio();
+    audio.loop = false;
+    const mp = document.getElementById('mini-player');
+
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    function visible() { return CARDS.map((it, i) => ({ ...it, i })).filter(it => it.rarity.toLowerCase() === state.sub); }
+    function initQueue() { state.queue = visible().map(x => x.i); }
+
+    function pageItems() {
+      const list = visible();
+      const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+      if (state.page > total) state.page = total;
+      const start = (state.page - 1) * PAGE_SIZE;
+      return list.slice(start, start + PAGE_SIZE);
+    }
+
+    function renderPager() {
+      const pager = document.getElementById('pager');
+      const list = visible();
+      const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+      pager.innerHTML = `
+        <button class="pg-btn" data-pg="prev" ${state.page <= 1 ? 'disabled' : ''}>‹ 上一页</button>
+        ${Array.from({ length: total }, (_, k) => `<button class="pg-num ${k + 1 === state.page ? 'on' : ''}" data-pg="${k + 1}">${k + 1}</button>`).join('')}
+        <button class="pg-btn" data-pg="next" ${state.page >= total ? 'disabled' : ''}>下一页 ›</button>
+        <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>`;
+      pager.style.display = total > 1 ? 'flex' : 'none';
+    }
+
+    function goPage(p) {
+      const list = visible();
+      const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+      state.page = Math.min(Math.max(1, p), total);
+      renderAll();
+    }
+
+    function renderGrid() {
+      const list = pageItems();
+      const grid = document.getElementById('card-grid');
+      grid.innerHTML = list.map(it => `
+        <div class="srmr-card ${state.playingIdx === it.i ? 'playing' : ''}" data-idx="${it.i}">
+          <div class="card-art">
+            <img src="${it.img}" alt="${esc(it.name)}" loading="lazy">
+            <span class="rarity">${it.rarity}</span>
+            <button class="card-play" data-idx="${it.i}" title="播放语音">${state.playingIdx === it.i ? '❚❚' : '▶'}</button>
+          </div>
+          <div class="card-info">
+            <div class="card-name">${esc(it.name)}</div>
+            <div class="card-sub">${esc(it.sub)}</div>
+            <div class="card-tags">${(it.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('')}</div>
+          </div>
+        </div>`).join('');
+    }
+
+    function renderList() {
+      const list = pageItems();
+      const ml = document.getElementById('music-list');
+      ml.innerHTML = list.map((it, k) => `
+        <div class="music-row ${state.playingIdx === it.i ? 'playing' : ''}" data-idx="${it.i}">
+          <span class="row-idx">${state.playingIdx === it.i ? '♪' : String((state.page - 1) * PAGE_SIZE + k + 1).padStart(2, '0')}</span>
+          <div>
+            <div class="row-name">${esc(it.name)}</div>
+            <div class="row-sub">${esc(it.sub)}</div>
+          </div>
+          <div style="display:flex;gap:6px">${(it.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('')}</div>
+          <span class="row-dur">${it.dur}</span>
+          <button class="row-play" data-idx="${it.i}" title="播放语音">${state.playingIdx === it.i ? '❚❚' : '▶'}</button>
+        </div>`).join('');
+    }
+
+    function updateMiniPlayer() {
+      if (state.playingIdx < 0) { mp.classList.remove('show'); return; }
+      const it = CARDS[state.playingIdx];
+      document.getElementById('mp-cover').src = it.img;
+      document.getElementById('mp-name').textContent = it.name;
+      document.getElementById('mp-sub').textContent = it.sub + ' · ' + it.rarity;
+      const t = document.getElementById('mp-toggle');
+      t.textContent = audio.paused ? '▶' : '❚❚';
+      t.classList.toggle('playing', !audio.paused);
+      updateModeBtn();
+      mp.classList.add('show');
+    }
+
+    function updateModeBtn() {
+      const b = document.getElementById('mp-mode');
+      const orderIc = b.querySelector('.ic-order');
+      const randomIc = b.querySelector('.ic-random');
+      orderIc.style.display = state.mode === 'random' ? 'none' : 'block';
+      randomIc.style.display = state.mode === 'random' ? 'block' : 'none';
+      b.title = state.mode === 'random' ? '随机播放' : '顺序播放';
+      b.classList.toggle('on', state.mode === 'random');
+    }
+
+    function renderPlaylist() {
+      const wrap = document.getElementById('mp-pl-wrap');
+      if (!state.queue.length) {
+        wrap.innerHTML = '<div class="mp-pl-empty">播放列表为空 · 从上方卡片/列表点击可重新加入</div>';
+        return;
+      }
+      wrap.innerHTML = `
+        <div class="mp-pl-title">播放列表（${state.queue.length}）</div>
+        <div class="mp-pl-items">
+          ${state.queue.map((idx, k) => {
+            const it = CARDS[idx];
+            return `<div class="mp-pl-item ${state.playingIdx === idx ? 'playing' : ''}" data-idx="${idx}">
+              <span class="mp-pl-idx">${state.playingIdx === idx ? '♪' : String(k + 1).padStart(2, '0')}</span>
+              <span class="mp-pl-name">${esc(it.name)}</span>
+              <span class="mp-pl-dur">${it.dur || ''}</span>
+              <button class="mp-pl-del" data-idx="${idx}" title="从本次循环删除">×</button>
+            </div>`;
+          }).join('')}
+        </div>`;
+    }
+
+    function renderAll() {
+      renderGrid(); renderList(); renderPager(); renderPlaylist(); updateMiniPlayer();
+      const np = document.getElementById('now-playing');
+      if (state.playingIdx >= 0) {
+        const it = CARDS[state.playingIdx];
+        np.classList.add('on');
+        np.textContent = '正在播放：' + it.name + '（' + it.rarity + '） · 可从右下角迷你播放器控制';
+      } else { np.classList.remove('on'); }
+    }
+
+    function stopPlay() {
+      audio.pause(); audio.currentTime = 0; state.playingIdx = -1; renderAll();
+    }
+
+    function playIdx(i) {
+      const it = CARDS[i];
+      if (!state.queue.includes(i)) state.queue.push(i); // 从大列表点击的卡重新加入播放列表
+      if (state.playingIdx === i) {
+        if (audio.paused) { audio.play(); } else { audio.pause(); }
+        updateMiniPlayer(); renderPlaylist(); return;
+      }
+      audio.src = it.audio; audio.play();
+      state.playingIdx = i; renderAll();
+    }
+
+    function nextTrack() {
+      const q = state.queue;
+      if (!q.length) return;
+      const pos = q.indexOf(state.playingIdx);
+      let next;
+      if (state.mode === 'random' && q.length > 1) {
+        let r; do { r = Math.floor(Math.random() * q.length); } while (r === pos);
+        next = q[r];
+      } else { next = q[(pos + 1) % q.length]; }
+      audio.src = CARDS[next].audio; audio.play();
+      state.playingIdx = next; renderAll();
+    }
+
+    function prevTrack() {
+      const q = state.queue;
+      if (!q.length) return;
+      const pos = q.indexOf(state.playingIdx);
+      const prev = q[(pos - 1 + q.length) % q.length];
+      audio.src = CARDS[prev].audio; audio.play();
+      state.playingIdx = prev; renderAll();
+    }
+
+    audio.addEventListener('ended', () => nextTrack());
+
+    document.querySelectorAll('.gallery-tabs .chip').forEach(c => c.addEventListener('click', () => {
+      state.sub = c.dataset.sub; state.page = 1; state.playingIdx = -1; audio.pause();
+      initQueue();
+      document.querySelectorAll('.gallery-tabs .chip').forEach(x => x.classList.toggle('on', x === c));
+      renderAll();
+    }));
+    document.querySelectorAll('.view-switch .chip').forEach(c => c.addEventListener('click', () => {
+      state.view = c.dataset.view;
+      document.querySelectorAll('.view-switch .chip').forEach(x => x.classList.toggle('on', x === c));
+      document.getElementById('card-grid').style.display = state.view === 'card' ? 'grid' : 'none';
+      document.getElementById('list-view').style.display = state.view === 'list' ? 'block' : 'none';
+    }));
+    document.getElementById('mp-mode').addEventListener('click', () => {
+      state.mode = state.mode === 'random' ? 'order' : 'random';
+      updateModeBtn();
+    });
+
+    document.getElementById('pager').addEventListener('click', e => {
+      const b = e.target.closest('[data-pg]');
+      if (!b) return;
+      const pg = b.dataset.pg;
+      if (pg === 'prev') goPage(state.page - 1);
+      else if (pg === 'next') goPage(state.page + 1);
+      else goPage(+pg);
+    });
+
+    document.addEventListener('click', e => {
+      const b = e.target.closest('.card-play, .row-play');
+      if (b) { const i = +b.dataset.idx; if (!visible().some(x => x.i === i)) return; playIdx(i); }
+    });
+
+    document.getElementById('mp-toggle').addEventListener('click', () => {
+      if (state.playingIdx < 0) return;
+      if (audio.paused) audio.play(); else audio.pause();
+      updateMiniPlayer();
+    });
+    document.getElementById('mp-next').addEventListener('click', () => { if (state.playingIdx >= 0) nextTrack(); });
+    document.getElementById('mp-prev').addEventListener('click', () => { if (state.playingIdx >= 0) prevTrack(); });
+    document.getElementById('mp-close').addEventListener('click', stopPlay);
+
+    /* 播放列表：向上撑开 + 删除项 */
+    const mpTab = document.getElementById('mp-list-tab');
+    const mpWrap = document.getElementById('mp-pl-wrap');
+    function togglePlaylist() {
+      const opening = !mpWrap.classList.contains('open');
+      mpWrap.classList.toggle('open', opening);
+      mpTab.classList.toggle('open', opening);
+      mpTab.querySelector('.ic-up').style.display = opening ? 'none' : 'block';
+      mpTab.querySelector('.ic-down').style.display = opening ? 'block' : 'none';
+      // 若小窗已被拖动（top 固定），同步上移/下移，保持"向上撑开"
+      const mpEl = document.getElementById('mini-player');
+      if (getComputedStyle(mpEl).bottom === 'auto' && mpEl.style.top) {
+        const delta = opening ? 275 : -275;
+        mpEl.style.top = (parseFloat(mpEl.style.top) - delta) + 'px';
+      }
+    }
+    mpTab.addEventListener('click', togglePlaylist);
+    document.getElementById('mp-pl-wrap').addEventListener('click', e => {
+      const del = e.target.closest('.mp-pl-del');
+      if (del) {
+        const i = +del.dataset.idx;
+        const pos = state.queue.indexOf(i);
+        if (pos >= 0) state.queue.splice(pos, 1);
+        renderPlaylist();
+        return;
+      }
+      const item = e.target.closest('.mp-pl-item');
+      if (item) { const i = +item.dataset.idx; if (visible().some(x => x.i === i)) playIdx(i); }
+    });
+
+    /* 迷你播放器拖动（可拖动定位） */
+    const dragbar = document.getElementById('mp-dragbar');
+    dragbar.addEventListener('mousedown', e => {
+      state.dragging = true;
+      mp._dx = e.clientX - mp.getBoundingClientRect().left;
+      mp._dy = e.clientY - mp.getBoundingClientRect().top;
+      mp.style.transition = 'none';
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!state.dragging) return;
+      const x = e.clientX - mp._dx, y = e.clientY - mp._dy;
+      const r = mp.getBoundingClientRect();
+      mp.style.left = Math.min(Math.max(0, x), window.innerWidth - r.width) + 'px';
+      mp.style.top = Math.min(Math.max(0, y), window.innerHeight - r.height) + 'px';
+      mp.style.right = 'auto'; mp.style.bottom = 'auto';
+    });
+    document.addEventListener('mouseup', () => {
+      if (state.dragging) { state.dragging = false; mp.style.transition = ''; }
+    });
+
+    /* 初始化：加载数据 + 页头页脚 + 背景 + 典藏数据 */
+    async function boot() {
+      await initPage('gallery.html');
+      try {
+        const r = await fetch('data/gallery.json?v=' + DATA_VERSION);
+        const d = await r.json();
+        CARDS = (d.cards || []).map(c => Object.assign({ dur: '' }, c));
+      } catch (err) {
+        const grid = document.getElementById('card-grid');
+        grid.innerHTML = '<div style="grid-column:1/-1;color:var(--muted);padding:40px;text-align:center">典藏数据加载失败：' + esc(err.message) + '</div>';
+      }
+      initQueue();
+      renderAll();
+    }
+    boot();
+  </script>
+</body>
+</html>
