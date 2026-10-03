@@ -622,19 +622,24 @@
       "createdAt": "2026-10-02T10:40:03.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/晓风停处/晓风停处-20251208-1.jpg",
+        "assets/images/moyi/activity/晓风停处/晓风停处-20251208-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/晓风停处/晓风停处-20251208-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
-      "id": "uncategorized-晓风停处-1",
+      "content": "“我从前风闻有你，现在亲眼看见你。”",
+      "id": "activity-晓风停处-1",
       "title": "晓风停处",
       "subtitle": "旧梦今情·莫弈篇",
       "date": "2025.12.8",
