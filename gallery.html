@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>典藏 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261002aq">
+  <link rel="stylesheet" href="css/style.css?v=20261002as">
   <style>
     /* ===== 典藏栏目组件样式 ===== */
     .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
@@ -198,7 +198,7 @@
     </div>
   </div>
 
-  <script src="js/common.js?v=20261002aq"></script>
+  <script src="js/common.js?v=20261002as"></script>
   <script>
     /* ===== 典藏页面：SR/MR 卡面与语音 ===== */
     let CARDS = [];
@@ -464,19 +464,38 @@
       return m ? new Date(+m[1], +m[2] - 1, +m[3]).getTime() : 0;
     }
 
-    /* 初始化：加载数据 + 页头页脚 + 背景 + 典藏数据 */
+    /* 稀有度标签 id → 名称 */
+    const RARITY_TAG = { t25: 'SSS', t26: 'SSR', t27: 'SR', t28: 'MR', t29: 'R' };
+
+    /* 从时间线事件派生典藏卡（单一数据源：events.json）
+       条件 = 有卡面图 + 有语音 + 带稀有度标签；稀有度取事件的稀有度标签 */
+    function buildCards() {
+      const byTag = {};
+      DATA.categories.forEach(c => (c.tags || []).forEach(t => { byTag[t.id] = t.name; }));
+      const cards = [];
+      DATA.events.forEach(e => {
+        const imgs = e.images || [], auds = e.audios || [];
+        if (!imgs.length || !auds.length) return;
+        const tags = e.tags || [];
+        const rid = tags.find(t => RARITY_TAG[t]);
+        if (!rid) return;
+        const tagNames = tags.filter(t => !RARITY_TAG[t]).map(t => byTag[t]).filter(Boolean);
+        const mainTag = byTag[e.mainTag];
+        const sub = (e.subtitle || '').trim() || mainTag || tagNames[0] || '';
+        cards.push({
+          id: e.id, name: e.title, rarity: RARITY_TAG[rid], sub,
+          tags: tagNames, date: e.date || '', img: imgs[0], audio: auds[0], dur: ''
+        });
+      });
+      return cards;
+    }
+
+    /* 初始化：加载数据 + 页头页脚 + 背景 + 派生典藏卡 */
     async function boot() {
       await initPage('gallery.html');
-      try {
-        const r = await fetch('data/gallery.json?v=' + DATA_VERSION);
-        const d = await r.json();
-        CARDS = (d.cards || []).map(c => Object.assign({ dur: '' }, c));
-        // 按日期倒序（最新在前）
-        CARDS.sort((a, b) => (parseDate(b.date) - parseDate(a.date)) || 0);
-      } catch (err) {
-        const grid = document.getElementById('card-grid');
-        grid.innerHTML = '<div style="grid-column:1/-1;color:var(--muted);padding:40px;text-align:center">典藏数据加载失败：' + esc(err.message) + '</div>';
-      }
+      CARDS = buildCards();
+      // 按日期倒序（最新在前）
+      CARDS.sort((a, b) => (parseDate(b.date) - parseDate(a.date)) || 0);
       initQueue();
       renderAll();
     }
