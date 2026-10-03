@@ -494,15 +494,15 @@
       "createdAt": "2026-10-02T10:05:02.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
       "images": [
-        "assets/images/moyi/uncategorized/危情邀约/危情邀约-20200730-1.jpg",
-        "assets/images/moyi/uncategorized/危情邀约/危情邀约-20200730-2.jpg"
+        "assets/images/moyi/activity/危情邀约/危情邀约-20200730-1.jpg",
+        "assets/images/moyi/activity/危情邀约/危情邀约-20200730-2.jpg"
       ],
       "audios": [
-        "assets/audio/moyi/uncategorized/危情邀约/危情邀约-20200730-0.mp3"
+        "assets/audio/moyi/activity/危情邀约/危情邀约-20200730-0.mp3"
       ],
       "characters": [
         "莫弈"
@@ -511,7 +511,7 @@
       "importance": "",
       "bgImage": "",
       "content": "“不用着急，我可以慢慢等 你的答案。”",
-      "id": "uncategorized-危情邀约-1",
+      "id": "activity-危情邀约-1",
       "title": "危情邀约",
       "subtitle": "",
       "date": "2020.7.30",

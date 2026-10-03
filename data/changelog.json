@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "ver": "20261001df",
+      "date": "2026-10-03",
+      "items": [
+        "危情邀约从未分类切换到活动/节日线：id改activity-危情邀约-1，素材目录迁移至assets/images|audio/moyi/activity/危情邀约"
+      ]
+    },
+    {
       "ver": "20261001de",
       "date": "2026-10-03",
       "items": [
