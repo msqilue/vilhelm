@@ -856,20 +856,25 @@
       "createdAt": "2026-10-02T11:00:03.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/泡影抚痕/泡影抚痕-20220623-1.jpg",
+        "assets/images/moyi/activity/泡影抚痕/泡影抚痕-20220623-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/泡影抚痕/泡影抚痕-20220623-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“你会用怎样的方式，来思念我？”",
       "mainTag": "",
-      "id": "uncategorized-泡影抚痕-1",
+      "id": "activity-泡影抚痕-1",
       "title": "泡影抚痕",
       "subtitle": "甜宠萌心·上篇",
       "date": "2022.6.23",
