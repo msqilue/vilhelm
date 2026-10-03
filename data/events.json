@@ -1781,7 +1781,9 @@
         "assets/images/moyi/activity/枕梦惊芳/枕梦惊芳-20260210-1.jpg",
         "assets/images/moyi/activity/枕梦惊芳/枕梦惊芳-20260210-2.jpg"
       ],
-      "audios": [],
+      "audios": [
+        "assets/audio/moyi/activity/枕梦惊芳/枕梦惊芳-20260210-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
