@@ -974,20 +974,25 @@
       "createdAt": "2026-10-02T12:00:02.000Z"
     },
     {
-      "timelineId": "uncategorized",
+      "timelineId": "activity",
       "stage": "",
       "order": 0,
-      "images": [],
-      "audios": [],
+      "images": [
+        "assets/images/moyi/activity/雨漫驰想/雨漫驰想-20230328-1.jpg",
+        "assets/images/moyi/activity/雨漫驰想/雨漫驰想-20230328-2.jpg"
+      ],
+      "audios": [
+        "assets/audio/moyi/activity/雨漫驰想/雨漫驰想-20230328-0.mp3"
+      ],
       "characters": [
         "莫弈"
       ],
       "recordDate": "",
       "importance": "",
       "bgImage": "",
-      "content": "",
+      "content": "“所以，我先将热烈送给你，只要你喜欢。”",
       "mainTag": "",
-      "id": "uncategorized-雨漫驰想-1",
+      "id": "activity-雨漫驰想-1",
       "title": "雨漫驰想",
       "subtitle": "念念拾裳",
       "date": "2023.3.28",
