@@ -19,9 +19,8 @@
       const items = Array.isArray(entry.items) ? entry.items : [entry.items];
       const lis = items.map(t => `<li>${escapeHtml(t)}</li>`).join('');
       return `<div class="changelog-item">
-        <div class="changelog-ver">${escapeHtml(entry.ver)}</div>
+        <div class="changelog-ver">${escapeHtml(entry.date || '')}</div>
         <div class="changelog-body">
-          <span class="changelog-date">${escapeHtml(entry.date || '')}</span>
           <ul>${lis}</ul>
         </div>
       </div>`;

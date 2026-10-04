@@ -1116,12 +1116,14 @@ a:hover { text-decoration: underline; }
 
 .changelog-ver {
   flex: 0 0 auto;
-  min-width: 104px;
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 13px;
-  font-weight: 700;
+  min-width: 150px;
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--accent);
+  line-height: 1.6;
   padding-top: 2px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .changelog-body {
