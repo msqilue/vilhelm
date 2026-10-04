@@ -41,11 +41,13 @@ initPage('profile.html').then(async () => {
     `<div class="quote-card"><div class="quote-mark">❝</div><div class="quote-text">${escapeHtml(q)}</div></div>`
   ).join('');
 
-  /* 相关事件：个人成长线的生日事件 */
+  /* 相关事件：个人成长线的生日事件（SR/MR/R 走语音卡版式） */
   const evs = DATA.events.filter(e => e.timelineId === 'growth');
-  document.getElementById('pf-events').innerHTML = evs.map(e =>
-    `<a class="pf-event-chip" href="event.html?id=${encodeURIComponent(e.id)}">${escapeHtml(e.title)} · ${escapeHtml(e.date || '')}</a>`
-  ).join('');
+  document.getElementById('pf-events').innerHTML = evs.map(e => {
+    const voice = (e.tags || []).some(t => ['t27', 't28', 't29'].includes(t));
+    const href = (voice ? 'event-voice.html' : 'event.html') + '?id=' + encodeURIComponent(e.id);
+    return `<a class="pf-event-chip" href="${href}">${escapeHtml(e.title)} · ${escapeHtml(e.date || '')}</a>`;
+  }).join('');
 
   document.getElementById('pf-note').textContent = c.note || '';
 });

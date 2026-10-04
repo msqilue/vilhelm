@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件详情 · 莫弈·Vilhelm</title>
+  <link rel="stylesheet" href="css/style.css?v=20261004ay">
+  <style>
+    /* ===== SR/MR/R 语音卡版式（卡片式，卡面完整显示） ===== */
+    .voice-wrap{max-width:1060px;margin:0 auto;padding:22px 20px 60px}
+    .v-head{
+      display:flex;align-items:center;gap:16px;padding:12px 20px;margin-bottom:20px;
+      background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    }
+    .v-head .back{font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap;text-decoration:none}
+    .v-head .back:hover{color:var(--txt)}
+    .v-head-main{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+    .v-head-tags{display:flex;gap:8px}
+    .v-chip{font-size:12px;padding:2px 10px;border-radius:20px;background:transparent;border:1px solid #8F8F9C;color:#8F8F9C}
+    .v-chip.rare{border-color:#A8C4D9;color:#A8C4D9}
+    .v-head-title{font-size:22px;font-weight:700;letter-spacing:.08em;line-height:1.2}
+    .v-head-sub{margin-left:4px;font-size:12.5px;color:var(--muted)}
+    /* 双语音并列：卡片式，卡片比例适配卡面（原图 9:20） */
+    .v-voices{display:grid;grid-template-columns:repeat(2,252px);gap:20px;justify-content:center}
+    @media (max-width:640px){.v-voices{grid-template-columns:1fr;justify-items:center}}
+    .v-card{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#000;height:560px;width:252px}
+    .v-bg{position:absolute;inset:0}
+    .v-bg img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+    .v-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,20,24,.35) 0%,rgba(18,20,24,.15) 32%,rgba(18,20,24,.74) 76%,rgba(18,20,24,.96) 100%)}
+    .v-top{position:absolute;top:14px;left:14px;right:14px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+    .v-name{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;padding:6px 12px;border-radius:20px;background:rgba(18,20,24,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25)}
+    .v-name .v-disc{width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.45);color:#fff;background:transparent;display:grid;place-items:center;font-size:12px;flex:none}
+    /* 台词：卡面下1/3处，透明底，窗口仅显示4行 */
+    .v-lyrics{position:absolute;left:0;right:0;bottom:84px;height:172px;z-index:2;overflow-y:auto;scroll-behavior:smooth;padding:2px 0}
+    .v-lyrics::-webkit-scrollbar{width:0}
+    .v-line{display:block;padding:4px 14px;margin:0;border-radius:0;line-height:1.5;font-size:13px;color:rgba(255,255,255,.92);background:transparent;transition:all .2s;border:none;text-shadow:0 1px 6px rgba(0,0,0,.85)}
+    .v-line.active{color:#fff;background:rgba(255,255,255,.14);font-weight:600}
+    .v-line.done{color:rgba(255,255,255,.55);text-shadow:none}
+    /* 底部播放器：透明；时间显示在进度条上方 */
+    .v-player{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;flex-direction:column;gap:8px;background:transparent}
+    .v-prow{display:flex;align-items:center;gap:12px}
+    .v-time{font-size:11px;color:#cfd3da;text-align:left;padding-left:4px;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+    .v-btn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.45);cursor:pointer;background:transparent;color:#fff;font-size:15px;display:grid;place-items:center;flex:none;transition:transform .15s}
+    .v-btn:hover{transform:scale(1.06)}
+    .v-track{flex:1;height:6px;border-radius:3px;background:#3a3f4b;position:relative;cursor:pointer}
+    .v-track .fill{height:100%;border-radius:3px;background:rgba(255,255,255,.75);width:0%}
+    .v-track .knob{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);left:0%;box-shadow:0 1px 6px rgba(0,0,0,.4)}
+    .v-empty{padding:60px 0;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <span class="brand" id="brand">莫弈·Vilhelm</span>
+      <nav class="main-nav" id="main-nav"></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="voice-wrap">
+      <div class="v-head">
+        <a class="back" href="timeline.html">← 返回时间线</a>
+        <div class="v-head-main">
+          <span class="v-head-title" id="v-title"></span>
+          <div class="v-head-tags" id="v-tags"></div>
+          <span class="v-head-sub" id="v-sub"></span>
+        </div>
+      </div>
+      <div class="v-voices" id="v-voices"></div>
+      <div class="v-nav" id="v-nav" style="margin-top:26px"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div id="footer-text"></div>
+      <a id="admin-link" href="admin.html"></a>
+    </div>
+  </footer>
+
+  <script src="js/common.js?v=20261004ay"></script>
+  <script src="js/event-voice.js?v=20261004ay"></script>
+</body>
+</html>

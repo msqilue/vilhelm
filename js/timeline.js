@@ -90,9 +90,12 @@ function visibleEvents() {
   return sortEvents(list);
 }
 
-/* 跳转详情页时携带当前筛选（时间线 + 标签），供事件页按筛选后的顺序导航 */
+/* 跳转详情页时携带当前筛选（时间线 + 标签），供事件页按筛选后的顺序导航；
+   SR/MR/R（稀有度 t27/t28/t29）事件走语音卡版式 event-voice.html */
 function detailHref(id) {
-  let url = 'event.html?id=' + encodeURIComponent(id);
+  const ev = DATA.events.find(e => e.id === id);
+  const isVoice = ev && (ev.tags || []).some(t => ['t27', 't28', 't29'].includes(t));
+  let url = (isVoice ? 'event-voice.html' : 'event.html') + '?id=' + encodeURIComponent(id);
   if (state.timeline && state.timeline !== 'all') url += '&tl=' + encodeURIComponent(state.timeline);
   if (state.tags.size) url += '&tags=' + [...state.tags].join(',');
   return url;

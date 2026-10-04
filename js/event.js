@@ -40,6 +40,12 @@ initPage('timeline.html').then(() => {
     return;
   }
 
+  /* SR/MR/R 事件走语音卡版式（本页为 SSS/SSR 版式，直接跳转） */
+  if ((ev.tags || []).some(t => ['t27', 't28', 't29'].includes(t))) {
+    location.replace('event-voice.html' + location.search);
+    return;
+  }
+
   // 事件级背景图：进入详情页时自动切换为该事件背景（优先事件指定背景，否则用第二张图片）
   const evBg = ev.bgImage || (ev.images && ev.images.length >= 2 ? ev.images[1] : '');
   if (evBg) BG.apply(evBg);
@@ -230,7 +236,9 @@ function renderNav(ev) {
   const next = (idx >= 0 && idx + 1 < ordered.length) ? ordered[idx + 1] : null; // 时间线下方：更早的
 
   const navHref = (id) => {
-    let url = 'event.html?id=' + encodeURIComponent(id);
+    const e = DATA.events.find(x => x.id === id);
+    const page = e && (e.tags || []).some(t => ['t27', 't28', 't29'].includes(t)) ? 'event-voice.html' : 'event.html';
+    let url = page + '?id=' + encodeURIComponent(id);
     if (navTl && navTl !== 'all') url += '&tl=' + encodeURIComponent(navTl);
     if (navTags.length) url += '&tags=' + navTags.join(',');
     return url;
