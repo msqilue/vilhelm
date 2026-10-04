@@ -43,15 +43,33 @@
     renderPager();
   }
 
+  /* 折叠页码：首尾恒显，当前页前后各1页，中间用 … 省略 */
+  function pageNums(current, total) {
+    const set = new Set([1, total, current - 1, current, current + 1]);
+    const nums = [...set].filter(n => n >= 1 && n <= total).sort((a, b) => a - b);
+    const out = [];
+    let prev = 0;
+    for (const n of nums) {
+      if (prev && n - prev > 1) out.push('…');
+      out.push(n);
+      prev = n;
+    }
+    return out;
+  }
+
   function renderPager() {
     const pager = els.pager;
     const list = state.entries;
     const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
     pager.innerHTML = `
       <button class="pg-btn" data-pg="prev" ${state.page <= 1 ? 'disabled' : ''}>‹ 上一页</button>
-      ${Array.from({ length: total }, (_, k) => `<button class="pg-num ${k + 1 === state.page ? 'on' : ''}" data-pg="${k + 1}">${k + 1}</button>`).join('')}
+      ${pageNums(state.page, total).map(n => n === '…'
+        ? `<span class="pg-ellipsis">…</span>`
+        : `<button class="pg-num ${n === state.page ? 'on' : ''}" data-pg="${n}">${n}</button>`).join('')}
       <button class="pg-btn" data-pg="next" ${state.page >= total ? 'disabled' : ''}>下一页 ›</button>
-      <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>`;
+      <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>
+      <span class="pg-jump">跳转到 第 <input class="pg-input" id="pg-input" type="number" min="1" max="${total}" value="${state.page}"> 页
+        <button class="pg-btn pg-go" id="pg-go">跳转</button></span>`;
     pager.style.display = total > 1 ? 'flex' : 'none';
   }
 
@@ -59,6 +77,14 @@
     const total = Math.max(1, Math.ceil(state.entries.length / PAGE_SIZE));
     state.page = Math.min(Math.max(1, p), total);
     render();
+  }
+
+  function jumpTo() {
+    const input = $('pg-input');
+    if (!input) return;
+    const v = parseInt(input.value, 10);
+    if (!v || Number.isNaN(v)) return;
+    goPage(v);
   }
 
   initPage('changelog.html').then(async () => {
@@ -72,11 +98,17 @@
       render();
       els.pager.addEventListener('click', e => {
         const b = e.target.closest('[data-pg]');
-        if (!b) return;
-        const pg = b.dataset.pg;
-        if (pg === 'prev') goPage(state.page - 1);
-        else if (pg === 'next') goPage(state.page + 1);
-        else goPage(+pg);
+        if (b) {
+          const pg = b.dataset.pg;
+          if (pg === 'prev') goPage(state.page - 1);
+          else if (pg === 'next') goPage(state.page + 1);
+          else goPage(+pg);
+          return;
+        }
+        if (e.target.closest('#pg-go')) jumpTo();
+      });
+      els.pager.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && e.target.id === 'pg-input') jumpTo();
       });
     } catch (err) {
       console.error('changelog load failed', err);

@@ -1219,3 +1219,35 @@ a:hover { text-decoration: underline; }
   color: var(--muted);
   margin-left: 6px;
 }
+.pg-ellipsis {
+  min-width: 22px;
+  text-align: center;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 30px;
+  user-select: none;
+}
+.pg-jump {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .72rem;
+  color: var(--muted);
+  margin-left: 10px;
+  flex-wrap: nowrap;
+}
+.pg-input {
+  width: 46px;
+  height: 26px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: .76rem;
+  text-align: center;
+  outline: none;
+  transition: border-color .2s;
+}
+.pg-input:focus { border-color: var(--accent); }
+.pg-go { min-width: 40px; height: 26px; padding: 0 8px; font-size: .72rem; }
