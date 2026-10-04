@@ -55,7 +55,7 @@ function renderVoices(ev) {
     <div class="v-card" id="vc${i}">
       <div class="v-bg"><img src="${escapeHtml(v.image)}" alt="${escapeHtml(v.title)}"></div>
       <div class="v-overlay"></div>
-      <div class="v-top"><span class="v-name">${escapeHtml(v.title)}</span></div>
+      <div class="v-top"><span class="v-name">${escapeHtml(v.title)}<span class="v-wave" id="vwave${i}"><i></i><i></i><i></i></span></span></div>
       <div class="v-lyrics" id="vlyr${i}"></div>
       <div class="v-player">
         <span class="v-time" id="vtime${i}">0:00 / 0:00</span>
@@ -82,6 +82,7 @@ function makeVoicePlayer(voice, i) {
   const knob = document.getElementById('vknb' + i);
   const timeEl = document.getElementById('vtime' + i);
   const lyrics = document.getElementById('vlyr' + i);
+  const wave = document.getElementById('vwave' + i);
   const subs = voice.subs || [];
 
   /* 渲染台词 */
@@ -93,9 +94,9 @@ function makeVoicePlayer(voice, i) {
   });
 
   pb.addEventListener('click', () => { audio.paused ? audio.play() : audio.pause(); });
-  audio.addEventListener('play', () => { pb.textContent = '❚❚'; });
-  audio.addEventListener('pause', () => { pb.textContent = '▶'; });
-  audio.addEventListener('ended', () => { pb.textContent = '▶'; });
+  audio.addEventListener('play', () => { pb.textContent = '❚❚'; if (wave) wave.classList.add('on'); });
+  audio.addEventListener('pause', () => { pb.textContent = '▶'; if (wave) wave.classList.remove('on'); });
+  audio.addEventListener('ended', () => { pb.textContent = '▶'; if (wave) wave.classList.remove('on'); });
 
   function setProg() {
     const p = audio.duration ? audio.currentTime / audio.duration : 0;

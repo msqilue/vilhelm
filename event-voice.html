@@ -29,6 +29,13 @@
     .v-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,20,24,.35) 0%,rgba(18,20,24,.15) 32%,rgba(18,20,24,.74) 76%,rgba(18,20,24,.96) 100%)}
     .v-top{position:absolute;top:14px;left:14px;right:14px;display:flex;align-items:center;justify-content:space-between;z-index:2}
     .v-name{font-size:15px;font-weight:600;padding:0;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+    /* 动态波形：静止时三条短竖线，播放时跳动 */
+    .v-wave{display:inline-flex;align-items:flex-end;gap:2.5px;height:13px;margin-left:9px;vertical-align:middle}
+    .v-wave i{width:2.5px;height:5px;background:rgba(255,255,255,.85);border-radius:1.5px;transition:height .25s}
+    .v-wave.on i{animation:vw 0.9s ease-in-out infinite}
+    .v-wave.on i:nth-child(2){animation-delay:.18s}
+    .v-wave.on i:nth-child(3){animation-delay:.36s}
+    @keyframes vw{0%,100%{height:5px}50%{height:13px}}
     /* 台词：卡面下1/3处，透明底，窗口仅显示4行 */
     .v-lyrics{position:absolute;left:0;right:0;bottom:84px;height:172px;z-index:2;overflow-y:auto;scroll-behavior:smooth;padding:2px 0}
     .v-lyrics::-webkit-scrollbar{width:0}
