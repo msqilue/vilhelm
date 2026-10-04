@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>典藏 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261004c6">
+  <link rel="stylesheet" href="css/style.css?v=20261004c7">
   <style>
     /* ===== 典藏栏目组件样式 ===== */
     .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
@@ -48,7 +48,7 @@
     .now-playing { margin-bottom: 16px; padding: 10px 14px; border-radius: 10px; background: var(--accent-soft); border: 1px solid rgba(110,143,78,.35); font-size: .82rem; color: var(--accent-solid); display: none; }
     .now-playing.on { display: block; }
     /* 分页 */
-    .pager { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:24px; flex-wrap:wrap; }
+    .pager { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-top:24px; flex-wrap:wrap; }
     .pg-btn, .pg-num { min-width:30px; height:30px; padding:0 10px; border:1px solid var(--line); border-radius:8px; background:transparent; color:var(--muted); font-size:.78rem; cursor:pointer; transition:all .2s; }
     .pg-btn:hover:not(:disabled), .pg-num:hover { border-color: var(--accent); color: var(--accent); }
     .pg-btn:disabled { opacity:.35; cursor:default; }
@@ -198,7 +198,7 @@
     </div>
   </div>
 
-  <script src="js/common.js?v=20261004c6"></script>
+  <script src="js/common.js?v=20261004c7"></script>
   <script>
     /* ===== 典藏页面：SR/MR 卡面与语音 ===== */
     let CARDS = [];
@@ -220,15 +220,33 @@
       return list.slice(start, start + PAGE_SIZE);
     }
 
+    /* 折叠页码：首尾恒显，当前页前后各1页，中间用 … 省略 */
+    function pageNums(current, total) {
+      const set = new Set([1, total, current - 1, current, current + 1]);
+      const nums = [...set].filter(n => n >= 1 && n <= total).sort((a, b) => a - b);
+      const out = [];
+      let prev = 0;
+      for (const n of nums) {
+        if (prev && n - prev > 1) out.push('…');
+        out.push(n);
+        prev = n;
+      }
+      return out;
+    }
+
     function renderPager() {
       const pager = document.getElementById('pager');
       const list = visible();
       const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
       pager.innerHTML = `
         <button class="pg-btn" data-pg="prev" ${state.page <= 1 ? 'disabled' : ''}>‹ 上一页</button>
-        ${Array.from({ length: total }, (_, k) => `<button class="pg-num ${k + 1 === state.page ? 'on' : ''}" data-pg="${k + 1}">${k + 1}</button>`).join('')}
+        ${pageNums(state.page, total).map(n => n === '…'
+          ? `<span class="pg-ellipsis">…</span>`
+          : `<button class="pg-num ${n === state.page ? 'on' : ''}" data-pg="${n}">${n}</button>`).join('')}
         <button class="pg-btn" data-pg="next" ${state.page >= total ? 'disabled' : ''}>下一页 ›</button>
-        <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>`;
+        <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>
+        <span class="pg-jump">第 <input class="pg-input" id="pg-input" type="number" min="1" max="${total}" value="${state.page}"> 页
+          <button class="pg-btn pg-go" id="pg-go">跳转</button></span>`;
       pager.style.display = total > 1 ? 'flex' : 'none';
     }
 
@@ -385,11 +403,27 @@
 
     document.getElementById('pager').addEventListener('click', e => {
       const b = e.target.closest('[data-pg]');
-      if (!b) return;
-      const pg = b.dataset.pg;
-      if (pg === 'prev') goPage(state.page - 1);
-      else if (pg === 'next') goPage(state.page + 1);
-      else goPage(+pg);
+      if (b) {
+        const pg = b.dataset.pg;
+        if (pg === 'prev') goPage(state.page - 1);
+        else if (pg === 'next') goPage(state.page + 1);
+        else goPage(+pg);
+        return;
+      }
+      if (e.target.closest('#pg-go')) {
+        const input = document.getElementById('pg-input');
+        if (!input) return;
+        const v = parseInt(input.value, 10);
+        if (!v || Number.isNaN(v)) return;
+        goPage(v);
+      }
+    });
+    document.getElementById('pager').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.target.id === 'pg-input') {
+        const v = parseInt(e.target.value, 10);
+        if (!v || Number.isNaN(v)) return;
+        goPage(v);
+      }
     });
 
     document.addEventListener('click', e => {
