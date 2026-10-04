@@ -1,144 +1,164 @@
 {
-  "categories": [
+ "categories": [
+  {
+   "id": "story",
+   "name": "剧情/章节",
+   "tags": [
     {
-      "id": "story",
-      "name": "剧情/章节",
-      "tags": [
-        {
-          "id": "t1",
-          "name": "序章",
-          "color": "#B08968"
-        },
-        {
-          "id": "t2",
-          "name": "第1章",
-          "color": "#9C6B30"
-        }
-      ]
+     "id": "t1",
+     "name": "序章",
+     "color": "#B08968"
     },
     {
-      "id": "state",
-      "name": "篇章",
-      "tags": [
-        {
-          "id": "t14",
-          "name": "旖慕篇",
-          "color": "#D9A0A0"
-        },
-        {
-          "id": "t15",
-          "name": "甜蜜篇",
-          "color": "#E8B4A0"
-        },
-        {
-          "id": "t16",
-          "name": "约定篇",
-          "color": "#C9A9C9"
-        },
-        {
-          "id": "t17",
-          "name": "挚爱篇",
-          "color": "#B98E8E"
-        },
-        {
-          "id": "t18",
-          "name": "相守篇",
-          "color": "#A8B4A0"
-        },
-        {
-          "id": "t19",
-          "name": "未定篇",
-          "color": "#8F8F9C"
-        },
-        {
-          "id": "t20",
-          "name": "异世篇",
-          "color": "#9C8FB0"
-        }
-      ]
+     "id": "t2",
+     "name": "第一章",
+     "color": "#9C6B30"
     },
     {
-      "id": "eventType",
-      "name": "事件类型",
-      "tags": [
-        {
-          "id": "t9",
-          "name": "案件",
-          "color": "#A9716A"
-        },
-        {
-          "id": "t10",
-          "name": "日常",
-          "color": "#C4A484"
-        },
-        {
-          "id": "t11",
-          "name": "生日",
-          "color": "#D9A441"
-        },
-        {
-          "id": "t22",
-          "name": "求婚",
-          "color": "#D4A0A0"
-        },
-        {
-          "id": "t23",
-          "name": "周年",
-          "color": "#A9A9D4"
-        },
-        {
-          "id": "t24",
-          "name": "结婚",
-          "color": "#D4B4A0"
-        }
-      ]
+     "id": "t30",
+     "name": "第二章",
+     "color": "#8A5A2B"
     },
     {
-      "id": "place",
-      "name": "地点/时期",
-      "tags": [
-        {
-          "id": "t13",
-          "name": "未名市",
-          "color": "#8F8F8F"
-        },
-        {
-          "id": "t21",
-          "name": "木犀镇",
-          "color": "#C2A878"
-        }
-      ]
+     "id": "t31",
+     "name": "第三章",
+     "color": "#7A4E26"
     },
     {
-      "id": "rarity",
-      "name": "稀有度",
-      "tags": [
-        {
-          "id": "t25",
-          "name": "SSS",
-          "color": "#D4A5E0"
-        },
-        {
-          "id": "t26",
-          "name": "SSR",
-          "color": "#D9C6A8"
-        },
-        {
-          "id": "t27",
-          "name": "SR",
-          "color": "#A8C4D9"
-        },
-        {
-          "id": "t28",
-          "name": "MR",
-          "color": "#C4A8D9"
-        },
-        {
-          "id": "t29",
-          "name": "R",
-          "color": "#B0B0B0"
-        }
-      ]
+     "id": "t32",
+     "name": "第四章",
+     "color": "#6B4221"
+    },
+    {
+     "id": "t33",
+     "name": "第五章",
+     "color": "#5C361C"
     }
-  ]
+   ]
+  },
+  {
+   "id": "state",
+   "name": "篇章",
+   "tags": [
+    {
+     "id": "t14",
+     "name": "旖慕篇",
+     "color": "#D9A0A0"
+    },
+    {
+     "id": "t15",
+     "name": "甜蜜篇",
+     "color": "#E8B4A0"
+    },
+    {
+     "id": "t16",
+     "name": "约定篇",
+     "color": "#C9A9C9"
+    },
+    {
+     "id": "t17",
+     "name": "挚爱篇",
+     "color": "#B98E8E"
+    },
+    {
+     "id": "t18",
+     "name": "相守篇",
+     "color": "#A8B4A0"
+    },
+    {
+     "id": "t19",
+     "name": "未定篇",
+     "color": "#8F8F9C"
+    },
+    {
+     "id": "t20",
+     "name": "异世篇",
+     "color": "#9C8FB0"
+    }
+   ]
+  },
+  {
+   "id": "eventType",
+   "name": "事件类型",
+   "tags": [
+    {
+     "id": "t9",
+     "name": "案件",
+     "color": "#A9716A"
+    },
+    {
+     "id": "t10",
+     "name": "日常",
+     "color": "#C4A484"
+    },
+    {
+     "id": "t11",
+     "name": "生日",
+     "color": "#D9A441"
+    },
+    {
+     "id": "t22",
+     "name": "求婚",
+     "color": "#D4A0A0"
+    },
+    {
+     "id": "t23",
+     "name": "周年",
+     "color": "#A9A9D4"
+    },
+    {
+     "id": "t24",
+     "name": "结婚",
+     "color": "#D4B4A0"
+    }
+   ]
+  },
+  {
+   "id": "place",
+   "name": "地点/时期",
+   "tags": [
+    {
+     "id": "t13",
+     "name": "未名市",
+     "color": "#8F8F8F"
+    },
+    {
+     "id": "t21",
+     "name": "木犀镇",
+     "color": "#C2A878"
+    }
+   ]
+  },
+  {
+   "id": "rarity",
+   "name": "稀有度",
+   "tags": [
+    {
+     "id": "t25",
+     "name": "SSS",
+     "color": "#D4A5E0"
+    },
+    {
+     "id": "t26",
+     "name": "SSR",
+     "color": "#D9C6A8"
+    },
+    {
+     "id": "t27",
+     "name": "SR",
+     "color": "#A8C4D9"
+    },
+    {
+     "id": "t28",
+     "name": "MR",
+     "color": "#C4A8D9"
+    },
+    {
+     "id": "t29",
+     "name": "R",
+     "color": "#B0B0B0"
+    }
+   ]
+  }
+ ]
 }
