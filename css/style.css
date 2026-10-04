@@ -1182,3 +1182,40 @@ a:hover { text-decoration: underline; }
   color: var(--muted);
   padding: 60px 0;
 }
+
+/* ===== 分页控件（日志页等通用） ===== */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.pg-btn, .pg-num {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: .78rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.pg-btn:hover:not(:disabled), .pg-num:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pg-btn:disabled { opacity: .35; cursor: default; }
+.pg-num.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.pg-info {
+  font-size: .72rem;
+  color: var(--muted);
+  margin-left: 6px;
+}
