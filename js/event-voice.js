@@ -117,19 +117,20 @@ function makeVoicePlayer(voice, i) {
   document.addEventListener('mousemove', e => { if (seeking) seekAt(e.clientX); });
   document.addEventListener('mouseup', () => { seeking = false; });
 
-  /* 台词自动滚动：当前句高亮（白色半透明全宽）+ 贴窗口顶部 */
+  /* 台词自动滚动：当前句高亮（白色半透明全宽）+ 贴窗口顶部；
+     句间空档与暂停时保持当前句高亮不消失，下一句出现才切换 */
   let curIdx = -1;
   audio.addEventListener('timeupdate', () => {
     const t = audio.currentTime;
     let idx = -1;
     for (let k = 0; k < subs.length; k++) if (t >= subs[k][0] && t < subs[k][1]) { idx = k; break; }
-    if (idx === curIdx) return;
-    lines.forEach((el, k) => {
-      el.classList.toggle('active', k === idx);
-      el.classList.toggle('done', k < idx);
-    });
     if (idx >= 0) {
+      if (idx === curIdx) return;
       curIdx = idx;
+      lines.forEach((el, k) => {
+        el.classList.toggle('active', k === idx);
+        el.classList.toggle('done', k < idx);
+      });
       lyrics.scrollTo({ top: lines[idx].offsetTop - 4, behavior: 'smooth' });
     } else if (t < 0.5) { curIdx = -1; }
   });
