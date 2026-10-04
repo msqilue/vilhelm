@@ -1117,13 +1117,20 @@ a:hover { text-decoration: underline; }
 .changelog-ver {
   flex: 0 0 auto;
   min-width: 150px;
+  line-height: 1.5;
+  padding-top: 2px;
+  white-space: nowrap;
+}
+.cl-time {
   font-size: 12.5px;
   font-weight: 600;
   color: var(--accent);
-  line-height: 1.6;
-  padding-top: 2px;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+}
+.cl-ver {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .changelog-body {

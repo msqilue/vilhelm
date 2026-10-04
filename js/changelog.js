@@ -19,7 +19,10 @@
       const items = Array.isArray(entry.items) ? entry.items : [entry.items];
       const lis = items.map(t => `<li>${escapeHtml(t)}</li>`).join('');
       return `<div class="changelog-item">
-        <div class="changelog-ver">${escapeHtml(entry.date || '')}</div>
+        <div class="changelog-ver">
+          <div class="cl-time">${escapeHtml(entry.date || '')}</div>
+          <div class="cl-ver">${escapeHtml(entry.ver || '')}</div>
+        </div>
         <div class="changelog-body">
           <ul>${lis}</ul>
         </div>
