@@ -468,24 +468,31 @@
     const RARITY_TAG = { t25: 'SSS', t26: 'SSR', t27: 'SR', t28: 'MR', t29: 'R' };
 
     /* 从时间线事件派生典藏卡（单一数据源：events.json）
-       条件 = 有卡面图 + 有语音 + 带稀有度标签；稀有度取事件的稀有度标签 */
+       条件 = 有卡面图 + 有语音 + 带稀有度标签；稀有度取事件的稀有度标签
+       voices（多段语音）会拆成独立条目：标题 = 事件标题-语音名 */
     function buildCards() {
       const byTag = {};
       DATA.categories.forEach(c => (c.tags || []).forEach(t => { byTag[t.id] = t.name; }));
       const cards = [];
       DATA.events.forEach(e => {
         const imgs = e.images || [], auds = e.audios || [];
-        if (!imgs.length || !auds.length) return;
         const tags = e.tags || [];
         const rid = tags.find(t => RARITY_TAG[t]);
         if (!rid) return;
         const tagNames = tags.filter(t => !RARITY_TAG[t]).map(t => byTag[t]).filter(Boolean);
         const mainTag = byTag[e.mainTag];
         const sub = (e.subtitle || '').trim() || mainTag || tagNames[0] || '';
-        cards.push({
-          id: e.id, name: e.title, rarity: RARITY_TAG[rid], sub,
-          tags: tagNames, date: e.date || '', img: imgs[0], audio: auds[0], dur: ''
-        });
+        const push = (name, img, audio, subTxt) => {
+          cards.push({
+            id: e.id, name, rarity: RARITY_TAG[rid], sub: subTxt,
+            tags: tagNames, date: e.date || '', img, audio, dur: ''
+          });
+        };
+        if ((e.voices || []).length) {
+          e.voices.forEach(v => push(e.title + '-' + v.title, v.image, v.audio, sub));
+        }
+        if (!imgs.length || !auds.length) return;
+        push(e.title, imgs[0], auds[0], sub);
       });
       return cards;
     }
