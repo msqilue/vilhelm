@@ -251,8 +251,8 @@
           </div>
           <div class="card-info">
             <div class="card-name">${esc(it.name)}</div>
-            <div class="card-tags">${(it.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('')}</div>
             <div class="card-sub">${esc(it.sub)}</div>
+            <div class="card-tags">${(it.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('')}</div>
           </div>
         </div>`).join('');
     }
