@@ -68,7 +68,8 @@
         : `<button class="pg-num ${n === state.page ? 'on' : ''}" data-pg="${n}">${n}</button>`).join('')}
       <button class="pg-btn" data-pg="next" ${state.page >= total ? 'disabled' : ''}>下一页 ›</button>
       <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>
-      <span class="pg-jump">第 <input class="pg-input" id="pg-input" type="number" min="1" max="${total}" value="${state.page}"> 页</span>`;
+      <span class="pg-jump">第 <input class="pg-input" id="pg-input" type="number" min="1" max="${total}" value="${state.page}"> 页
+        <button class="pg-btn pg-go" id="pg-go">跳转</button></span>`;
     pager.style.display = total > 1 ? 'flex' : 'none';
   }
 
@@ -97,18 +98,18 @@
       render();
       els.pager.addEventListener('click', e => {
         const b = e.target.closest('[data-pg]');
-        if (!b) return;
-        const pg = b.dataset.pg;
-        if (pg === 'prev') goPage(state.page - 1);
-        else if (pg === 'next') goPage(state.page + 1);
-        else goPage(+pg);
+        if (b) {
+          const pg = b.dataset.pg;
+          if (pg === 'prev') goPage(state.page - 1);
+          else if (pg === 'next') goPage(state.page + 1);
+          else goPage(+pg);
+          return;
+        }
+        if (e.target.closest('#pg-go')) jumpTo();
       });
       els.pager.addEventListener('keydown', e => {
         if (e.key === 'Enter' && e.target.id === 'pg-input') jumpTo();
       });
-      els.pager.addEventListener('blur', e => {
-        if (e.target.id === 'pg-input') jumpTo();
-      }, true);
     } catch (err) {
       console.error('changelog load failed', err);
       els.changelog.innerHTML = '<div class="changelog-empty">日志数据加载失败，请刷新重试</div>';
