@@ -23,7 +23,7 @@
     /* 双语音并列：卡片式，卡片比例适配卡面（原图 9:20） */
     .v-voices{display:grid;grid-template-columns:repeat(2,252px);gap:20px;justify-content:center}
     @media (max-width:640px){.v-voices{grid-template-columns:1fr;justify-items:center}}
-    .v-card{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#000;height:560px;width:252px}
+    .v-card{position:relative;border-radius:16px;overflow:hidden;background:#000;height:560px;width:252px}
     .v-bg{position:absolute;inset:0}
     .v-bg img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
     .v-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,20,24,.35) 0%,rgba(18,20,24,.15) 32%,rgba(18,20,24,.74) 76%,rgba(18,20,24,.96) 100%)}
