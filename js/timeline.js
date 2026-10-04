@@ -42,11 +42,12 @@ function renderSwitch() {
   });
 }
 
-/* 筛选面板：四类别 → 标签多选 */
+/* 筛选面板：四类别 → 标签多选（稀有度组置顶） */
 function renderFilter() {
   const el = document.getElementById('filter-panel');
   if (!DATA.categories.length) { el.innerHTML = ''; return; }
-  el.innerHTML = DATA.categories.map(c => {
+  const cats = [DATA.categories.find(c => c.name === '稀有度'), ...DATA.categories.filter(c => c.name !== '稀有度')].filter(Boolean);
+  el.innerHTML = cats.map(c => {
     const tags = c.tags.map(t =>
       `<span class="tag-chip ${state.tags.has(t.id) ? 'on' : ''}" data-tag="${t.id}" style="${t.color && !state.tags.has(t.id) ? 'border-color:' + t.color + ';' : ''}">${escapeHtml(t.name)}</span>`
     ).join('');
