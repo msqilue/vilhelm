@@ -55,7 +55,7 @@ function renderVoices(ev) {
     <div class="v-card" id="vc${i}">
       <div class="v-bg"><img src="${escapeHtml(v.image)}" alt="${escapeHtml(v.title)}"></div>
       <div class="v-overlay"></div>
-      <div class="v-top"><span class="v-name"><span class="v-disc">♪</span>${escapeHtml(v.title)}</span></div>
+      <div class="v-top"><span class="v-name">${escapeHtml(v.title)}</span></div>
       <div class="v-lyrics" id="vlyr${i}"></div>
       <div class="v-player">
         <span class="v-time" id="vtime${i}">0:00 / 0:00</span>
