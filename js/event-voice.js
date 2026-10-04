@@ -131,7 +131,7 @@ function makeVoicePlayer(voice, i) {
         el.classList.toggle('active', k === idx);
         el.classList.toggle('done', k < idx);
       });
-      lyrics.scrollTo({ top: lines[idx].offsetTop - 4, behavior: 'smooth' });
+      lyrics.scrollTo({ top: Math.max(0, lines[idx].offsetTop - (lyrics.clientHeight - lines[idx].offsetHeight) / 2), behavior: 'smooth' });
     } else if (t < 0.5) { curIdx = -1; }
   });
 }
