@@ -1256,3 +1256,59 @@ a:hover { text-decoration: underline; }
 }
 .pg-input:focus { border-color: var(--accent); outline: none; }
 .pg-go { min-width: 40px; height: 24px; padding: 0 8px; font-size: .72rem; }
+
+/* ===== 全局迷你播放器浮窗（全站共享：切页/新开页面持续播放） ===== */
+.mini-player {
+  position: fixed; right: 20px; bottom: 20px; z-index: 999;
+  display: none; flex-direction: column;
+  min-width: 380px; max-width: 520px;
+  padding: 10px 14px 12px 10px;
+  border: 1px solid rgba(110,143,78,.45); border-radius: 14px;
+  background: rgba(26,22,38,.92); backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  transition: transform .25s ease, opacity .25s ease;
+  opacity: 0; transform: translateY(24px);
+}
+.mini-player.show { display: flex; opacity: 1; transform: translateY(0); }
+.mp-dragbar { position:absolute; top:0; left:0; right:0; height:8px; cursor:grab; border-radius:14px 14px 0 0; }
+.mp-dragbar:active { cursor:grabbing; }
+.mp-pl-wrap { width:100%; max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.mp-pl-wrap.open { max-height:264px; border-bottom:1px solid var(--line); margin-bottom:10px; }
+.mp-pl-title { font-size:.72rem; color:var(--muted); padding:2px 6px 8px; display:flex; justify-content:space-between; align-items:center; }
+.mp-pl-items { overflow-y:auto; max-height:216px; }
+.mp-pl-item { display:flex; align-items:center; gap:6px; padding:6px 6px; border-radius:8px; font-size:.78rem; color:var(--ink); cursor:pointer; }
+.mp-pl-item:hover { background:var(--glass-strong); }
+.mp-pl-item.playing { color: var(--accent); background: var(--accent-soft); }
+.mp-pl-idx { color:var(--muted); font-size:.68rem; width:16px; flex:none; }
+.mp-pl-name { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mp-pl-dur { color:var(--muted); font-size:.66rem; flex:none; }
+.mp-pl-del { width:18px; height:18px; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:.85rem; line-height:1; border-radius:50%; flex:none; }
+.mp-pl-del:hover { color: var(--gold); background: rgba(255,255,255,.08); }
+.mp-pl-empty { font-size:.74rem; color:var(--muted); padding:12px 6px; text-align:center; }
+.mp-body { display:flex; align-items:center; gap:10px; width:100%; }
+.mp-coverwrap { position: relative; flex: none; }
+.mp-cover { width:52px; height:52px; border-radius:10px; object-fit:cover; border:1px solid var(--line); display:block; }
+.mp-list-tab { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:26px; height:26px; border-radius:50%; border:none; background:rgba(20,17,30,.6); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s, background .2s; }
+.mini-player:hover .mp-list-tab { opacity:1; }
+.mp-list-tab:hover { background: rgba(110,143,78,.75); }
+.mp-list-tab.open { opacity:1; background: rgba(110,143,78,.75); }
+.tab-ic { width:14px; height:14px; display:block; }
+.mp-info { flex:1; min-width:0; }
+.mp-name { font-family: Georgia,"Noto Serif SC",serif; font-size:.9rem; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mp-sub { font-size:.7rem; color:var(--muted); margin-top:2px; }
+.mp-ctrl { display:flex; align-items:center; gap:6px; flex:none; }
+.mp-btn { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; font-size:.8rem; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.mp-btn:hover { border-color: var(--accent); color: var(--accent); }
+.mp-btn.mp-play { width:40px; height:40px; background: var(--accent); border-color: var(--accent); color:#fff; font-size:.95rem; }
+.mp-btn.mp-play.playing { background: var(--gold); border-color: var(--gold); color:#2A2438; }
+.mp-mode { display:flex; align-items:center; flex:none; }
+.mp-mode-btn { width:30px; height:30px; border-radius:50%; border:1px solid transparent; background:transparent; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color .2s; }
+.mp-mode-btn:hover { color: var(--accent); }
+.mp-mode-btn.on { color: var(--gold); }
+.mp-mode-ic { width:17px; height:17px; display:block; }
+.mp-close { position:absolute; top:8px; right:8px; width:22px; height:22px; border:none; background:transparent; color:var(--muted); font-size:1rem; cursor:pointer; line-height:1; }
+.mp-close:hover { color:var(--accent); }
+@media (max-width: 640px) {
+  .mini-player { min-width: 0; left: 12px; right: 12px; }
+  .mp-mode { width:100%; justify-content:flex-end; }
+}

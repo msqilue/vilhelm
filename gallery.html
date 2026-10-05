@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>典藏 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261005c17">
+  <link rel="stylesheet" href="css/style.css?v=20261005c24">
   <style>
     /* ===== 典藏栏目组件样式 ===== */
     .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
@@ -54,63 +54,8 @@
     .pg-btn:disabled { opacity:.35; cursor:default; }
     .pg-num.on { background: var(--accent); border-color: var(--accent); color:#fff; }
     .pg-info { font-size:.72rem; color:var(--muted); margin-left:6px; }
-    /* 迷你播放器浮窗（向上撑开：列表区 + 控制条） */
-    .mini-player {
-      position: fixed; right: 20px; bottom: 20px; z-index: 999;
-      display: none; flex-direction: column;
-      min-width: 380px; max-width: 520px;
-      padding: 10px 14px 12px 10px;
-      border: 1px solid rgba(110,143,78,.45); border-radius: 14px;
-      background: rgba(26,22,38,.92); backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,.45);
-      transition: transform .25s ease, opacity .25s ease;
-      opacity: 0; transform: translateY(24px);
-    }
-    .mini-player.show { display: flex; opacity: 1; transform: translateY(0); }
-    .mp-dragbar { position:absolute; top:0; left:0; right:0; height:8px; cursor:grab; border-radius:14px 14px 0 0; }
-    .mp-dragbar:active { cursor:grabbing; }
-    /* 向上撑开的播放列表区 */
-    .mp-pl-wrap { width:100%; max-height:0; overflow:hidden; transition:max-height .3s ease; }
-    .mp-pl-wrap.open { max-height:264px; border-bottom:1px solid var(--line); margin-bottom:10px; }
-    .mp-pl-title { font-size:.72rem; color:var(--muted); padding:2px 6px 8px; display:flex; justify-content:space-between; align-items:center; }
-    .mp-pl-items { overflow-y:auto; max-height:216px; }
-    .mp-pl-item { display:flex; align-items:center; gap:6px; padding:6px 6px; border-radius:8px; font-size:.78rem; color:var(--ink); cursor:pointer; }
-    .mp-pl-item:hover { background:var(--glass-strong); }
-    .mp-pl-item.playing { color: var(--accent); background: var(--accent-soft); }
-    .mp-pl-idx { color:var(--muted); font-size:.68rem; width:16px; flex:none; }
-    .mp-pl-name { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .mp-pl-dur { color:var(--muted); font-size:.66rem; flex:none; }
-    .mp-pl-del { width:18px; height:18px; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:.85rem; line-height:1; border-radius:50%; flex:none; }
-    .mp-pl-del:hover { color: var(--gold); background: rgba(255,255,255,.08); }
-    .mp-pl-empty { font-size:.74rem; color:var(--muted); padding:12px 6px; text-align:center; }
-    /* 常驻控制条 */
-    .mp-body { display:flex; align-items:center; gap:10px; width:100%; }
-    .mp-coverwrap { position: relative; flex: none; }
-    .mp-cover { width:52px; height:52px; border-radius:10px; object-fit:cover; border:1px solid var(--line); display:block; }
-    /* 封面正中央按钮：悬停小窗时显示，点击向上撑开/收起播放列表 */
-    .mp-list-tab { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:26px; height:26px; border-radius:50%; border:none; background:rgba(20,17,30,.6); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s, background .2s; }
-    .mini-player:hover .mp-list-tab { opacity:1; }
-    .mp-list-tab:hover { background: rgba(110,143,78,.75); }
-    .mp-list-tab.open { opacity:1; background: rgba(110,143,78,.75); }
-    .tab-ic { width:14px; height:14px; display:block; }
-    .mp-info { flex:1; min-width:0; }
-    .mp-name { font-family: Georgia,"Noto Serif SC",serif; font-size:.9rem; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .mp-sub { font-size:.7rem; color:var(--muted); margin-top:2px; }
-    .mp-ctrl { display:flex; align-items:center; gap:6px; flex:none; }
-    .mp-btn { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; font-size:.8rem; display:flex; align-items:center; justify-content:center; transition:all .2s; }
-    .mp-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .mp-btn.mp-play { width:40px; height:40px; background: var(--accent); border-color: var(--accent); color:#fff; font-size:.95rem; }
-    .mp-btn.mp-play.playing { background: var(--gold); border-color: var(--gold); color:#2A2438; }
-    .mp-mode { display:flex; align-items:center; flex:none; }
-    .mp-mode-btn { width:30px; height:30px; border-radius:50%; border:1px solid transparent; background:transparent; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color .2s; }
-    .mp-mode-btn:hover { color: var(--accent); }
-    .mp-mode-btn.on { color: var(--gold); }
-    .mp-mode-ic { width:17px; height:17px; display:block; }
-    .mp-close { position:absolute; top:8px; right:8px; width:22px; height:22px; border:none; background:transparent; color:var(--muted); font-size:1rem; cursor:pointer; line-height:1; }
-    .mp-close:hover { color:var(--accent); }
+    /* 迷你播放器浮窗样式已迁移至全局 style.css（全站共享） */
     @media (max-width: 640px) {
-      .mini-player { min-width: 0; left: 12px; right: 12px; }
-      .mp-mode { width:100%; justify-content:flex-end; }
       .music-row { grid-template-columns: 30px 1fr auto; }
       .row-sub { display:none; }
     }
@@ -166,98 +111,49 @@
     </div>
   </footer>
 
-  <!-- 迷你播放器浮窗（向上撑开：上半播放列表 + 下半控制条） -->
-  <div class="mini-player" id="mini-player">
-    <div class="mp-dragbar" id="mp-dragbar"></div>
-    <!-- 向上撑开的播放列表区 -->
-    <div class="mp-pl-wrap" id="mp-pl-wrap"></div>
-    <!-- 常驻控制条 -->
-    <div class="mp-body">
-      <div class="mp-coverwrap">
-        <img class="mp-cover" id="mp-cover" alt="">
-        <button class="mp-list-tab" id="mp-list-tab" title="播放列表">
-          <svg class="tab-ic ic-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l6-6 6 6"/></svg>
-          <svg class="tab-ic ic-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M6 10l6 6 6-6"/></svg>
-        </button>
-      </div>
-      <div class="mp-info">
-        <div class="mp-name" id="mp-name"></div>
-        <div class="mp-sub" id="mp-sub"></div>
-      </div>
-      <div class="mp-ctrl">
-        <button class="mp-btn" id="mp-prev" title="上一首">⏮</button>
-        <button class="mp-btn mp-play" id="mp-toggle" title="播放/停止">▶</button>
-        <button class="mp-btn" id="mp-next" title="下一首">⏭</button>
-      </div>
-      <div class="mp-mode">
-        <button class="mp-mode-btn" id="mp-mode" title="顺序播放">
-          <svg class="mp-mode-ic ic-order" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H8a4 4 0 0 0-4 4"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h13a4 4 0 0 0 4-4"/></svg>
-          <svg class="mp-mode-ic ic-random" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
-        </button>
-      </div>
-      <button class="mp-close" id="mp-close" title="关闭">×</button>
-    </div>
-  </div>
-
-  <script src="js/common.js?v=20261005c17"></script>
+  <script src="js/common.js?v=20261005c24"></script>
   <script>
-    /* ===== 典藏页面：SR/MR 卡面与语音 ===== */
-    let CARDS = [];
+    /* ===== 典藏页面：SR/MR 卡面与语音（播放器为全站共享 MP，切页/新开页面不断） ===== */
     const PAGE_SIZE = 10;
-    const state = { sub: 'ssr', view: 'card', mode: 'order', playingIdx: -1, page: 1, queue: [], dragging: false };
-    const audio = new Audio();
-    audio.loop = false;
-    const mp = document.getElementById('mini-player');
+    const state = { sub: 'ssr', view: 'card', page: 1 };
 
     function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
     function visible() {
-      return CARDS.map((it, i) => ({ ...it, i }))
+      return MP.cards.map((it, i) => ({ ...it, i }))
         .filter(it => state.sub === 'all' || it.rarity.toLowerCase() === state.sub);
     }
-    function initQueue() { state.queue = visible().map(x => x.i); }
 
+    /* 分页（每页 10 条） */
     function pageItems() {
-      const list = visible();
-      const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-      if (state.page > total) state.page = total;
-      const start = (state.page - 1) * PAGE_SIZE;
-      return list.slice(start, start + PAGE_SIZE);
+      const all = visible();
+      const total = all.length, pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      state.page = Math.min(Math.max(1, state.page), pages);
+      return all.slice((state.page - 1) * PAGE_SIZE, state.page * PAGE_SIZE);
     }
-
-    /* 折叠页码：首尾恒显，当前页前后各1页，中间用 … 省略 */
-    function pageNums(current, total) {
-      const set = new Set([1, total, current - 1, current, current + 1]);
-      const nums = [...set].filter(n => n >= 1 && n <= total).sort((a, b) => a - b);
-      const out = [];
-      let prev = 0;
-      for (const n of nums) {
-        if (prev && n - prev > 1) out.push('…');
-        out.push(n);
-        prev = n;
-      }
-      return out;
-    }
-
     function renderPager() {
+      const all = visible();
+      const total = all.length, pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
       const pager = document.getElementById('pager');
-      const list = visible();
-      const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-      pager.innerHTML = `
-        <button class="pg-btn" data-pg="prev" ${state.page <= 1 ? 'disabled' : ''}>‹ 上一页</button>
-        ${pageNums(state.page, total).map(n => n === '…'
-          ? `<span class="pg-ellipsis">…</span>`
-          : `<button class="pg-num ${n === state.page ? 'on' : ''}" data-pg="${n}">${n}</button>`).join('')}
-        <button class="pg-btn" data-pg="next" ${state.page >= total ? 'disabled' : ''}>下一页 ›</button>
-        <span class="pg-info">共 ${list.length} 条 · 第 ${state.page}/${total} 页</span>
-        <span class="pg-jump">第 <input class="pg-input" id="pg-input" type="number" min="1" max="${total}" value="${state.page}"> 页
-          <button class="pg-btn pg-go" id="pg-go">跳转</button></span>`;
-      pager.style.display = total > 1 ? 'flex' : 'none';
+      if (total === 0) { pager.innerHTML = ''; return; }
+      let html = '<button class="pg-btn" id="pg-prev" ' + (state.page <= 1 ? 'disabled' : '') + '>‹ 上一页</button>';
+      let nums = [1];
+      for (let i = Math.max(2, state.page - 1); i <= Math.min(pages - 1, state.page + 1); i++) nums.push(i);
+      if (pages > 1) nums.push(pages);
+      nums = [...new Set(nums)];
+      let prev = 0;
+      nums.forEach(n => {
+        if (n - prev > 1) html += '<span style="color:var(--muted);font-size:.8rem">…</span>';
+        html += '<button class="pg-num ' + (n === state.page ? 'on' : '') + '" data-page="' + n + '">' + n + '</button>';
+        prev = n;
+      });
+      html += '<button class="pg-btn" id="pg-next" ' + (state.page >= pages ? 'disabled' : '') + '>下一页 ›</button>';
+      html += '<span class="pg-info">共 ' + total + ' 条 · 第 ' + state.page + '/' + pages + ' 页</span>';
+      pager.innerHTML = html;
     }
-
     function goPage(p) {
-      const list = visible();
-      const total = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-      state.page = Math.min(Math.max(1, p), total);
+      const all = visible();
+      const pages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+      state.page = Math.min(Math.max(1, p), pages);
       renderAll();
     }
 
@@ -265,11 +161,11 @@
       const list = pageItems();
       const grid = document.getElementById('card-grid');
       grid.innerHTML = list.map(it => `
-        <div class="srmr-card ${state.playingIdx === it.i ? 'playing' : ''}" data-idx="${it.i}">
+        <div class="srmr-card ${MP.playingKey === it.key ? 'playing' : ''}" data-key="${esc(it.key)}">
           <div class="card-art">
             <img src="${it.img}" alt="${esc(it.name)}" loading="lazy">
             <span class="rarity">${it.rarity}</span>
-            <button class="card-play" data-idx="${it.i}" title="播放语音">${state.playingIdx === it.i ? '❚❚' : '▶'}</button>
+            <button class="card-play" data-key="${esc(it.key)}" title="播放语音">${MP.state.playing && MP.playingKey === it.key ? '❚❚' : '▶'}</button>
           </div>
           <div class="card-info">
             <div class="card-name">${esc(it.name)}</div>
@@ -283,265 +179,65 @@
       const list = pageItems();
       const ml = document.getElementById('music-list');
       ml.innerHTML = list.map((it, k) => `
-        <div class="music-row ${state.playingIdx === it.i ? 'playing' : ''}" data-idx="${it.i}">
-          <span class="row-idx">${state.playingIdx === it.i ? '♪' : String((state.page - 1) * PAGE_SIZE + k + 1).padStart(2, '0')}</span>
+        <div class="music-row ${MP.playingKey === it.key ? 'playing' : ''}" data-key="${esc(it.key)}">
+          <span class="row-idx">${MP.playingKey === it.key ? '♪' : String((state.page - 1) * PAGE_SIZE + k + 1).padStart(2, '0')}</span>
           <div>
             <div class="row-name">${esc(it.name)}</div>
             <div class="row-sub">${esc(it.sub)}</div>
           </div>
           <div style="display:flex;gap:6px">${(it.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join('')}</div>
           <span class="row-dur">${it.dur}</span>
-          <button class="row-play" data-idx="${it.i}" title="播放语音">${state.playingIdx === it.i ? '❚❚' : '▶'}</button>
+          <button class="row-play" data-key="${esc(it.key)}" title="播放语音">${MP.state.playing && MP.playingKey === it.key ? '❚❚' : '▶'}</button>
         </div>`).join('');
     }
 
-    function updateMiniPlayer() {
-      if (state.playingIdx < 0) { mp.classList.remove('show'); return; }
-      const it = CARDS[state.playingIdx];
-      document.getElementById('mp-cover').src = it.img;
-      document.getElementById('mp-name').textContent = it.name;
-      document.getElementById('mp-sub').textContent = it.sub + ' · ' + it.rarity;
-      const t = document.getElementById('mp-toggle');
-      t.textContent = audio.paused ? '▶' : '❚❚';
-      t.classList.toggle('playing', !audio.paused);
-      updateModeBtn();
-      mp.classList.add('show');
-    }
-
-    function updateModeBtn() {
-      const b = document.getElementById('mp-mode');
-      const orderIc = b.querySelector('.ic-order');
-      const randomIc = b.querySelector('.ic-random');
-      orderIc.style.display = state.mode === 'random' ? 'none' : 'block';
-      randomIc.style.display = state.mode === 'random' ? 'block' : 'none';
-      b.title = state.mode === 'random' ? '随机播放' : '顺序播放';
-      b.classList.toggle('on', state.mode === 'random');
-    }
-
-    function renderPlaylist() {
-      const wrap = document.getElementById('mp-pl-wrap');
-      if (!state.queue.length) {
-        wrap.innerHTML = '<div class="mp-pl-empty">播放列表为空 · 从上方卡片/列表点击可重新加入</div>';
-        return;
-      }
-      wrap.innerHTML = `
-        <div class="mp-pl-title">播放列表（${state.queue.length}）</div>
-        <div class="mp-pl-items">
-          ${state.queue.map((idx, k) => {
-            const it = CARDS[idx];
-            return `<div class="mp-pl-item ${state.playingIdx === idx ? 'playing' : ''}" data-idx="${idx}">
-              <span class="mp-pl-idx">${state.playingIdx === idx ? '♪' : String(k + 1).padStart(2, '0')}</span>
-              <span class="mp-pl-name">${esc(it.name)}</span>
-              <span class="mp-pl-dur">${it.dur || ''}</span>
-              <button class="mp-pl-del" data-idx="${idx}" title="从本次循环删除">×</button>
-            </div>`;
-          }).join('')}
-        </div>`;
-    }
-
     function renderAll() {
-      renderGrid(); renderList(); renderPager(); renderPlaylist(); updateMiniPlayer();
+      renderGrid(); renderList(); renderPager();
       const np = document.getElementById('now-playing');
-      if (state.playingIdx >= 0) {
-        const it = CARDS[state.playingIdx];
-        np.classList.add('on');
-        np.textContent = '正在播放：' + it.name + '（' + it.rarity + '） · 可从右下角迷你播放器控制';
+      if (MP.state.playing && MP.playingKey) {
+        const it = MP.cards.find(c => c.key === MP.playingKey);
+        if (it) {
+          np.classList.add('on');
+          np.textContent = '正在播放：' + it.name + '（' + it.rarity + '） · 可从右下角迷你播放器控制';
+        } else { np.classList.remove('on'); }
       } else { np.classList.remove('on'); }
     }
 
-    function stopPlay() {
-      audio.pause(); audio.currentTime = 0; state.playingIdx = -1; renderAll();
-    }
-
-    function playIdx(i) {
-      const it = CARDS[i];
-      if (!state.queue.includes(i)) state.queue.push(i); // 从大列表点击的卡重新加入播放列表
-      if (state.playingIdx === i) {
-        if (audio.paused) { audio.play(); } else { audio.pause(); }
-        updateMiniPlayer(); renderPlaylist(); return;
-      }
-      audio.src = it.audio; audio.play();
-      state.playingIdx = i; renderAll();
-    }
-
-    function nextTrack() {
-      const q = state.queue;
-      if (!q.length) return;
-      const pos = q.indexOf(state.playingIdx);
-      let next;
-      if (state.mode === 'random' && q.length > 1) {
-        let r; do { r = Math.floor(Math.random() * q.length); } while (r === pos);
-        next = q[r];
-      } else { next = q[(pos + 1) % q.length]; }
-      audio.src = CARDS[next].audio; audio.play();
-      state.playingIdx = next; renderAll();
-    }
-
-    function prevTrack() {
-      const q = state.queue;
-      if (!q.length) return;
-      const pos = q.indexOf(state.playingIdx);
-      const prev = q[(pos - 1 + q.length) % q.length];
-      audio.src = CARDS[prev].audio; audio.play();
-      state.playingIdx = prev; renderAll();
-    }
-
-    audio.addEventListener('ended', () => nextTrack());
-
+    // 筛选（切换不打断全局播放器）
     document.querySelectorAll('.gallery-tabs .chip').forEach(c => c.addEventListener('click', () => {
-      state.sub = c.dataset.sub; state.page = 1; state.playingIdx = -1; audio.pause();
-      initQueue();
+      state.sub = c.dataset.sub; state.page = 1;
       document.querySelectorAll('.gallery-tabs .chip').forEach(x => x.classList.toggle('on', x === c));
       renderAll();
     }));
+    // 视图切换
     document.querySelectorAll('.view-switch .chip').forEach(c => c.addEventListener('click', () => {
-      state.view = c.dataset.view;
+      state.view = c.dataset.view; state.page = 1;
       document.querySelectorAll('.view-switch .chip').forEach(x => x.classList.toggle('on', x === c));
       document.getElementById('card-grid').style.display = state.view === 'card' ? 'grid' : 'none';
       document.getElementById('list-view').style.display = state.view === 'list' ? 'block' : 'none';
+      renderAll();
     }));
-    document.getElementById('mp-mode').addEventListener('click', () => {
-      state.mode = state.mode === 'random' ? 'order' : 'random';
-      updateModeBtn();
-    });
-
+    // 分页
     document.getElementById('pager').addEventListener('click', e => {
-      const b = e.target.closest('[data-pg]');
-      if (b) {
-        const pg = b.dataset.pg;
-        if (pg === 'prev') goPage(state.page - 1);
-        else if (pg === 'next') goPage(state.page + 1);
-        else goPage(+pg);
-        return;
-      }
-      if (e.target.closest('#pg-go')) {
-        const input = document.getElementById('pg-input');
-        if (!input) return;
-        const v = parseInt(input.value, 10);
-        if (!v || Number.isNaN(v)) return;
-        goPage(v);
-      }
+      const n = e.target.closest('.pg-num'); if (n) return goPage(+n.dataset.page);
+      if (e.target.id === 'pg-prev') return goPage(state.page - 1);
+      if (e.target.id === 'pg-next') return goPage(state.page + 1);
     });
-    document.getElementById('pager').addEventListener('keydown', e => {
-      if (e.key === 'Enter' && e.target.id === 'pg-input') {
-        const v = parseInt(e.target.value, 10);
-        if (!v || Number.isNaN(v)) return;
-        goPage(v);
-      }
-    });
-
+    // 播放：卡片/列表点击 → 以当前筛选视图全部卡片为播放列表，从点击项开始
     document.addEventListener('click', e => {
       const b = e.target.closest('.card-play, .row-play');
-      if (b) { const i = +b.dataset.idx; if (!visible().some(x => x.i === i)) return; playIdx(i); }
-    });
-
-    document.getElementById('mp-toggle').addEventListener('click', () => {
-      if (state.playingIdx < 0) return;
-      if (audio.paused) audio.play(); else audio.pause();
-      updateMiniPlayer();
-    });
-    document.getElementById('mp-next').addEventListener('click', () => { if (state.playingIdx >= 0) nextTrack(); });
-    document.getElementById('mp-prev').addEventListener('click', () => { if (state.playingIdx >= 0) prevTrack(); });
-    document.getElementById('mp-close').addEventListener('click', stopPlay);
-
-    /* 播放列表：向上撑开 + 删除项 */
-    const mpTab = document.getElementById('mp-list-tab');
-    const mpWrap = document.getElementById('mp-pl-wrap');
-    function togglePlaylist() {
-      const opening = !mpWrap.classList.contains('open');
-      mpWrap.classList.toggle('open', opening);
-      mpTab.classList.toggle('open', opening);
-      mpTab.querySelector('.ic-up').style.display = opening ? 'none' : 'block';
-      mpTab.querySelector('.ic-down').style.display = opening ? 'block' : 'none';
-      // 若小窗已被拖动（top 固定），同步上移/下移，保持"向上撑开"
-      const mpEl = document.getElementById('mini-player');
-      if (getComputedStyle(mpEl).bottom === 'auto' && mpEl.style.top) {
-        const delta = opening ? 275 : -275;
-        mpEl.style.top = (parseFloat(mpEl.style.top) - delta) + 'px';
+      if (b) {
+        const k = b.dataset.key;
+        const all = visible();
+        if (!all.some(x => x.key === k)) return;
+        MP.playAll(all.map(x => x.key), k);
       }
-    }
-    mpTab.addEventListener('click', togglePlaylist);
-    document.getElementById('mp-pl-wrap').addEventListener('click', e => {
-      const del = e.target.closest('.mp-pl-del');
-      if (del) {
-        const i = +del.dataset.idx;
-        const pos = state.queue.indexOf(i);
-        if (pos >= 0) state.queue.splice(pos, 1);
-        renderPlaylist();
-        return;
-      }
-      const item = e.target.closest('.mp-pl-item');
-      if (item) { const i = +item.dataset.idx; if (visible().some(x => x.i === i)) playIdx(i); }
     });
+    // 全局播放器状态变化 → 刷新高亮/提示
+    document.addEventListener('mpchange', () => { renderAll(); });
 
-    /* 迷你播放器拖动（可拖动定位） */
-    const dragbar = document.getElementById('mp-dragbar');
-    dragbar.addEventListener('mousedown', e => {
-      state.dragging = true;
-      mp._dx = e.clientX - mp.getBoundingClientRect().left;
-      mp._dy = e.clientY - mp.getBoundingClientRect().top;
-      mp.style.transition = 'none';
-      e.preventDefault();
-    });
-    document.addEventListener('mousemove', e => {
-      if (!state.dragging) return;
-      const x = e.clientX - mp._dx, y = e.clientY - mp._dy;
-      const r = mp.getBoundingClientRect();
-      mp.style.left = Math.min(Math.max(0, x), window.innerWidth - r.width) + 'px';
-      mp.style.top = Math.min(Math.max(0, y), window.innerHeight - r.height) + 'px';
-      mp.style.right = 'auto'; mp.style.bottom = 'auto';
-    });
-    document.addEventListener('mouseup', () => {
-      if (state.dragging) { state.dragging = false; mp.style.transition = ''; }
-    });
-
-    /* 解析 "YYYY.M.D" 日期，无日期返回 0（排最前） */
-    function parseDate(s) {
-      if (!s) return 0;
-      const m = String(s).match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
-      return m ? new Date(+m[1], +m[2] - 1, +m[3]).getTime() : 0;
-    }
-
-    /* 稀有度标签 id → 名称 */
-    const RARITY_TAG = { t25: 'SSS', t26: 'SSR', t27: 'SR', t28: 'MR', t29: 'R' };
-
-    /* 从时间线事件派生典藏卡（单一数据源：events.json）
-       条件 = 有卡面图 + 有语音 + 带稀有度标签；稀有度取事件的稀有度标签
-       voices（多段语音）会拆成独立条目：标题 = 事件标题-语音名 */
-    function buildCards() {
-      const byTag = {};
-      DATA.categories.forEach(c => (c.tags || []).forEach(t => { byTag[t.id] = t.name; }));
-      const cards = [];
-      DATA.events.forEach(e => {
-        const imgs = e.images || [], auds = e.audios || [];
-        const tags = e.tags || [];
-        const rid = tags.find(t => RARITY_TAG[t]);
-        if (!rid) return;
-        const tagNames = tags.filter(t => !RARITY_TAG[t]).map(t => byTag[t]).filter(Boolean);
-        const mainTag = byTag[e.mainTag];
-        const sub = (e.subtitle || '').trim() || mainTag || tagNames[0] || '';
-        const push = (name, img, audio, subTxt) => {
-          cards.push({
-            id: e.id, name, rarity: RARITY_TAG[rid], sub: subTxt,
-            tags: tagNames, date: e.date || '', img, audio, dur: ''
-          });
-        };
-        if ((e.voices || []).length) {
-          e.voices.forEach(v => push(e.title + '-' + v.title, v.image, v.audio, sub));
-        }
-        if (!imgs.length || !auds.length) return;
-        push(e.title, imgs[0], auds[0], sub);
-      });
-      return cards;
-    }
-
-    /* 初始化：加载数据 + 页头页脚 + 背景 + 派生典藏卡 */
     async function boot() {
       await initPage('gallery.html');
-      CARDS = buildCards();
-      // 按日期倒序（最新在前）
-      CARDS.sort((a, b) => (parseDate(b.date) - parseDate(a.date)) || 0);
-      initQueue();
       renderAll();
     }
     boot();
