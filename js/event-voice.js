@@ -173,5 +173,6 @@ function renderNav(ev) {
   let html = '';
   if (prev) html += `<a class="ev-nav-card" href="${navHref(prev)}"><span class="ev-nav-arrow">↑</span><span><em>上一条</em>${escapeHtml(prev.title)}</span></a>`;
   if (next) html += `<a class="ev-nav-card" href="${navHref(next)}"><span class="ev-nav-arrow">↓</span><span><em>下一条</em>${escapeHtml(next.title)}</span></a>`;
-  el.innerHTML = html || '<p class="ev-nav-empty">当前筛选下没有其他事件</p>';
+  if (html) el.innerHTML = '<div class="ev-nav">' + html + '</div>';
+  else el.innerHTML = '<p class="ev-nav-empty">当前筛选下没有其他事件</p>';
 }

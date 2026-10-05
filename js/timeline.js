@@ -6,7 +6,8 @@ try { savedTags = JSON.parse(localStorage.getItem('vilhelm:tlTags') || '[]') || 
 const state = {
   timeline: savedTl || 'all',      // 'all' 或时间线 id
   tags: new Set(savedTags),      // 选中的标签 id（跨类别 AND、同类别 OR）
-  keyword: ''
+  keyword: '',
+  page: 1
 };
 
 initPage('timeline.html').then(renderAll);
@@ -17,6 +18,7 @@ function renderAll() {
   let dirty = false;
   [...state.tags].forEach(id => { if (!valid.has(id)) { state.tags.delete(id); dirty = true; } });
   if (dirty) saveTags();
+  state.page = 1;
   renderSwitch();
   renderFilter();
   renderTimeline();
@@ -103,13 +105,28 @@ function detailHref(id) {
 }
 
 /* 时间轴 A：左右交替式渲染（点击卡片 → 跳转独立详情页） */
+function cardTagHtml(ev) {
+  const main = mainTagOf(ev);
+  if (main) return `<span class="main-tag" style="color:${main.color};border-color:${main.color}">${escapeHtml(main.name)}</span>`;
+  const et = eventTags(ev);
+  const chapter = et.find(t => t.categoryName === '篇章');
+  const rare = et.find(t => ['t25', 't26', 't27', 't28', 't29'].includes(t.id));
+  return [chapter, rare].filter(Boolean)
+    .map(t => `<span class="main-tag" style="color:${t.color};border-color:${t.color}">${escapeHtml(t.name)}</span>`).join('');
+}
 function renderTimeline() {
   const el = document.getElementById('timeline');
-  const list = visibleEvents();
-  if (!list.length) {
+  const all = visibleEvents();
+  const pager = document.getElementById('tl-pager');
+  if (!all.length) {
     el.innerHTML = `<p class="empty-tip">没有符合条件的事件。</p>`;
+    if (pager) pager.style.display = 'none';
     return;
   }
+  const total = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+  if (state.page > total) state.page = total;
+  const start = (state.page - 1) * PAGE_SIZE;
+  const list = all.slice(start, start + PAGE_SIZE);
   el.innerHTML = list.map((ev, i) => {
     const tl = getTimeline(ev.timelineId);
     const imp = ev.importance || 'normal';
@@ -124,7 +141,7 @@ function renderTimeline() {
           <div class="card-body">
             <div class="event-meta">
               ${ev.subtitle ? `<span class="event-subtitle">『${escapeHtml(ev.subtitle)}』</span>` : (tl ? `<span>${escapeHtml(tl.name)}</span>` : '')}
-              ${mainTagOf(ev) ? `<span class="main-tag" style="color:${mainTagOf(ev).color};border-color:${mainTagOf(ev).color}">${escapeHtml(mainTagOf(ev).name)}</span>` : ''}
+              ${cardTagHtml(ev)}
               ${ev.stage ? `<span>${escapeHtml(ev.stage)}</span>` : ''}
               ${ev.date ? `<span>${escapeHtml(ev.date)}</span>` : ''}
               ${imp !== 'normal' ? `<span class="badge ${imp === 'milestone' ? 'badge-milestone' : ''}">${importanceLabel(imp)}</span>` : ''}
@@ -158,6 +175,70 @@ function renderTimeline() {
       refresh();
     });
   });
+  renderPager(all.length, total);
+}
+
+/* ===== 时间线分页（每页 5 条，复用日志页分页样式） ===== */
+const PAGE_SIZE = 5;
+
+function pageNums(current, total) {
+  const set = new Set([1, total, current - 1, current, current + 1]);
+  const nums = [...set].filter(n => n >= 1 && n <= total).sort((a, b) => a - b);
+  const out = [];
+  let prev = 0;
+  for (const n of nums) {
+    if (prev && n - prev > 1) out.push('…');
+    out.push(n);
+    prev = n;
+  }
+  return out;
+}
+
+function renderPager(count, total) {
+  const pager = document.getElementById('tl-pager');
+  if (!pager) return;
+  pager.innerHTML = `
+    <button class="pg-btn" data-pg="prev" ${state.page <= 1 ? 'disabled' : ''}>‹ 上一页</button>
+    ${pageNums(state.page, total).map(n => n === '…'
+      ? `<span class="pg-ellipsis">…</span>`
+      : `<button class="pg-num ${n === state.page ? 'on' : ''}" data-pg="${n}">${n}</button>`).join('')}
+    <button class="pg-btn" data-pg="next" ${state.page >= total ? 'disabled' : ''}>下一页 ›</button>
+    <span class="pg-info">共 ${count} 条 · 第 ${state.page}/${total} 页</span>
+    <span class="pg-jump">第 <input class="pg-input" id="tl-pg-input" type="number" min="1" max="${total}" value="${state.page}"> 页
+      <button class="pg-btn pg-go" id="tl-pg-go">跳转</button></span>`;
+  pager.style.display = total > 1 ? 'flex' : 'none';
+}
+
+function goPage(p) {
+  const total = Math.max(1, Math.ceil(visibleEvents().length / PAGE_SIZE));
+  state.page = Math.min(Math.max(1, p), total);
+  renderTimeline();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const tlPager = document.getElementById('tl-pager');
+if (tlPager) {
+  tlPager.addEventListener('click', e => {
+    const b = e.target.closest('[data-pg]');
+    if (b) {
+      const pg = b.dataset.pg;
+      if (pg === 'prev') goPage(state.page - 1);
+      else if (pg === 'next') goPage(state.page + 1);
+      else goPage(+pg);
+      return;
+    }
+    if (e.target.closest('#tl-pg-go')) {
+      const input = document.getElementById('tl-pg-input');
+      const v = input ? parseInt(input.value, 10) : NaN;
+      if (!Number.isNaN(v)) goPage(v);
+    }
+  });
+  tlPager.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.id === 'tl-pg-input') {
+      const v = parseInt(e.target.value, 10);
+      if (!Number.isNaN(v)) goPage(v);
+    }
+  });
 }
 
 /* 搜索防抖 */
@@ -166,6 +247,7 @@ searchEl.addEventListener('input', () => {
   clearTimeout(searchEl._t);
   searchEl._t = setTimeout(() => {
     state.keyword = searchEl.value.trim();
+    state.page = 1;
     renderTimeline();
   }, 300);
 });
