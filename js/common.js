@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION='20261004c11';
+const DATA_VERSION='20261004c12';
 
 async function loadData() {
   if (DATA.site) return DATA;
