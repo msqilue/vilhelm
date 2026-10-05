@@ -1,4 +1,5 @@
 /* ===== 人物介绍页逻辑 ===== */
+(function () {
 initPage('profile.html').then(async () => {
   const pf = await fetch('data/profile.json?v=' + DATA_VERSION).then(r => r.json());
   const c = pf.character;
@@ -51,3 +52,4 @@ initPage('profile.html').then(async () => {
 
   document.getElementById('pf-note').textContent = c.note || '';
 });
+})();

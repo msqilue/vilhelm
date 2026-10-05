@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>关于 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261005c24">
+  <link rel="stylesheet" href="css/style.css?v=20261005c38">
 </head>
 <body>
   <header class="site-header">
@@ -33,11 +33,13 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=20261005c24"></script>
+  <script src="js/common.js?v=20261005c38"></script>
   <script>
+    (function () {
     initPage('about.html').then(() => {
       document.getElementById('declaration').textContent = DATA.site.fanDeclaration || '';
     });
+    })();
   </script>
 </body>
 </html>

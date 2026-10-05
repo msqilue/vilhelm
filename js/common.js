@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION='20261005c24';
+const DATA_VERSION='20261005c38';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -94,6 +94,15 @@ function importanceLabel(v) {
 /* ===== 背景图 + 自动取色 ===== */
 const BG_KEY = 'vilhelm:bg';
 const OVERLAY_KEY = 'vilhelm:overlay';
+
+/* 页面解析后立即应用已保存的背景图（不等数据加载），切页时背景秒显、避免黑屏；
+   正式的取色/遮罩流程仍由 BG.apply 异步接管 */
+(function () {
+  try {
+    const src = localStorage.getItem(BG_KEY);
+    if (src) document.body.style.backgroundImage = "url('" + src + "')";
+  } catch (e) { /* 忽略 */ }
+})();
 
 function getStoredBg() {
   try { return localStorage.getItem(BG_KEY) || ''; } catch (e) { return ''; }
@@ -185,9 +194,11 @@ const BG = {
   /* 用户主动把某张图设为背景：记住选择并立即应用（背景路径不写死，可动态更换） */
   async setBg(src) {
     if (!src) return;
-    storeBg(src);
+    // 带时间戳的 URL：媒体 7 天缓存下，换背景仍能强制加载新图并缓存新版本
+    const busted = src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + Date.now();
+    storeBg(busted);
     this.current = '';           // 强制重新应用
-    await this.apply(src);
+    await this.apply(busted);
   }
 };
 
@@ -243,7 +254,8 @@ function renderBgControl() {
   });
   reset.addEventListener('click', () => {
     try { localStorage.removeItem(BG_KEY); localStorage.removeItem(OVERLAY_KEY); } catch (e) { /* 忽略 */ }
-    location.reload();
+    BG.current = '';   // 恢复默认背景，免整页刷新
+    BG.apply('');
   });
 
   syncRange();
@@ -395,7 +407,7 @@ async function initPage(active) {
   await loadData();
   renderHeader(active);
   renderFooter();
-  document.title = DATA.site.siteName;
+  // 页面标题由各 HTML 的 <title> 提供；SPA 切换时由路由模块同步更新
 
   // 遮罩层
   if (!BG.overlay) {
@@ -696,4 +708,82 @@ async function initPage(active) {
     get playingKey() { return st.key; }
   };
   Object.defineProperty(window.MP, 'cards', { get: () => cards });
+})();
+
+/* ===== 伪 SPA 路由：栏目/事件切换不整页刷新，仅替换 <main> 并重跑页面脚本 =====
+   约定：
+   - 页面脚本统一用 IIFE 包裹（可重复执行）；document 级监听用命名函数并在
+     window.__vilhelmCleanup 中移除；页面私有 <audio> 由 cleanup 暂停。
+   - 管理/预览页（admin/new-event/*-preview）保持整页跳转。 */
+(function () {
+  const SKIP_PAGES = ['admin.html', 'new-event.html', 'event-preview-sr.html', 'gallery-preview.html'];
+  let seq = 0;
+
+  function pageName(u) {
+    return u.split('#')[0].split('?')[0].split('/').pop().toLowerCase();
+  }
+
+  async function loadPage(url, push) {
+    const me = ++seq;
+    let html;
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      html = await res.text();
+    } catch (e) {
+      if (me === seq) location.href = url;   // 请求失败回退整页跳转
+      return;
+    }
+    if (me !== seq) return;                  // 已被更新的导航取代
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const curMain = document.querySelector('main');
+    const newMain = doc.querySelector('main');
+    if (!curMain || !newMain) { location.href = url; return; }
+
+    /* 卸载旧页面：移除页面级监听 / 暂停页面私有音频 / 关闭灯箱 */
+    if (window.__vilhelmCleanup) { try { window.__vilhelmCleanup(); } catch (e) {} }
+    window.__vilhelmCleanup = null;
+    closeLightbox();
+
+    curMain.innerHTML = newMain.innerHTML;
+
+    /* 按文档顺序执行页面脚本（跳过已全局加载的 common.js） */
+    doc.querySelectorAll('script').forEach(s => {
+      const src = s.getAttribute('src') || '';
+      if (src && src.toLowerCase().indexOf('common.js') >= 0) return;
+      const el = document.createElement('script');
+      if (src) el.src = src; else el.textContent = s.textContent;
+      document.body.appendChild(el);
+    });
+
+    const t = doc.querySelector('title');
+    if (t) document.title = t.textContent;
+    if (push) history.pushState({}, '', url);
+    window.scrollTo(0, 0);
+  }
+
+  /* 供页面脚本调用的站内跳转（如时间线卡片点击） */
+  window.navigateTo = function (url, replace) {
+    if (replace) history.replaceState({}, '', url);
+    loadPage(url, !replace);
+  };
+
+  /* 拦截站内 .html 链接（排除管理/预览页），改为局部加载 */
+  document.addEventListener('click', function (e) {
+    const a = e.target && e.target.closest ? e.target.closest('a') : null;
+    if (!a || e.defaultPrevented || e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank') return;
+    const href = a.getAttribute('href') || '';
+    if (!href || href.indexOf('.html') < 0) return;
+    if (/^(https?:)?\/\//.test(href) && new URL(href, location.href).origin !== location.origin) return;
+    const name = pageName(href);
+    if (!name || SKIP_PAGES.includes(name)) return;
+    try { if (new URL(href, location.href).href === location.href) return; } catch (err) { return; }
+    e.preventDefault();
+    loadPage(href, true);
+  });
+  window.addEventListener('popstate', function () {
+    loadPage(location.href, false);
+  });
 })();

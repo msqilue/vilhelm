@@ -1,4 +1,5 @@
 /* ===== 时间线页逻辑 ===== */
+(function () {
 // 记住上次选中的时间线 + 标签筛选，从事件页返回时恢复（localStorage）
 const savedTl = localStorage.getItem('vilhelm:tlFilter');
 let savedTags = [];
@@ -161,7 +162,7 @@ function renderTimeline() {
     const id = card.dataset.href;
     card.addEventListener('click', e => {
       if (e.target.closest('.like-btn')) return;
-      location.href = card.dataset.href;
+      navigateTo(card.dataset.href);   // SPA 局部加载，避免整页刷新
     });
   });
   // 点赞（localStorage）
@@ -251,3 +252,4 @@ searchEl.addEventListener('input', () => {
     renderTimeline();
   }, 300);
 });
+})();

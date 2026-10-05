@@ -1,4 +1,8 @@
 /* ===== 事件详情页逻辑 ===== */
+(function () {
+/* 页面私有音频与一次性交互监听：SPA 切换离开本页时由 cleanup 暂停/移除 */
+const pageAudios = [];
+const autoOnceHandlers = [];
 
 /* 序号为 0 的语音为「自动播放语音」：点进事件自动播放，不在语音列表显示。
    命名规则：{事件名}-{时间}-0.mp3（-0. 结尾即视为自动播放语音） */
@@ -11,16 +15,18 @@ function isAutoAudio(a) {
 function playAutoAudio(src) {
   if (!src) return;
   const audio = new Audio(src);
+  pageAudios.push(audio);
   audio.volume = 1;
   const tryPlay = () => {
     const p = audio.play();
     if (p && p.catch) p.catch(() => {
+      const once = () => {
+        audio.play().catch(() => {});
+        autoOnceHandlers.forEach(h => ['pointerdown', 'keydown', 'touchstart'].forEach(e2 => document.removeEventListener(e2, h)));
+      };
+      autoOnceHandlers.push(once);
       ['pointerdown', 'keydown', 'touchstart'].forEach(evt =>
-        document.addEventListener(evt, function once() {
-          audio.play().catch(() => {});
-          ['pointerdown', 'keydown', 'touchstart'].forEach(e2 =>
-            document.removeEventListener(e2, once));
-        }, { once: true }));
+        document.addEventListener(evt, once, { once: true }));
     });
   };
   tryPlay();
@@ -42,7 +48,7 @@ initPage('timeline.html').then(() => {
 
   /* SR/MR/R 事件走语音卡版式（本页为 SSS/SSR 版式，直接跳转） */
   if ((ev.tags || []).some(t => ['t27', 't28', 't29'].includes(t))) {
-    location.replace('event-voice.html' + location.search);
+    navigateTo('event-voice.html' + location.search, true);
     return;
   }
 
@@ -105,6 +111,7 @@ function fmtTime(s) {
 function initAudioPlayers(root) {
   root.querySelectorAll('.audio-custom').forEach(box => {
     const audio = new Audio();
+    pageAudios.push(audio);
     audio.preload = 'none';
     audio.src = box.dataset.src;
     const playBtn = box.querySelector('.ac-play');
@@ -249,3 +256,10 @@ function renderNav(ev) {
   if (next) html += `<a class="ev-nav-card" href="${navHref(next.id)}"><span class="ev-nav-arrow">↓</span><span><em>下一条</em>${escapeHtml(next.title)}</span></a>`;
   el.innerHTML = html || '<p class="ev-nav-empty">当前筛选下没有其他事件</p>';
 }
+
+/* SPA 卸载钩子：暂停页面私有音频、移除自动播放的交互监听 */
+window.__vilhelmCleanup = function () {
+  pageAudios.forEach(a => { try { a.pause(); } catch (e) {} });
+  autoOnceHandlers.forEach(h => ['pointerdown', 'keydown', 'touchstart'].forEach(e2 => document.removeEventListener(e2, h)));
+};
+})();

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>典藏 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261005c24">
+  <link rel="stylesheet" href="css/style.css?v=20261005c38">
   <style>
     /* ===== 典藏栏目组件样式 ===== */
     .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
@@ -111,8 +111,9 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=20261005c24"></script>
+  <script src="js/common.js?v=20261005c38"></script>
   <script>
+    (function () {
     /* ===== 典藏页面：SR/MR 卡面与语音（播放器为全站共享 MP，切页/新开页面不断） ===== */
     const PAGE_SIZE = 10;
     const state = { sub: 'ssr', view: 'card', page: 1 };
@@ -224,7 +225,7 @@
       if (e.target.id === 'pg-next') return goPage(state.page + 1);
     });
     // 播放：卡片/列表点击 → 以当前筛选视图全部卡片为播放列表，从点击项开始
-    document.addEventListener('click', e => {
+    function onDocClick(e) {
       const b = e.target.closest('.card-play, .row-play');
       if (b) {
         const k = b.dataset.key;
@@ -232,15 +233,23 @@
         if (!all.some(x => x.key === k)) return;
         MP.playAll(all.map(x => x.key), k);
       }
-    });
+    }
+    document.addEventListener('click', onDocClick);
     // 全局播放器状态变化 → 刷新高亮/提示
-    document.addEventListener('mpchange', () => { renderAll(); });
+    function onMpChange() { renderAll(); }
+    document.addEventListener('mpchange', onMpChange);
+    // SPA 卸载钩子：移除本页 document 级监听，避免重复绑定
+    window.__vilhelmCleanup = function () {
+      document.removeEventListener('click', onDocClick);
+      document.removeEventListener('mpchange', onMpChange);
+    };
 
     async function boot() {
       await initPage('gallery.html');
       renderAll();
     }
     boot();
+    })();
   </script>
 </body>
 </html>

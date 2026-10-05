@@ -1,4 +1,9 @@
 /* ===== SR/MR/R 事件语音卡详情页逻辑 ===== */
+(function () {
+/* 页面私有音频与 document 级拖动监听：SPA 切换离开本页时由 cleanup 暂停/移除 */
+const pageAudios = [];
+const pageDocHandlers = [];
+
 /* 版式：双（多）语音并列卡片式；卡面完整显示；台词随语音滚动高亮（当前句白色半透明全宽高亮） */
 /* 与 SSS/SSR 事件页（event.html + event.js）分流：本页承接标签含 SR(t27)/MR(t28)/R(t29) 的事件 */
 
@@ -20,7 +25,7 @@ initPage('timeline.html').then(() => {
 
   /* 若该事件不是 SR/MR/R（误入本页），引导回标准事件页 */
   if (!isVoiceEvent(ev)) {
-    location.replace('event.html' + location.search);
+    navigateTo('event.html' + location.search, true);
     return;
   }
 
@@ -76,6 +81,7 @@ function fmtTime(t) {
 
 function makeVoicePlayer(voice, i) {
   const audio = new Audio(voice.audio);
+  pageAudios.push(audio);
   const pb = document.getElementById('vpb' + i);
   const track = document.getElementById('vtrk' + i);
   const fill = document.getElementById('vfill' + i);
@@ -113,9 +119,12 @@ function makeVoicePlayer(voice, i) {
     if (audio.duration) audio.currentTime = p * audio.duration;
     setProg();
   }
+  const seekMove = e => { if (seeking) seekAt(e.clientX); };
+  const seekUp = () => { seeking = false; };
   track.addEventListener('mousedown', e => { seeking = true; seekAt(e.clientX); });
-  document.addEventListener('mousemove', e => { if (seeking) seekAt(e.clientX); });
-  document.addEventListener('mouseup', () => { seeking = false; });
+  document.addEventListener('mousemove', seekMove);
+  document.addEventListener('mouseup', seekUp);
+  pageDocHandlers.push({ move: seekMove, up: seekUp });
 
   /* 台词自动滚动：当前句高亮（白色半透明全宽）+ 贴窗口顶部；
      句间空档与暂停时保持当前句高亮不消失，下一句出现才切换 */
@@ -176,3 +185,13 @@ function renderNav(ev) {
   if (html) el.innerHTML = '<div class="ev-nav">' + html + '</div>';
   else el.innerHTML = '<p class="ev-nav-empty">当前筛选下没有其他事件</p>';
 }
+
+/* SPA 卸载钩子：暂停页面私有音频、移除拖动进度条的 document 监听 */
+window.__vilhelmCleanup = function () {
+  pageAudios.forEach(a => { try { a.pause(); } catch (e) {} });
+  pageDocHandlers.forEach(h => {
+    document.removeEventListener('mousemove', h.move);
+    document.removeEventListener('mouseup', h.up);
+  });
+};
+})();
