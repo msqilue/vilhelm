@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>典藏 · 莫弈·Vilhelm</title>
-  <link rel="stylesheet" href="css/style.css?v=20261004c7">
+  <link rel="stylesheet" href="css/style.css?v=20261004c8">
   <style>
     /* ===== 典藏栏目组件样式 ===== */
     .gallery-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
@@ -134,6 +134,7 @@
 
     <div class="gallery-head">
       <div class="gallery-tabs">
+        <span class="chip small" data-sub="all">全部</span>
         <span class="chip small" data-sub="sss">SSS</span>
         <span class="chip small on" data-sub="ssr">SSR</span>
         <span class="chip small" data-sub="sr">SR</span>
@@ -198,7 +199,7 @@
     </div>
   </div>
 
-  <script src="js/common.js?v=20261004c7"></script>
+  <script src="js/common.js?v=20261004c8"></script>
   <script>
     /* ===== 典藏页面：SR/MR 卡面与语音 ===== */
     let CARDS = [];
@@ -209,7 +210,10 @@
     const mp = document.getElementById('mini-player');
 
     function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-    function visible() { return CARDS.map((it, i) => ({ ...it, i })).filter(it => it.rarity.toLowerCase() === state.sub); }
+    function visible() {
+      return CARDS.map((it, i) => ({ ...it, i }))
+        .filter(it => state.sub === 'all' || it.rarity.toLowerCase() === state.sub);
+    }
     function initQueue() { state.queue = visible().map(x => x.i); }
 
     function pageItems() {
