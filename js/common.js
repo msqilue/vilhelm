@@ -9,7 +9,7 @@ const DATA = {
 const SITE_ROOT = document.baseURI.replace(/[^/]*$/, '');
 
 /* 资源/数据版本号：修改 HTML/CSS/JS/data 后递增，避免浏览器使用旧缓存 */
-const DATA_VERSION='20261005c38';
+const DATA_VERSION='20261005c39';
 
 async function loadData() {
   if (DATA.site) return DATA;
@@ -745,6 +745,16 @@ async function initPage(active) {
     if (window.__vilhelmCleanup) { try { window.__vilhelmCleanup(); } catch (e) {} }
     window.__vilhelmCleanup = null;
     closeLightbox();
+
+    /* 页面专属样式：移除上一页注入的 <style>，注入本页 <head> 中的内联样式
+       （SPA 只替换 <main>，head 样式需手动同步，否则卡片/语音卡等组件样式丢失） */
+    document.querySelectorAll('style[data-spa-style]').forEach(s => s.remove());
+    doc.querySelectorAll('head style').forEach(s => {
+      const el = document.createElement('style');
+      el.setAttribute('data-spa-style', '');
+      el.textContent = s.textContent;
+      document.head.appendChild(el);
+    });
 
     curMain.innerHTML = newMain.innerHTML;
 
